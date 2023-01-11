@@ -1,0 +1,6 @@
+name: ChatImage
+author: ChickenSaysBak
+website: https://www.spigotmc.org/resources/chatimage-send-images-in-minecraft.95842/
+description: Send images in Minecraft!
+version: ${project.version}
+main: me.chickensaysbak.chatimage.bungee.ChatImageBungee

@@ -1,0 +1,15 @@
+# To stop sending a message entirely, delete the whole line including the key/prefix.
+
+# Seen by anyone
+ignore_enabled: "&7Now ignoring images!"
+ignore_disabled: "&aNow showing images!"
+
+# Seen by admins
+reload_config: "&aSuccessfully reloaded ChatImage!"
+image_sent: "&aSuccessfully sent image!"
+chatimage_usage: "&cUsage: /chatimage <reload|send>"
+chatimage_send_usage: "&cUsage: /chatimage send <player> <url> [smooth] [trim] [max-width] [max-height] [text]"
+error_player_offline: "&cThat player is not online!"
+error_load: "&cThat image could not be loaded!"
+error_outdated: "&cThat player is on an outdated version!"
+error_ignoring: "&cThat player is ignoring images!"

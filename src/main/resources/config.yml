@@ -1,0 +1,73 @@
+# ============================================= #
+#            ChatImage Configuration            #
+#              By: ChickenSaysBak               #
+#                                               #
+# To reload, use /chatimage reload              #
+#                                               #
+# Permissions:                                  #
+# - chatimage.use (to render images)            #
+# - chatimage.admin (to use /chatimage)         #
+# ============================================= #
+
+
+# IMAGE SETTINGS #
+
+# Uses a more visually pleasing method of rendering images.
+# This is nearly just as fast as alternative rendering.
+fancy_render: true
+
+# Gets rid of excessive blank space along edges.
+trim_transparency: true
+
+# Maximum dimensions for an image. The maximum for default Minecraft chat settings is 35 x 20.
+max_width: 35
+max_height: 20
+
+
+# COOLDOWN SETTINGS #
+
+# Sets how long (in seconds) someone must wait before another image will render.
+cooldown: 3
+
+# Cooldown will start from 0 if an image URL is sent (as opposed to to it starting when the image itself renders).
+# If enabled, this lengthens the cooldown if the user is repeatedly sending a URL. This can help against avid spammers.
+strict_cooldown: false
+
+
+# FILTRATION SETTINGS #
+
+bad_words:
+
+  # Prevents an image from rendering if bad words are found. Does not apply to '/chatimage send'
+  # This will impact speed by a couple seconds. Duplicates cache within the plugin to increase speed.
+  enabled: false
+
+  # If an image contains bad words, the entire message with the link will not be sent.
+  # This includes messages from people that do not have permission to render images.
+  remove_message: false
+
+  # Specify words that should be allowed. Example:
+  # exclusions: ["word", "word", "word"]
+  exclusions: []
+
+explicit_content:
+
+  # You can obtain an api key for free here: https://moderatecontent.com/signup
+  # All you need is to submit an email address and you will receive one with no additional account setup required.
+  # With this, you can scan up to 10,000 images a month. If you need more, upgrades are available.
+  # To check your server's usage stats, go here: https://client.moderatecontent.com/
+  # If you're running a public server, please don't test images in chat. You can test them using this (add key and url):
+  # https://api.moderatecontent.com/moderate/?key=API_KEY_HERE&url=URL_HERE
+  api_key: ""
+
+  # YOU MUST HAVE AN API KEY TO USE THIS FEATURE.
+  # Prevents an image from rendering if explicit content is found. Does not apply to '/chatimage send'
+  # This will impact speed by a couple seconds. Duplicates cache within the plugin to increase speed.
+  enabled: false
+
+  # If an image contains explicit content, the entire message with the link will not be sent.
+  # NOTE: This includes messages from people that do not have permission to render images. Any images scanned will count toward your monthly limit!
+  remove_message: false
+
+# Prints extra messages to console to help find the source of issues
+debug: false
