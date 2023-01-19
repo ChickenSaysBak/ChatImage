@@ -10,5 +10,4 @@ public interface PluginWrapper {
     void sendPlayerMessage(UUID uuid, String message);
     boolean isBungee();
 
-
 }
