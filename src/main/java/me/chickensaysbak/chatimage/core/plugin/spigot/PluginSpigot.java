@@ -6,11 +6,15 @@ import me.chickensaysbak.chatimage.core.ChatImage;
 import me.chickensaysbak.chatimage.core.wrappers.CommandWrapper;
 import me.chickensaysbak.chatimage.core.wrappers.PluginWrapper;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.UUID;
 
-public class PluginSpigot extends JavaPlugin implements PluginWrapper {
+public class PluginSpigot extends JavaPlugin implements Listener, PluginWrapper {
 
     private ChatImage core;
 
@@ -18,12 +22,19 @@ public class PluginSpigot extends JavaPlugin implements PluginWrapper {
     public void onEnable() {
 
         core = new ChatImage(this);
+        getServer().getPluginManager().registerEvents(this, this);
 
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onChat(AsyncPlayerChatEvent event) {
+        boolean cancelEvent = core.onChat(event.getPlayer().getUniqueId(), event.getMessage());
+        event.setCancelled(cancelEvent);
     }
 
     @Override
     public void registerCommand(CommandWrapper command) {
-        getCommand(command.getName()).setExecutor(new me.chickensaysbak.chatimage.core.plugin.spigot.CommandSpigot(command));
+        getCommand(command.getName()).setExecutor(new CommandSpigot(command));
     }
 
     @Override
