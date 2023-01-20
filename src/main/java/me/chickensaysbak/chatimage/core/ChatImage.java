@@ -10,10 +10,12 @@ import java.util.UUID;
 
 public class ChatImage {
 
+    private static ChatImage instance;
     private PluginWrapper plugin;
 
     public ChatImage(PluginWrapper plugin) {
 
+        instance = this;
         this.plugin = plugin;
 
         plugin.registerCommand(new ChatImageCommand(plugin));
@@ -31,6 +33,14 @@ public class ChatImage {
 
         return false;
 
+    }
+
+    static ChatImage getInstance() {
+        return instance;
+    }
+
+    public PluginWrapper getPlugin() {
+        return plugin;
     }
 
 }
