@@ -4,6 +4,6 @@ package me.chickensaysbak.chatimage;
 
 public class ChatImageAPI {
 
-
+    private ChatImageAPI() {}
 
 }

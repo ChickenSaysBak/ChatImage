@@ -4,4 +4,6 @@ package me.chickensaysbak.chatimage.core;
 
 public class ImageMaker {
 
+    private ImageMaker() {}
+
 }
