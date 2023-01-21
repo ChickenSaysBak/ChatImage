@@ -12,11 +12,13 @@ public class ChatImage {
 
     private static ChatImage instance;
     private PluginWrapper plugin;
+    private Filtration filtration;
 
     public ChatImage(PluginWrapper plugin) {
 
         instance = this;
         this.plugin = plugin;
+        filtration = new Filtration();
 
         plugin.registerCommand(new ChatImageCommand(plugin));
         plugin.registerCommand(new IgnoreImagesCommand(plugin));
