@@ -43,7 +43,7 @@ public class ImageMaker {
 
         for (BaseComponent component : components) {
 
-            // adds text before existing image line breaks; text is only added if it matches the corresponding line number
+            // Adds text before existing image line breaks; text is only added if it matches the corresponding line number.
             if (currentLine < lines.length && component.toPlainText().equals("\n")) {
                 String currentText = ChatColor.translateAlternateColorCodes('&', " " + lines[currentLine]);
                 newComponents.addAll(Arrays.asList(TextComponent.fromLegacyText(currentText)));
@@ -73,10 +73,10 @@ public class ImageMaker {
         boolean hasPartialTransparency = hasPartialTransparency(original);
 
         BufferedImage image = original;
-        if (trim) image = trimTransparency(image, hasPartialTransparency); // ran 1st to ensure best possible resolution pre-resize
+        if (trim) image = trimTransparency(image, hasPartialTransparency); // Ran 1st to ensure best possible resolution pre-resize.
         Dimension scaled = getScaledDimension(image, maximum);
         image = smooth ? resizeImageSmooth(image, scaled) : resizeImage(image, scaled);
-        if (trim) image = trimTransparency(image, hasPartialTransparency); // ran again to remove excess whitespace post-resize
+        if (trim) image = trimTransparency(image, hasPartialTransparency); // Ran again to remove excess whitespace post-resize.
 
         return convertToText(image, hasPartialTransparency);
 
@@ -98,16 +98,15 @@ public class ImageMaker {
 
                 int rgb = image.getRGB(x, y);
                 int alpha = new Color(rgb, true).getAlpha();
-                String hexString = Integer.toHexString(rgb);
-                boolean normalPixel = hexString.length() >= 8; // ignores extraneous pixels found in transparent images
-                boolean nonBlank = alpha > 0 && (hasPartialTransparency || alpha > MID_ALPHA);
                 TextComponent pixel = new TextComponent();
 
-                if (normalPixel && nonBlank) {
+                if (isPixelVisible(alpha, hasPartialTransparency) && isPixelNormal(rgb)) {
+
+                    String standardHex = "#" + Integer.toHexString(rgb).substring(2); // Strips alpha characters.
+                    pixel.setColor(ChatColor.of(standardHex));
 
                     pixel.setText(alpha > MID_ALPHA ? SOLID_PIXEL : TRANSPARENT_PIXEL);
-                    if (hasPartialTransparency && alpha <= LOW_ALPHA) pixel.setFont("minecraft:uniform"); // smaller pixels
-                    pixel.setColor(ChatColor.of("#" + hexString.substring(hexString.length()-6))); // strips alpha hex
+                    if (hasPartialTransparency && alpha <= LOW_ALPHA) pixel.setFont("minecraft:uniform"); // Uses smaller pixels.
 
                 } else pixel.setText(BLANK_PIXEL);
 
@@ -126,24 +125,23 @@ public class ImageMaker {
     /**
      * Trims off transparent edges of an image
      * @param original the image to trim
+     * @param hasPartialTransparency whether to acknowledge transparent pixels or not
      * @return the trimmed image
      */
     private static BufferedImage trimTransparency(BufferedImage original, boolean hasPartialTransparency) {
 
         int width = original.getWidth(), height = original.getHeight();
 
-        // sides start on opposite ends and work their way across as pixels are found
-        // note that the Y-axis is reversed for image coordinates, so top and bottom are flipped
+        // Sides start on opposite ends and work their way across as pixels are found.
+        // Note that the Y-axis is reversed for image coordinates, so top and bottom are flipped.
         int top = height, bottom = 0, left = width, right = 0;
 
         for (int x = 0; x < width; ++x) for (int y = 0; y < height; ++y) {
 
             int rgb = original.getRGB(x, y);
             int alpha = new Color(rgb, true).getAlpha();
-            boolean normalPixel = Integer.toHexString(rgb).length() >= 8; // ignores extraneous pixels found in transparent images
-            boolean nonBlank = alpha > 0 && (hasPartialTransparency || alpha > MID_ALPHA);
 
-            if (normalPixel && nonBlank) {
+            if (isPixelVisible(alpha, hasPartialTransparency) && isPixelNormal(rgb)) {
                 top = Math.min(top, y);
                 bottom = Math.max(bottom, y);
                 left = Math.min(left, x);
@@ -152,7 +150,7 @@ public class ImageMaker {
 
         }
 
-        int newWidth = right - left + 1, newHeight = bottom - top + 1; // 1 is added since coordinates start at 0
+        int newWidth = right - left + 1, newHeight = bottom - top + 1; // 1 is added since coordinates start at 0.
         return original.getSubimage(left, top, newWidth, newHeight);
 
     }
@@ -247,6 +245,27 @@ public class ImageMaker {
         double ratio = (double) midAlphaPixels/visiblePixels;
         return ratio >= THRESHOLD;
 
+    }
+
+    /**
+     * Checks if a pixel is considered normal.
+     * Used to ignore extraneous pixels found along the border of some transparent images.
+     * @param rgb the rgb of the pixel to check
+     * @return true if the pixel is normal
+     */
+    private static boolean isPixelNormal(int rgb) {
+        return Integer.toHexString(rgb).length() == 8;
+    }
+
+    /**
+     * Checks if a pixel should be visible.
+     * If partial transparency is not supported for the image, the pixel's alpha must be high to be considered visible.
+     * @param alpha the alpha value of the pixel to check
+     * @param hasPartialTransparency whether to acknowledge transparent pixels or not
+     * @return true if the pixel should be visible
+     */
+    private static boolean isPixelVisible(int alpha, boolean hasPartialTransparency) {
+        return alpha > 0 && (hasPartialTransparency || alpha > MID_ALPHA);
     }
 
 }
