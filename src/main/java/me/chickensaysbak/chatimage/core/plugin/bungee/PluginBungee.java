@@ -5,6 +5,7 @@ package me.chickensaysbak.chatimage.core.plugin.bungee;
 import me.chickensaysbak.chatimage.core.ChatImage;
 import me.chickensaysbak.chatimage.core.wrappers.CommandWrapper;
 import me.chickensaysbak.chatimage.core.wrappers.PluginWrapper;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.Connection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -49,6 +50,12 @@ public class PluginBungee extends Plugin implements Listener, PluginWrapper {
     public void sendPlayerMessage(UUID uuid, String message) {
         ProxiedPlayer player = getProxy().getPlayer(uuid);
         if (player != null) player.sendMessage(TextComponent.fromLegacyText(message));
+    }
+
+    @Override
+    public void sendPlayerComponent(UUID uuid, BaseComponent component) {
+        ProxiedPlayer player = getProxy().getPlayer(uuid);
+        if (player != null) player.sendMessage(component);
     }
 
     @Override
