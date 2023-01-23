@@ -31,4 +31,5 @@ public class CommandBungee extends Command implements TabExecutor {
         UUID uuid = sender instanceof ProxiedPlayer ? ((ProxiedPlayer) sender).getUniqueId() : null;
         return command.onTabComplete(uuid, args);
     }
+
 }

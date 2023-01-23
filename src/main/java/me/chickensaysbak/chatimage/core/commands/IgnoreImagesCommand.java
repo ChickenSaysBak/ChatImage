@@ -5,6 +5,7 @@ package me.chickensaysbak.chatimage.core.commands;
 import me.chickensaysbak.chatimage.core.wrappers.CommandWrapper;
 import me.chickensaysbak.chatimage.core.wrappers.PluginWrapper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,7 +32,8 @@ public class IgnoreImagesCommand extends CommandWrapper {
 
     @Override
     public List<String> onTabComplete(UUID sender, String[] args) {
-        return null;
+        List<String> result = new ArrayList<>();
+        return result;
     }
 
 }
