@@ -15,6 +15,7 @@ import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
 
+import java.io.InputStream;
 import java.util.UUID;
 
 public class PluginBungee extends Plugin implements Listener, PluginAdapter {
@@ -44,6 +45,11 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
     @Override
     public void registerCommand(CommandAdapter command) {
         getProxy().getPluginManager().registerCommand(this, new CommandBungee(command));
+    }
+
+    @Override
+    public InputStream getResource(String name) {
+        return getResourceAsStream(name);
     }
 
     @Override
