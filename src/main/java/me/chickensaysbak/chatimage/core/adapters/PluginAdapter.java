@@ -6,6 +6,7 @@ import net.md_5.bungee.api.chat.BaseComponent;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.Reader;
 import java.util.UUID;
 
 public interface PluginAdapter {
@@ -13,6 +14,8 @@ public interface PluginAdapter {
     void registerCommand(CommandAdapter command);
     File getDataFolder();
     InputStream getResource(String name);
+    YamlAdapter loadYaml(File file);
+    YamlAdapter loadYaml(Reader reader);
     void sendPlayerMessage(UUID uuid, String message);
     void sendPlayerComponent(UUID uuid, BaseComponent component);
     boolean isBungee();

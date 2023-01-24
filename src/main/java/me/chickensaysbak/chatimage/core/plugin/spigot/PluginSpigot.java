@@ -5,7 +5,9 @@ package me.chickensaysbak.chatimage.core.plugin.spigot;
 import me.chickensaysbak.chatimage.core.ChatImage;
 import me.chickensaysbak.chatimage.core.adapters.CommandAdapter;
 import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
+import me.chickensaysbak.chatimage.core.adapters.YamlAdapter;
 import net.md_5.bungee.api.chat.BaseComponent;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -13,6 +15,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.io.Reader;
 import java.util.UUID;
 
 public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter {
@@ -36,6 +40,16 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
     @Override
     public void registerCommand(CommandAdapter command) {
         getCommand(command.getName()).setExecutor(new CommandSpigot(command));
+    }
+
+    @Override
+    public YamlAdapter loadYaml(File file) {
+        return new YamlSpigot(YamlConfiguration.loadConfiguration(file));
+    }
+
+    @Override
+    public YamlAdapter loadYaml(Reader reader) {
+        return new YamlSpigot(YamlConfiguration.loadConfiguration(reader));
     }
 
     @Override

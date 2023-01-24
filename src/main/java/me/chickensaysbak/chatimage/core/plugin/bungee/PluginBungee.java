@@ -5,6 +5,7 @@ package me.chickensaysbak.chatimage.core.plugin.bungee;
 import me.chickensaysbak.chatimage.core.ChatImage;
 import me.chickensaysbak.chatimage.core.adapters.CommandAdapter;
 import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
+import me.chickensaysbak.chatimage.core.adapters.YamlAdapter;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.Connection;
@@ -12,10 +13,15 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
+import net.md_5.bungee.config.ConfigurationProvider;
+import net.md_5.bungee.config.YamlConfiguration;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.util.UUID;
 
 public class PluginBungee extends Plugin implements Listener, PluginAdapter {
@@ -50,6 +56,23 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
     @Override
     public InputStream getResource(String name) {
         return getResourceAsStream(name);
+    }
+
+    @Override
+    public YamlAdapter loadYaml(File file) {
+
+        try {
+            return new YamlBungee(ConfigurationProvider.getProvider(YamlConfiguration.class).load(file));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    @Override
+    public YamlAdapter loadYaml(Reader reader) {
+        return new YamlBungee(ConfigurationProvider.getProvider(YamlConfiguration.class).load(reader));
     }
 
     @Override
