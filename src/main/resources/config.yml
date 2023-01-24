@@ -29,7 +29,7 @@ max_height: 20
 # Sets how long (in seconds) someone must wait before another image will render.
 cooldown: 3
 
-# Cooldown will start from 0 if an image URL is sent (as opposed to to it starting when the image itself renders).
+# Cooldown will start from 0 if an image URL is sent (as opposed to it starting when the image itself renders).
 # If enabled, this lengthens the cooldown if the user is repeatedly sending a URL. This can help against avid spammers.
 strict_cooldown: false
 
@@ -53,7 +53,7 @@ bad_words:
 explicit_content:
 
   # You can obtain an api key for free here: https://moderatecontent.com/signup
-  # All you need is to submit an email address and you will receive one with no additional account setup required.
+  # All you need is to submit an email address, and you will receive one with no additional account setup required.
   # With this, you can scan up to 10,000 images a month. If you need more, upgrades are available.
   # To check your server's usage stats, go here: https://client.moderatecontent.com/
   # If you're running a public server, please don't test images in chat. You can test them using this (add key and url):
