@@ -4,7 +4,7 @@ package me.chickensaysbak.chatimage.core;
 
 import me.chickensaysbak.chatimage.core.commands.ChatImageCommand;
 import me.chickensaysbak.chatimage.core.commands.IgnoreImagesCommand;
-import me.chickensaysbak.chatimage.core.wrappers.PluginAdapter;
+import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 
 import java.util.UUID;
 

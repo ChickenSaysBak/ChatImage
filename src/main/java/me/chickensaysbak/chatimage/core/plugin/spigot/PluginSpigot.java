@@ -3,8 +3,8 @@
 package me.chickensaysbak.chatimage.core.plugin.spigot;
 
 import me.chickensaysbak.chatimage.core.ChatImage;
-import me.chickensaysbak.chatimage.core.wrappers.CommandWrapper;
-import me.chickensaysbak.chatimage.core.wrappers.PluginWrapper;
+import me.chickensaysbak.chatimage.core.adapters.CommandAdapter;
+import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,7 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.UUID;
 
-public class PluginSpigot extends JavaPlugin implements Listener, PluginWrapper {
+public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter {
 
     private ChatImage core;
 
@@ -34,7 +34,7 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginWrapper 
     }
 
     @Override
-    public void registerCommand(CommandWrapper command) {
+    public void registerCommand(CommandAdapter command) {
         getCommand(command.getName()).setExecutor(new CommandSpigot(command));
     }
 

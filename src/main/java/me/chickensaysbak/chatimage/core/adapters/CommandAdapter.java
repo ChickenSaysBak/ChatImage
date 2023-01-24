@@ -1,4 +1,4 @@
-package me.chickensaysbak.chatimage.core.wrappers;
+package me.chickensaysbak.chatimage.core.adapters;
 
 import java.util.List;
 import java.util.UUID;

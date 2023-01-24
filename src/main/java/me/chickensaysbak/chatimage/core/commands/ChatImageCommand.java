@@ -2,8 +2,8 @@
 // This code is licensed under MIT license (see LICENSE file for details).
 package me.chickensaysbak.chatimage.core.commands;
 
-import me.chickensaysbak.chatimage.core.wrappers.CommandAdapter;
-import me.chickensaysbak.chatimage.core.wrappers.PluginAdapter;
+import me.chickensaysbak.chatimage.core.adapters.CommandAdapter;
+import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

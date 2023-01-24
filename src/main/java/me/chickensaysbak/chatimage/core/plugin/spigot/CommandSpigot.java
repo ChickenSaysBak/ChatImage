@@ -2,7 +2,7 @@
 // This code is licensed under MIT license (see LICENSE file for details).
 package me.chickensaysbak.chatimage.core.plugin.spigot;
 
-import me.chickensaysbak.chatimage.core.wrappers.CommandAdapter;
+import me.chickensaysbak.chatimage.core.adapters.CommandAdapter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;

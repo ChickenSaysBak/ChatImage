@@ -1,6 +1,6 @@
 // ChatImage © 2023 ChickenSaysBak
 // This code is licensed under MIT license (see LICENSE file for details).
-package me.chickensaysbak.chatimage.core.wrappers;
+package me.chickensaysbak.chatimage.core.adapters;
 
 import net.md_5.bungee.api.chat.BaseComponent;
 

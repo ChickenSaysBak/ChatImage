@@ -3,8 +3,8 @@
 package me.chickensaysbak.chatimage.core.plugin.bungee;
 
 import me.chickensaysbak.chatimage.core.ChatImage;
-import me.chickensaysbak.chatimage.core.wrappers.CommandAdapter;
-import me.chickensaysbak.chatimage.core.wrappers.PluginAdapter;
+import me.chickensaysbak.chatimage.core.adapters.CommandAdapter;
+import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.Connection;
