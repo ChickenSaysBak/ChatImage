@@ -2,7 +2,7 @@
 // This code is licensed under MIT license (see LICENSE file for details).
 package me.chickensaysbak.chatimage.core.plugin.spigot;
 
-import me.chickensaysbak.chatimage.core.wrappers.CommandWrapper;
+import me.chickensaysbak.chatimage.core.wrappers.CommandAdapter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -13,9 +13,9 @@ import java.util.UUID;
 
 public class CommandSpigot implements TabExecutor {
 
-    private CommandWrapper command;
+    private CommandAdapter command;
 
-    public CommandSpigot(CommandWrapper command) {
+    public CommandSpigot(CommandAdapter command) {
         this.command = command;
     }
 

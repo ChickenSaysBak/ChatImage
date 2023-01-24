@@ -3,15 +3,15 @@ package me.chickensaysbak.chatimage.core.wrappers;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class CommandWrapper {
+public abstract class CommandAdapter {
 
-    private PluginWrapper plugin;
+    private PluginAdapter plugin;
 
-    public CommandWrapper(PluginWrapper plugin) {
+    public CommandAdapter(PluginAdapter plugin) {
         this.plugin = plugin;
     }
 
-    public PluginWrapper getPlugin() {
+    public PluginAdapter getPlugin() {
         return plugin;
     }
 

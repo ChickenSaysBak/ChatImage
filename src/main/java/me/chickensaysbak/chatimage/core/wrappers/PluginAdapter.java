@@ -6,9 +6,9 @@ import net.md_5.bungee.api.chat.BaseComponent;
 
 import java.util.UUID;
 
-public interface PluginWrapper {
+public interface PluginAdapter {
 
-    void registerCommand(CommandWrapper command);
+    void registerCommand(CommandAdapter command);
     void sendPlayerMessage(UUID uuid, String message);
     void sendPlayerComponent(UUID uuid, BaseComponent component);
     boolean isBungee();
