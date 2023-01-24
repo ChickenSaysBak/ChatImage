@@ -16,7 +16,6 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.Reader;
 import java.util.UUID;
 
 public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter {
@@ -45,11 +44,6 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
     @Override
     public YamlAdapter loadYaml(File file) {
         return new YamlSpigot(YamlConfiguration.loadConfiguration(file));
-    }
-
-    @Override
-    public YamlAdapter loadYaml(Reader reader) {
-        return new YamlSpigot(YamlConfiguration.loadConfiguration(reader));
     }
 
     @Override

@@ -21,7 +21,6 @@ import net.md_5.bungee.event.EventPriority;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Reader;
 import java.util.UUID;
 
 public class PluginBungee extends Plugin implements Listener, PluginAdapter {
@@ -68,11 +67,6 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
             return null;
         }
 
-    }
-
-    @Override
-    public YamlAdapter loadYaml(Reader reader) {
-        return new YamlBungee(ConfigurationProvider.getProvider(YamlConfiguration.class).load(reader));
     }
 
     @Override
