@@ -4,17 +4,17 @@ package me.chickensaysbak.chatimage.core;
 
 import me.chickensaysbak.chatimage.core.commands.ChatImageCommand;
 import me.chickensaysbak.chatimage.core.commands.IgnoreImagesCommand;
-import me.chickensaysbak.chatimage.core.wrappers.PluginWrapper;
+import me.chickensaysbak.chatimage.core.wrappers.PluginAdapter;
 
 import java.util.UUID;
 
 public class ChatImage {
 
     private static ChatImage instance;
-    private PluginWrapper plugin;
+    private PluginAdapter plugin;
     private Filtration filtration;
 
-    public ChatImage(PluginWrapper plugin) {
+    public ChatImage(PluginAdapter plugin) {
 
         instance = this;
         this.plugin = plugin;
@@ -41,7 +41,7 @@ public class ChatImage {
         return instance;
     }
 
-    public PluginWrapper getPlugin() {
+    public PluginAdapter getPlugin() {
         return plugin;
     }
 
