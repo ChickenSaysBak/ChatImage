@@ -40,7 +40,21 @@ public class ChatImage {
 
     }
 
-    static ChatImage getInstance() {
+    /**
+     * Sends a UI message if it exists in the settings. If the recipient is null, the message is sent to console.
+     * @param recipient the UUID of the recipient or null for console
+     * @param key the setting key for the message
+     */
+    public void sendUIMessage(UUID recipient, String key) {
+
+        String message = settings.getMessage(key);
+        if (message == null) return;
+
+        plugin.sendMessage(recipient, ChatColor.translateAlternateColorCodes('&', message));
+
+    }
+
+    public static ChatImage getInstance() {
         return instance;
     }
 
