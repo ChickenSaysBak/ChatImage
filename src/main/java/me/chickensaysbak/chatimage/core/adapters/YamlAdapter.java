@@ -4,11 +4,13 @@ package me.chickensaysbak.chatimage.core.adapters;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 public interface YamlAdapter {
 
     void save(File file) throws IOException;
+    Collection<String> getKeys();
     boolean getBoolean(String path, boolean def);
     int getInt(String path, int def);
     long getLong(String path, long def);

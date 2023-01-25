@@ -9,6 +9,7 @@ import net.md_5.bungee.config.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 public class YamlBungee implements YamlAdapter {
@@ -22,6 +23,11 @@ public class YamlBungee implements YamlAdapter {
     @Override
     public void save(File file) throws IOException {
         ConfigurationProvider.getProvider(YamlConfiguration.class).save(config, file);
+    }
+
+    @Override
+    public Collection<String> getKeys() {
+        return config.getKeys();
     }
 
     @Override

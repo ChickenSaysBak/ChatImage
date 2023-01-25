@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 public class YamlSpigot implements YamlAdapter {
@@ -20,6 +21,11 @@ public class YamlSpigot implements YamlAdapter {
     @Override
     public void save(File file) throws IOException {
         config.save(file);
+    }
+
+    @Override
+    public Collection<String> getKeys() {
+        return config.getKeys(false);
     }
 
     @Override
