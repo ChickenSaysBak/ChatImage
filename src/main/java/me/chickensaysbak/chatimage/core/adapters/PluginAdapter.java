@@ -2,7 +2,7 @@
 // This code is licensed under MIT license (see LICENSE file for details).
 package me.chickensaysbak.chatimage.core.adapters;
 
-import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 import java.io.File;
 import java.io.InputStream;
@@ -14,8 +14,8 @@ public interface PluginAdapter {
     File getDataFolder();
     InputStream getResource(String name);
     YamlAdapter loadYaml(File file);
-    void sendPlayerMessage(UUID uuid, String message);
-    void sendPlayerComponent(UUID uuid, BaseComponent component);
+    void sendMessage(UUID recipient, String message);
+    void sendImage(UUID recipient, TextComponent component);
     boolean isBungee();
 
 }

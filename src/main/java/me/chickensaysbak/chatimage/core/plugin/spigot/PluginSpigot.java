@@ -6,7 +6,7 @@ import me.chickensaysbak.chatimage.core.ChatImage;
 import me.chickensaysbak.chatimage.core.adapters.CommandAdapter;
 import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 import me.chickensaysbak.chatimage.core.adapters.YamlAdapter;
-import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -47,14 +47,21 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
     }
 
     @Override
-    public void sendPlayerMessage(UUID uuid, String message) {
-        Player player = getServer().getPlayer(uuid);
-        if (player != null) player.sendMessage(message);
+    public void sendMessage(UUID recipient, String message) {
+
+        if (recipient == null) getServer().getConsoleSender().sendMessage(message);
+
+        else {
+            Player player = getServer().getPlayer(recipient);
+            if (player != null) player.sendMessage(message);
+        }
+
     }
 
     @Override
-    public void sendPlayerComponent(UUID uuid, BaseComponent component) {
-        Player player = getServer().getPlayer(uuid);
+    public void sendImage(UUID recipient, TextComponent component) {
+        if (recipient == null) return;
+        Player player = getServer().getPlayer(recipient);
         if (player != null) player.spigot().sendMessage(component);
     }
 
