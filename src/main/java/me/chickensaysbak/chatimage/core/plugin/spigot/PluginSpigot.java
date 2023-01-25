@@ -47,6 +47,12 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
     }
 
     @Override
+    public UUID getUUID(String name) {
+        Player player = getServer().getPlayer(name);
+        return player != null ? player.getUniqueId() : null;
+    }
+
+    @Override
     public void sendMessage(UUID recipient, String message) {
 
         if (recipient == null) getServer().getConsoleSender().sendMessage(message);

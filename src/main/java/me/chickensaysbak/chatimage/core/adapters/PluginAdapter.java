@@ -37,6 +37,13 @@ public interface PluginAdapter {
     YamlAdapter loadYaml(File file);
 
     /**
+     * Gets a player's UUID based on their name.
+     * @param name the name of the player
+     * @return the UUID of the player
+     */
+    UUID getUUID(String name);
+
+    /**
      * Sends a message to the recipient.
      * @param recipient the uuid of the recipient or null for console
      * @param message the message to send

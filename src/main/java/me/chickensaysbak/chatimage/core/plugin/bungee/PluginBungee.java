@@ -69,6 +69,12 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
     }
 
     @Override
+    public UUID getUUID(String name) {
+        ProxiedPlayer player = getProxy().getPlayer(name);
+        return player != null ? player.getUniqueId() : null;
+    }
+
+    @Override
     public void sendMessage(UUID recipient, String message) {
 
         if (recipient == null) getProxy().getConsole().sendMessage(TextComponent.fromLegacyText(message));
