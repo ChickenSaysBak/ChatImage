@@ -2,9 +2,10 @@
 // This code is licensed under MIT license (see LICENSE file for details).
 package me.chickensaysbak.chatimage.core;
 
+import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 import me.chickensaysbak.chatimage.core.commands.ChatImageCommand;
 import me.chickensaysbak.chatimage.core.commands.IgnoreImagesCommand;
-import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
+import net.md_5.bungee.api.ChatColor;
 
 import java.util.UUID;
 
@@ -12,12 +13,14 @@ public class ChatImage {
 
     private static ChatImage instance;
     private PluginAdapter plugin;
+    private Settings settings;
     private Filtration filtration;
 
     public ChatImage(PluginAdapter plugin) {
 
         instance = this;
         this.plugin = plugin;
+        settings = new Settings(plugin);
         filtration = new Filtration();
 
         plugin.registerCommand(new ChatImageCommand(plugin));
@@ -43,6 +46,10 @@ public class ChatImage {
 
     public PluginAdapter getPlugin() {
         return plugin;
+    }
+
+    public Settings getSettings() {
+        return settings;
     }
 
 }
