@@ -70,4 +70,9 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
         return false;
     }
 
+    @Override
+    public int getPlayerVersion(UUID uuid) {
+        return -1;
+    }
+
 }

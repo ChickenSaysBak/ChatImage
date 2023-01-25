@@ -17,5 +17,6 @@ public interface PluginAdapter {
     void sendMessage(UUID recipient, String message);
     void sendImage(UUID recipient, TextComponent component);
     boolean isBungee();
+    int getPlayerVersion(UUID uuid);
 
 }

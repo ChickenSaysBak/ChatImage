@@ -92,4 +92,11 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
         return true;
     }
 
+    @Override
+    public int getPlayerVersion(UUID uuid) {
+        if (uuid == null) return -1;
+        ProxiedPlayer player = getProxy().getPlayer(uuid);
+        return player != null ? player.getPendingConnection().getVersion() : -1;
+    }
+
 }
