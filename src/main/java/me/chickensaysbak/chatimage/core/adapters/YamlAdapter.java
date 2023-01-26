@@ -10,6 +10,7 @@ import java.util.List;
 public interface YamlAdapter {
 
     void save(File file) throws IOException;
+    void set(String path, Object value);
     Collection<String> getKeys();
     boolean getBoolean(String path, boolean def);
     int getInt(String path, int def);

@@ -24,6 +24,11 @@ public class YamlSpigot implements YamlAdapter {
     }
 
     @Override
+    public void set(String path, Object value) {
+        config.set(path, value);
+    }
+
+    @Override
     public Collection<String> getKeys() {
         return config.getKeys(false);
     }
