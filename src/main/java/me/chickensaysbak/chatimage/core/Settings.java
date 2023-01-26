@@ -38,7 +38,6 @@ public class Settings {
     Settings(PluginAdapter plugin) {
 
         this.plugin = plugin;
-
         configFile = new File(plugin.getDataFolder(), "config.yml");
         messagesFile = new File(plugin.getDataFolder(), "messages.yml");
 
