@@ -77,6 +77,13 @@ public interface PluginAdapter {
     int runTaskLater(Runnable task, int ticks);
 
     /**
+     * Runs an asynchronous task.
+     * @param task the task to run
+     * @return the task ID
+     */
+    int runTaskAsync(Runnable task);
+
+    /**
      * Check whether the plugin is Bungee or Spigot.
      * @return true if the plugin is Bungee
      */

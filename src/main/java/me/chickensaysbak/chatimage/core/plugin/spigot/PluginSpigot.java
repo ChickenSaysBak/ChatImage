@@ -76,6 +76,11 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
     }
 
     @Override
+    public int runTaskAsync(Runnable task) {
+        return getServer().getScheduler().runTaskAsynchronously(this, task).getTaskId();
+    }
+
+    @Override
     public boolean isBungee() {
         return false;
     }
