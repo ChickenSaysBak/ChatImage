@@ -61,7 +61,7 @@ public class Settings {
         maxWidth = config.getInt("max_width", 35);
         maxHeight = config.getInt("max_height", 20);
         trimTransparency = config.getBoolean("trim_transparency", true);
-        smoothRender = config.getBoolean("smooth_render", true);
+        smoothRender = config.getBoolean("smooth_render", config.getBoolean("fancy_render", true)); // Legacy support.
         cooldown = config.getInt("cooldown", 3);
         strictCooldown = config.getBoolean("strict_cooldown", false);
         filterBadWords = config.getBoolean("bad_words.enabled", false);
@@ -77,6 +77,8 @@ public class Settings {
         YamlAdapter messages = plugin.loadYaml(messagesFile);
         msgs.clear();
         for (String key : messages.getKeys()) msgs.put(key, messages.getString(key, ""));
+
+        plugin.publishStat("smooth_render", String.valueOf(smoothRender));
 
     }
 

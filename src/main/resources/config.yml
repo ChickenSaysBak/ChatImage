@@ -14,7 +14,7 @@
 
 # Uses a more visually pleasing method of rendering images.
 # This is nearly just as fast as alternative rendering.
-fancy_render: true
+smooth_render: true
 
 # Gets rid of excessive blank space along edges.
 trim_transparency: true
