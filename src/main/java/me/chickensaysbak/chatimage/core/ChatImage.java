@@ -58,8 +58,10 @@ public class ChatImage {
 
         String message = settings.getMessage(key);
         if (message == null) return;
+        message = ChatColor.translateAlternateColorCodes('&', message);
 
-        plugin.sendMessage(recipient, ChatColor.translateAlternateColorCodes('&', message));
+        if (recipient != null) plugin.getPlayer(recipient).sendMessage(message);
+        else plugin.sendConsoleMessage(message);
 
     }
 

@@ -2,10 +2,9 @@
 // This code is licensed under MIT license (see LICENSE file for details).
 package me.chickensaysbak.chatimage.core.adapters;
 
-import net.md_5.bungee.api.chat.TextComponent;
-
 import java.io.File;
 import java.io.InputStream;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -37,18 +36,37 @@ public interface PluginAdapter {
     Logger getLogger();
 
     /**
+     * Sends a message to console with color support.
+     * @param message the message to send
+     */
+    void sendConsoleMessage(String message);
+
+    /**
+     * Gets a player from their uuid.
+     * @param uuid the uuid to search for
+     * @return the player found
+     */
+    PlayerAdapter getPlayer(UUID uuid);
+
+    /**
+     * Gets a player from their name.
+     * @param name the name to search for
+     * @return the player found
+     */
+    PlayerAdapter getPlayer(String name);
+
+    /**
+     * Gets all online players.
+     * @return all online players
+     */
+    List<PlayerAdapter> getOnlinePlayers();
+
+    /**
      * Loads a file to be interpreted as YAML.
      * @param file the file to load
      * @return the loaded yaml file that can be used to retrieve values
      */
     YamlAdapter loadYaml(File file);
-
-    /**
-     * Gets a player's UUID based on their name.
-     * @param name the name of the player
-     * @return the UUID of the player
-     */
-    UUID getUUID(String name);
 
     /**
      * Runs a synchronous task after a certain amount of server ticks.
@@ -59,30 +77,9 @@ public interface PluginAdapter {
     int runTaskLater(Runnable task, int ticks);
 
     /**
-     * Sends a message to the recipient.
-     * @param recipient the uuid of the recipient or null for console
-     * @param message the message to send
-     */
-    void sendMessage(UUID recipient, String message);
-
-    /**
-     * Sends an image in the form of a TextComponent to the recipient. Does not send to console.
-     * @param recipient the uuid of the recipient
-     * @param component the image to send
-     */
-    void sendImage(UUID recipient, TextComponent component);
-
-    /**
      * Check whether the plugin is Bungee or Spigot.
      * @return true if the plugin is Bungee
      */
     boolean isBungee();
-
-    /**
-     * Gets the player's protocol version number if they're on Bungee.
-     * @param uuid the player to check
-     * @return the player's protocol version or -1 if running Spigot or the player is invalid
-     */
-    int getPlayerVersion(UUID uuid);
 
 }

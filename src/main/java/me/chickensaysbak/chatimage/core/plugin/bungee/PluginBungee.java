@@ -4,6 +4,7 @@ package me.chickensaysbak.chatimage.core.plugin.bungee;
 
 import me.chickensaysbak.chatimage.core.ChatImage;
 import me.chickensaysbak.chatimage.core.adapters.CommandAdapter;
+import me.chickensaysbak.chatimage.core.adapters.PlayerAdapter;
 import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 import me.chickensaysbak.chatimage.core.adapters.YamlAdapter;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -20,8 +21,10 @@ import net.md_5.bungee.event.EventPriority;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class PluginBungee extends Plugin implements Listener, PluginAdapter {
 
@@ -61,6 +64,26 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
     }
 
     @Override
+    public void sendConsoleMessage(String message) {
+        getProxy().getConsole().sendMessage(TextComponent.fromLegacyText(message));
+    }
+
+    @Override
+    public PlayerAdapter getPlayer(UUID uuid) {
+        return new PlayerBungee(getProxy().getPlayer(uuid));
+    }
+
+    @Override
+    public PlayerAdapter getPlayer(String name) {
+        return new PlayerBungee(getProxy().getPlayer(name));
+    }
+
+    @Override
+    public List<PlayerAdapter> getOnlinePlayers() {
+        return getProxy().getPlayers().stream().map(PlayerBungee::new).collect(Collectors.toList());
+    }
+
+    @Override
     public YamlAdapter loadYaml(File file) {
 
         try {
@@ -73,45 +96,13 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
     }
 
     @Override
-    public UUID getUUID(String name) {
-        ProxiedPlayer player = getProxy().getPlayer(name);
-        return player != null ? player.getUniqueId() : null;
-    }
-
-    @Override
     public int runTaskLater(Runnable task, int ticks) {
         return getProxy().getScheduler().schedule(this, task, ticks * 50L, TimeUnit.MILLISECONDS).getId();
     }
 
     @Override
-    public void sendMessage(UUID recipient, String message) {
-
-        if (recipient == null) getProxy().getConsole().sendMessage(TextComponent.fromLegacyText(message));
-
-        else {
-            ProxiedPlayer player = getProxy().getPlayer(recipient);
-            if (player != null) player.sendMessage(TextComponent.fromLegacyText(message));
-        }
-
-    }
-
-    @Override
-    public void sendImage(UUID recipient, TextComponent component) {
-        if (recipient == null) return;
-        ProxiedPlayer player = getProxy().getPlayer(recipient);
-        if (player != null) player.sendMessage(component);
-    }
-
-    @Override
     public boolean isBungee() {
         return true;
-    }
-
-    @Override
-    public int getPlayerVersion(UUID uuid) {
-        if (uuid == null) return -1;
-        ProxiedPlayer player = getProxy().getPlayer(uuid);
-        return player != null ? player.getPendingConnection().getVersion() : -1;
     }
 
 }
