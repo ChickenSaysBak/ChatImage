@@ -10,6 +10,7 @@ public interface PlayerAdapter {
 
     UUID getUniqueId();
     String getName();
+    boolean isOnline();
     void sendMessage(String message);
     void sendMessage(BaseComponent component);
     int getVersion();

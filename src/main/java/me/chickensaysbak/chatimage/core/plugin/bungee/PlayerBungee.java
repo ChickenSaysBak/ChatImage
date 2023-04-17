@@ -26,6 +26,11 @@ public class PlayerBungee implements PlayerAdapter {
     }
 
     @Override
+    public boolean isOnline() {
+        return player != null && player.isConnected();
+    }
+
+    @Override
     public void sendMessage(String message) {
         player.sendMessage(TextComponent.fromLegacyText(message));
     }

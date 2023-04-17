@@ -25,6 +25,11 @@ public class PlayerSpigot implements PlayerAdapter {
     }
 
     @Override
+    public boolean isOnline() {
+        return player != null && player.isOnline();
+    }
+
+    @Override
     public void sendMessage(String message) {
         player.sendMessage(message);
     }
