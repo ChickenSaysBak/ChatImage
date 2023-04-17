@@ -70,7 +70,7 @@ public class IgnoringImages {
                 UUID uuid = UUID.fromString(uuidString);
                 ignoring.add(uuid);
             } catch (IllegalArgumentException e) {
-                if (ChatImage.getInstance().getSettings().isDebug()) e.printStackTrace();
+                e.printStackTrace();
             }
 
         }
