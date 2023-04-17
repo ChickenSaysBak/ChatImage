@@ -2,6 +2,7 @@
 // This code is licensed under MIT license (see LICENSE file for details).
 package me.chickensaysbak.chatimage.core;
 
+import me.chickensaysbak.chatimage.core.adapters.PlayerAdapter;
 import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 import me.chickensaysbak.chatimage.core.commands.ChatImageCommand;
 import me.chickensaysbak.chatimage.core.commands.IgnoreImagesCommand;
@@ -60,8 +61,10 @@ public class ChatImage {
         if (message == null) return;
         message = ChatColor.translateAlternateColorCodes('&', message);
 
-        if (recipient != null) plugin.getPlayer(recipient).sendMessage(message);
-        else plugin.sendConsoleMessage(message);
+        if (recipient != null) {
+            PlayerAdapter player = plugin.getPlayer(recipient);
+            if (player != null) player.sendMessage(message);
+        } else plugin.sendConsoleMessage(message);
 
     }
 
