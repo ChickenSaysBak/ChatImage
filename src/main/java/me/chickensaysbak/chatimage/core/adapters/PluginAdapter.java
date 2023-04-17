@@ -7,6 +7,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import java.io.File;
 import java.io.InputStream;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 public interface PluginAdapter {
 
@@ -28,6 +29,12 @@ public interface PluginAdapter {
      * @return the resource
      */
     InputStream getResource(String name);
+
+    /**
+     * Gets the plugin's console logger.
+     * @return the logger
+     */
+    Logger getLogger();
 
     /**
      * Loads a file to be interpreted as YAML.
