@@ -44,6 +44,14 @@ public interface PluginAdapter {
     UUID getUUID(String name);
 
     /**
+     * Runs a synchronous task after a certain amount of server ticks.
+     * @param task the task to run
+     * @param ticks the amount of ticks (1 tick = 50 milliseconds)
+     * @return the task ID
+     */
+    int runTaskLater(Runnable task, int ticks);
+
+    /**
      * Sends a message to the recipient.
      * @param recipient the uuid of the recipient or null for console
      * @param message the message to send

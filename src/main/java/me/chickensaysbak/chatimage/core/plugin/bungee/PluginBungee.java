@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class PluginBungee extends Plugin implements Listener, PluginAdapter {
 
@@ -72,6 +73,11 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
     public UUID getUUID(String name) {
         ProxiedPlayer player = getProxy().getPlayer(name);
         return player != null ? player.getUniqueId() : null;
+    }
+
+    @Override
+    public int runTaskLater(Runnable task, int ticks) {
+        return getProxy().getScheduler().schedule(this, task, ticks * 50L, TimeUnit.MILLISECONDS).getId();
     }
 
     @Override

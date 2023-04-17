@@ -53,6 +53,11 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
     }
 
     @Override
+    public int runTaskLater(Runnable task, int ticks) {
+        return getServer().getScheduler().runTaskLater(this, task, ticks).getTaskId();
+    }
+
+    @Override
     public void sendMessage(UUID recipient, String message) {
 
         if (recipient == null) getServer().getConsoleSender().sendMessage(message);
