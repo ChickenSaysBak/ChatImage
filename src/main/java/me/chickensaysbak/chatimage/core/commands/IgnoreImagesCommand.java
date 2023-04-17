@@ -2,6 +2,8 @@
 // This code is licensed under MIT license (see LICENSE file for details).
 package me.chickensaysbak.chatimage.core.commands;
 
+import me.chickensaysbak.chatimage.core.ChatImage;
+import me.chickensaysbak.chatimage.core.IgnoringImages;
 import me.chickensaysbak.chatimage.core.adapters.CommandAdapter;
 import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 
@@ -28,12 +30,24 @@ public class IgnoreImagesCommand extends CommandAdapter {
     @Override
     public void onCommand(UUID sender, String[] args) {
 
+        if (sender == null) return; // disregards console
+
+        ChatImage chatImage = ChatImage.getInstance();
+        IgnoringImages ignoring = chatImage.getIgnoringImages();
+
+        if (ignoring.isIgnoring(sender)) {
+            ignoring.setIgnoring(sender, false);
+            chatImage.sendUIMessage(sender, "ignore_disabled");
+        } else {
+            ignoring.setIgnoring(sender, true);
+            chatImage.sendUIMessage(sender, "ignore_enabled");
+        }
+
     }
 
     @Override
     public List<String> onTabComplete(UUID sender, String[] args) {
-        List<String> result = new ArrayList<>();
-        return result;
+        return new ArrayList<>();
     }
 
 }

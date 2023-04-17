@@ -14,6 +14,7 @@ public class ChatImage {
     private static ChatImage instance;
     private PluginAdapter plugin;
     private Settings settings;
+    private IgnoringImages ignoringImages;
     private Filtration filtration;
 
     public ChatImage(PluginAdapter plugin) {
@@ -21,6 +22,7 @@ public class ChatImage {
         instance = this;
         this.plugin = plugin;
         settings = new Settings(plugin);
+        ignoringImages = new IgnoringImages(plugin);
         filtration = new Filtration();
 
         plugin.registerCommand(new ChatImageCommand(plugin));
@@ -54,6 +56,14 @@ public class ChatImage {
 
     }
 
+    /**
+     * Reloads all files.
+     */
+    public void reload() {
+        settings.reload();
+        ignoringImages.reload();
+    }
+
     public static ChatImage getInstance() {
         return instance;
     }
@@ -64,6 +74,9 @@ public class ChatImage {
 
     public Settings getSettings() {
         return settings;
+    }
+    public IgnoringImages getIgnoringImages() {
+        return ignoringImages;
     }
 
 }
