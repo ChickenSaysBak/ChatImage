@@ -29,10 +29,8 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
 
     @Override
     public void onEnable() {
-
         core = new ChatImage(this);
         getProxy().getPluginManager().registerListener(this, this);
-
     }
 
     @Override
