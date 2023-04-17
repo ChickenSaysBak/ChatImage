@@ -17,6 +17,8 @@ import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
+import org.bstats.bungeecord.Metrics;
+import org.bstats.charts.SimplePie;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,10 +31,12 @@ import java.util.stream.Collectors;
 public class PluginBungee extends Plugin implements Listener, PluginAdapter {
 
     private ChatImage core;
+    private Metrics bStats;
 
     @Override
     public void onEnable() {
         core = new ChatImage(this);
+        bStats = new Metrics(this, 12674);
         getProxy().getPluginManager().registerListener(this, this);
     }
 
@@ -108,6 +112,11 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
     @Override
     public boolean isBungee() {
         return true;
+    }
+
+    @Override
+    public void publishStat(String id, String value) {
+        bStats.addCustomChart(new SimplePie(id, () -> value));
     }
 
 }

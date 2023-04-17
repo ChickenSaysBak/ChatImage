@@ -7,6 +7,8 @@ import me.chickensaysbak.chatimage.core.adapters.CommandAdapter;
 import me.chickensaysbak.chatimage.core.adapters.PlayerAdapter;
 import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 import me.chickensaysbak.chatimage.core.adapters.YamlAdapter;
+import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -22,10 +24,12 @@ import java.util.stream.Collectors;
 public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter {
 
     private ChatImage core;
+    private Metrics bStats;
 
     @Override
     public void onEnable() {
         core = new ChatImage(this);
+        bStats = new Metrics(this, 12672);
         getServer().getPluginManager().registerEvents(this, this);
     }
 
@@ -83,6 +87,11 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
     @Override
     public boolean isBungee() {
         return false;
+    }
+
+    @Override
+    public void publishStat(String id, String value) {
+        bStats.addCustomChart(new SimplePie(id, () -> value));
     }
 
 }

@@ -17,10 +17,10 @@ public class Settings {
 
     // Config fields
     private File configFile;
+    private boolean smoothRender;
+    private boolean trimTransparency;
     private int maxWidth;
     private int maxHeight;
-    private boolean trimTransparency;
-    private boolean smoothRender;
     private int cooldown;
     private boolean strictCooldown;
     private boolean filterBadWords;
@@ -58,10 +58,10 @@ public class Settings {
         if (exclusions != null) oldExclusions.addAll(exclusions);
 
         YamlAdapter config = plugin.loadYaml(configFile);
+        smoothRender = config.getBoolean("smooth_render", config.getBoolean("fancy_render", true)); // Legacy support.
+        trimTransparency = config.getBoolean("trim_transparency", true);
         maxWidth = config.getInt("max_width", 35);
         maxHeight = config.getInt("max_height", 20);
-        trimTransparency = config.getBoolean("trim_transparency", true);
-        smoothRender = config.getBoolean("smooth_render", config.getBoolean("fancy_render", true)); // Legacy support.
         cooldown = config.getInt("cooldown", 3);
         strictCooldown = config.getBoolean("strict_cooldown", false);
         filterBadWords = config.getBoolean("bad_words.enabled", false);
@@ -79,13 +79,22 @@ public class Settings {
         for (String key : messages.getKeys()) msgs.put(key, messages.getString(key, ""));
 
         plugin.publishStat("smooth_render", String.valueOf(smoothRender));
+        plugin.publishStat("trim_transparency", String.valueOf(trimTransparency));
+        plugin.publishStat("max_width", String.valueOf(maxWidth));
+        plugin.publishStat("max_height", String.valueOf(maxHeight));
+        plugin.publishStat("cooldowns", String.valueOf(cooldown));
+        plugin.publishStat("strict_cooldown", String.valueOf(strictCooldown));
+        plugin.publishStat("bad_word_filtration", String.valueOf(filterBadWords));
+        plugin.publishStat("bad_word_message_removal", String.valueOf(removeBadWords));
+        plugin.publishStat("explicit_content_filtration", String.valueOf(filterExplicitContent));
+        plugin.publishStat("explicit_content_message_removal", String.valueOf(removeExplicitContent));
 
     }
 
+    public boolean isSmoothRender() {return smoothRender;}
+    public boolean isTrimTransparency() {return trimTransparency;}
     public int getMaxWidth() {return maxWidth;}
     public int getMaxHeight() {return maxHeight;}
-    public boolean isTrimTransparency() {return trimTransparency;}
-    public boolean isSmoothRender() {return smoothRender;}
     public int getCooldown() {return cooldown;}
     public boolean isStrictCooldown() {return strictCooldown;}
     public boolean isFilterBadWords() {return filterBadWords;}

@@ -89,4 +89,11 @@ public interface PluginAdapter {
      */
     boolean isBungee();
 
+    /**
+     * Publishes a statistic to bStats.
+     * @param id the id of the stat
+     * @param value the value of the stat
+     */
+    void publishStat(String id, String value);
+
 }
