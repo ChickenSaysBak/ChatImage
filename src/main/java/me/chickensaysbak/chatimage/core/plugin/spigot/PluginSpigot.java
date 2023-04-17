@@ -24,10 +24,13 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
 
     @Override
     public void onEnable() {
-
         core = new ChatImage(this);
         getServer().getPluginManager().registerEvents(this, this);
+    }
 
+    @Override
+    public void onDisable() {
+        core.onDisable();
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

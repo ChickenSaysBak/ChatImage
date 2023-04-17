@@ -31,6 +31,13 @@ public class ChatImage {
     }
 
     /**
+     * Called when the server shuts down and the plugin is disabled.
+     */
+    public void onDisable() {
+        if (ignoringImages.isSaveQueued()) ignoringImages.saveFile();
+    }
+
+    /**
      * Called when a player sends a message in chat.
      * @param uuid refers to the player
      * @param message the message sent

@@ -78,11 +78,19 @@ public class IgnoringImages {
     }
 
     /**
+     * Check if saving is scheduled to occur.
+     * @return true if saving is queued
+     */
+    public boolean isSaveQueued() {
+        return saveTimeRemaining > 0;
+    }
+
+    /**
      * Saves the ignoring file after at least 5 seconds or longer if changes are made before saving.
      * This prevents players from causing potential lag from spamming the /ignoreimages command.
      */
-    private void queueSave() {
-        boolean startTimer = saveTimeRemaining == 0;
+    public void queueSave() {
+        boolean startTimer = !isSaveQueued();
         saveTimeRemaining = 5;
         if (startTimer) queueSaveTimer();
     }
@@ -94,7 +102,7 @@ public class IgnoringImages {
 
         plugin.runTaskLater(() -> {
 
-            if (saveTimeRemaining > 0) {
+            if (isSaveQueued()) {
                 --saveTimeRemaining;
                 queueSaveTimer();
             } else saveFile();
@@ -107,7 +115,7 @@ public class IgnoringImages {
      * Updates the ignoring file to contain the contents of the ignoring list.
      * Deletes the file if the list is empty.
      */
-    private void saveFile() {
+    public void saveFile() {
 
         if (ignoring.isEmpty()) {
             if (ignoringFile.exists()) ignoringFile.delete();

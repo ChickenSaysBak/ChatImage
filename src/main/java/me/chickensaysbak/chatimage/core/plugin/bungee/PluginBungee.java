@@ -35,6 +35,11 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
 
     }
 
+    @Override
+    public void onDisable() {
+        core.onDisable();
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onChat(ChatEvent event) {
 
