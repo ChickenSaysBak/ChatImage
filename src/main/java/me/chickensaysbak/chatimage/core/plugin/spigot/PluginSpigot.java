@@ -3,6 +3,7 @@
 package me.chickensaysbak.chatimage.core.plugin.spigot;
 
 import me.chickensaysbak.chatimage.core.ChatImage;
+import me.chickensaysbak.chatimage.core.DiscordSRVHandler;
 import me.chickensaysbak.chatimage.core.adapters.CommandAdapter;
 import me.chickensaysbak.chatimage.core.adapters.PlayerAdapter;
 import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
@@ -25,16 +26,27 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
 
     private ChatImage core;
     private Metrics bStats;
+    private DiscordSRVHandler discordSRVHandler = null;
 
     @Override
     public void onEnable() {
+
         bStats = new Metrics(this, 12672);
         core = new ChatImage(this);
         getServer().getPluginManager().registerEvents(this, this);
+
+        if (getServer().getPluginManager().isPluginEnabled("DiscordSRV")) {
+            discordSRVHandler = new DiscordSRVHandler();
+            if (core.getSettings().isDebug()) getLogger().info("ChatImage Debugger - DiscordSRV found");
+        }
+
+        publishStat("discordsrv", String.valueOf(discordSRVHandler != null));
+
     }
 
     @Override
     public void onDisable() {
+        if (discordSRVHandler != null) discordSRVHandler.unsubscribe();
         core.onDisable();
     }
 

@@ -28,7 +28,7 @@ public class ChatImage {
     private Settings settings;
     private IgnoringImages ignoringImages;
 
-    private HashMap<UUID, Long> lastSent = new HashMap<>();
+    private HashMap<String, Long> lastSent = new HashMap<>(); // Contains UUIDs and Discord IDs.
 
     public ChatImage(PluginAdapter plugin) {
 
@@ -52,22 +52,30 @@ public class ChatImage {
 
     /**
      * Called when a player sends a message in chat.
-     * Detects when a url is sent and attempts to render an image if applicable.
      * @param player the player that chatted
      * @param message the message sent
      * @return true if the event should be canceled and have the message removed
      */
     public boolean onChat(PlayerAdapter player, String message) {
+        return processChatLinks(message, player.getUniqueId().toString(), player.hasPermission("chatimage.use"));
+    }
 
-        UUID uuid = player.getUniqueId();
+    /**
+     * Searches for a url in a message and attempts to render an image if applicable.
+     * @param message the message to scan
+     * @param id the UUID or Discord ID of the user
+     * @param hasPermission if the user has permission to render images
+     * @return true if the message should be removed
+     */
+    public boolean processChatLinks(String message, String id, boolean hasPermission) {
+
         int cooldown = settings.getCooldown();
         boolean strictCooldown = settings.isStrictCooldown();
         boolean filterBadWords = settings.isFilterBadWords(), filterExplicitContent = settings.isFilterExplicitContent();
         boolean removeBadWords = settings.isRemoveBadWords(), removeExplicitContent = settings.isRemoveExplicitContent();
 
-        boolean underCooldown = cooldown > 0 && lastSent.containsKey(uuid) && (System.currentTimeMillis()-lastSent.get(uuid))/1000 < cooldown;
+        boolean underCooldown = cooldown > 0 && lastSent.containsKey(id) && (System.currentTimeMillis()-lastSent.get(id))/1000 < cooldown;
         boolean underRegularCooldown = !strictCooldown && underCooldown;
-        boolean hasPermission = player.hasPermission("chatimage.use");
         boolean dontRender = !hasPermission || underRegularCooldown;
 
         /*
@@ -88,7 +96,7 @@ public class ChatImage {
 
         // Stop Check #2 - Terminates code if necessary AFTER message removal.
         if (dontRender) return false;
-        lastSent.put(uuid, System.currentTimeMillis()); // Cooldown starts over early with Strict Cooldown enabled
+        lastSent.put(id, System.currentTimeMillis()); // Cooldown starts over early with Strict Cooldown enabled
         if (strictCooldown && underCooldown) return false;
 
         // Renders the image AFTER the message has been sent.
