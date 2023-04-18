@@ -41,7 +41,7 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onChat(AsyncPlayerChatEvent event) {
         boolean cancelEvent = core.onChat(new PlayerSpigot(event.getPlayer()), event.getMessage());
-        event.setCancelled(cancelEvent);
+        if (cancelEvent) event.setCancelled(true);
     }
 
     @Override
