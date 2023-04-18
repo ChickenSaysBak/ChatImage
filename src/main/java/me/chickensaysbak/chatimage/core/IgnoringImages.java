@@ -100,7 +100,7 @@ public class IgnoringImages {
      */
     private void queueSaveTimer() {
 
-        plugin.runTaskLater(() -> {
+        plugin.runAsyncTaskLater(() -> {
 
             if (isSaveQueued()) {
                 --saveTimeRemaining;

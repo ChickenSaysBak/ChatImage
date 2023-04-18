@@ -67,7 +67,7 @@ public class ChatImageCommand extends CommandAdapter {
                 return;
             }
 
-            getPlugin().runTaskAsync(() -> {
+            getPlugin().runAsyncTaskLater(() -> {
 
                 BufferedImage image = chatImage.loadImage(args[2]);
 
@@ -103,7 +103,7 @@ public class ChatImageCommand extends CommandAdapter {
                 if (recipient.isOnline()) recipient.sendMessage(component);
                 if (sender != null && !sender.equals(recipient.getUniqueId())) chatImage.sendUIMessage(sender, "image_sent");
 
-            });
+            }, 0);
 
         } else chatImage.sendUIMessage(sender, "chatimage_usage");
 

@@ -75,13 +75,8 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
     }
 
     @Override
-    public int runTaskLater(Runnable task, int ticks) {
-        return getServer().getScheduler().runTaskLater(this, task, ticks).getTaskId();
-    }
-
-    @Override
-    public int runTaskAsync(Runnable task) {
-        return getServer().getScheduler().runTaskAsynchronously(this, task).getTaskId();
+    public int runAsyncTaskLater(Runnable task, int ticks) {
+        return getServer().getScheduler().runTaskLaterAsynchronously(this, task, ticks).getTaskId();
     }
 
     @Override

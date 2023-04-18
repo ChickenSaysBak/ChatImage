@@ -100,13 +100,8 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
     }
 
     @Override
-    public int runTaskLater(Runnable task, int ticks) {
+    public int runAsyncTaskLater(Runnable task, int ticks) {
         return getProxy().getScheduler().schedule(this, task, ticks * 50L, TimeUnit.MILLISECONDS).getId();
-    }
-
-    @Override
-    public int runTaskAsync(Runnable task) {
-        return getProxy().getScheduler().runAsync(this, task).getId();
     }
 
     @Override

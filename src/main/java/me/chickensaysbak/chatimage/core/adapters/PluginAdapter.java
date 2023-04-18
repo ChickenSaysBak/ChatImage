@@ -69,19 +69,12 @@ public interface PluginAdapter {
     YamlAdapter loadYaml(File file);
 
     /**
-     * Runs a synchronous task after a certain amount of server ticks.
+     * Runs an asynchronous task after a certain amount of server ticks.
      * @param task the task to run
      * @param ticks the amount of ticks (1 tick = 50 milliseconds)
      * @return the task ID
      */
-    int runTaskLater(Runnable task, int ticks);
-
-    /**
-     * Runs an asynchronous task.
-     * @param task the task to run
-     * @return the task ID
-     */
-    int runTaskAsync(Runnable task);
+    int runAsyncTaskLater(Runnable task, int ticks);
 
     /**
      * Check whether the plugin is Bungee or Spigot.
