@@ -28,8 +28,8 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
 
     @Override
     public void onEnable() {
-        core = new ChatImage(this);
         bStats = new Metrics(this, 12672);
+        core = new ChatImage(this);
         getServer().getPluginManager().registerEvents(this, this);
     }
 
