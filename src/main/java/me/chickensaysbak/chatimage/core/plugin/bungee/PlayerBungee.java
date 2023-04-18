@@ -31,6 +31,11 @@ public class PlayerBungee implements PlayerAdapter {
     }
 
     @Override
+    public boolean hasPermission(String node) {
+        return player.hasPermission(node);
+    }
+
+    @Override
     public void sendMessage(String message) {
         player.sendMessage(TextComponent.fromLegacyText(message));
     }
