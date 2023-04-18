@@ -52,7 +52,7 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
         if (event.isCancelled() || event.isCommand() || !(sender instanceof ProxiedPlayer)) return;
 
         ProxiedPlayer player = (ProxiedPlayer) sender;
-        boolean cancelEvent = core.onChat(player.getUniqueId(), event.getMessage());
+        boolean cancelEvent = core.onChat(new PlayerBungee(player), event.getMessage());
         event.setCancelled(cancelEvent);
 
     }

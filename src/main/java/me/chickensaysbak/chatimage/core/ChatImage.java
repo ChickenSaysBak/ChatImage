@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
 import java.util.UUID;
 
 public class ChatImage {
@@ -24,6 +25,8 @@ public class ChatImage {
     private Settings settings;
     private IgnoringImages ignoringImages;
     private Filtration filtration;
+
+    private HashMap<UUID, Long> lastSent = new HashMap<>();
 
     public ChatImage(PluginAdapter plugin) {
 
@@ -51,7 +54,7 @@ public class ChatImage {
      * @param message the message sent
      * @return true if the event should be cancelled and have the message removed
      */
-    public boolean onChat(UUID uuid, String message) {
+    public boolean onChat(PlayerAdapter player, String message) {
 
         return false;
 
