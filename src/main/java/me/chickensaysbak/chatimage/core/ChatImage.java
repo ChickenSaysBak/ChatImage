@@ -7,8 +7,10 @@ import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 import me.chickensaysbak.chatimage.core.commands.ChatImageCommand;
 import me.chickensaysbak.chatimage.core.commands.IgnoreImagesCommand;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -50,11 +52,51 @@ public class ChatImage {
 
     /**
      * Called when a player sends a message in chat.
-     * @param uuid refers to the player
+     * @param player the player that chatted
      * @param message the message sent
      * @return true if the event should be cancelled and have the message removed
      */
     public boolean onChat(PlayerAdapter player, String message) {
+
+        UUID uuid = player.getUniqueId();
+        int cooldown = settings.getCooldown();
+
+        boolean underCooldown = cooldown > 0 && lastSent.containsKey(uuid) && (System.currentTimeMillis()-lastSent.get(uuid))/1000 < cooldown;
+        boolean hasPermission = player.hasPermission("chatimage.use");
+        boolean noMessageRemoval = !settings.isRemoveBadWords() && !settings.isRemoveExplicitContent();
+        boolean underRegularCooldown = !settings.isStrictCooldown() && underCooldown;
+        boolean dontRender = !hasPermission || underRegularCooldown;
+
+        // Optimal if messages don't need to be checked for removal.
+        if (noMessageRemoval && dontRender) return false;
+
+        String url = findURL(message);
+        if (url == null) return false;
+
+        // ! Filtration Here !
+
+        if (dontRender) return false;
+        lastSent.put(uuid, System.currentTimeMillis());
+        if (settings.isStrictCooldown() && underCooldown) return false;
+
+        // Renders the image AFTER the message has been sent.
+        plugin.runAsyncTaskLater(() -> {
+
+            // ! Filtration Here !
+
+            BufferedImage image = loadImage(url);
+            if (image == null) return;
+
+            Dimension dim = new Dimension(settings.getMaxWidth(), settings.getMaxHeight());
+            boolean smooth = settings.isSmoothRender(), trim = settings.isTrimTransparency();
+            TextComponent component = ImageMaker.createChatImage(image, dim, smooth, trim);
+
+            for (PlayerAdapter p : plugin.getOnlinePlayers()) {
+                if (!isVersionValid(p.getVersion()) || ignoringImages.isIgnoring(p.getUniqueId())) continue;
+                p.sendMessage(component);
+            }
+
+        }, 1);
 
         return false;
 
@@ -92,8 +134,6 @@ public class ChatImage {
      * @return the loaded image or null if it failed to load
      */
     public BufferedImage loadImage(String url) {
-
-        url = stripURL(url);
 
         try {
             URLConnection connection = new URL(url).openConnection();
@@ -139,6 +179,27 @@ public class ChatImage {
 
         return split1[0] + "//" + split2[0] + "/" + urlEnd;
 
+    }
+
+    /**
+     * Finds the first url in a string of text.
+     * @param text the text to search
+     * @return the first url found
+     */
+    public static String findURL(String text) {
+        String[] words = ChatColor.stripColor(text).split(" ");
+        for (String word : words) if (word.startsWith("http")) return stripURL(word);
+        return null;
+    }
+
+    /**
+     * Checks if the client version is 1.16 or higher and can see custom colors.
+     * For Spigot servers, this will always be true.
+     * @param version the client's protocol version
+     * @return true if the client's version is 1.16 or higher
+     */
+    public static boolean isVersionValid(int version) {
+        return version == -1 || version > 735;
     }
 
     public static ChatImage getInstance() {
