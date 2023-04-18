@@ -24,9 +24,9 @@ public class ChatImage {
 
     private static ChatImage instance;
     private PluginAdapter plugin;
+    private Filtration filtration;
     private Settings settings;
     private IgnoringImages ignoringImages;
-    private Filtration filtration;
 
     private HashMap<UUID, Long> lastSent = new HashMap<>();
 
@@ -34,9 +34,9 @@ public class ChatImage {
 
         instance = this;
         this.plugin = plugin;
+        filtration = new Filtration(plugin);
         settings = new Settings(plugin);
         ignoringImages = new IgnoringImages(plugin);
-        filtration = new Filtration();
 
         plugin.registerCommand(new ChatImageCommand(plugin));
         plugin.registerCommand(new IgnoreImagesCommand(plugin));
@@ -52,37 +52,51 @@ public class ChatImage {
 
     /**
      * Called when a player sends a message in chat.
+     * Detects when a url is sent and attempts to render an image if applicable.
      * @param player the player that chatted
      * @param message the message sent
-     * @return true if the event should be cancelled and have the message removed
+     * @return true if the event should be canceled and have the message removed
      */
     public boolean onChat(PlayerAdapter player, String message) {
 
         UUID uuid = player.getUniqueId();
         int cooldown = settings.getCooldown();
+        boolean strictCooldown = settings.isStrictCooldown();
+        boolean filterBadWords = settings.isFilterBadWords(), filterExplicitContent = settings.isFilterExplicitContent();
+        boolean removeBadWords = settings.isRemoveBadWords(), removeExplicitContent = settings.isRemoveExplicitContent();
 
         boolean underCooldown = cooldown > 0 && lastSent.containsKey(uuid) && (System.currentTimeMillis()-lastSent.get(uuid))/1000 < cooldown;
+        boolean underRegularCooldown = !strictCooldown && underCooldown;
         boolean hasPermission = player.hasPermission("chatimage.use");
-        boolean noMessageRemoval = !settings.isRemoveBadWords() && !settings.isRemoveExplicitContent();
-        boolean underRegularCooldown = !settings.isStrictCooldown() && underCooldown;
         boolean dontRender = !hasPermission || underRegularCooldown;
 
-        // Optimal if messages don't need to be checked for removal.
-        if (noMessageRemoval && dontRender) return false;
+        /*
+         The following code may be run two different ways:
+             Optimal: Stop Check #1, Filtration #2
+             Message Removal Enabled: Filtration #1, Stop Check #2
+        */
+
+        // Stop Check #1 - Terminates code early if possible; optimal if message removal is disabled.
+        if (!removeBadWords && !removeExplicitContent && dontRender) return false;
 
         String url = findURL(message);
         if (url == null) return false;
 
-        // ! Filtration Here !
+        // Filtration #1 - Removes message and prevents rendering.
+        if (removeBadWords && filterBadWords && filtration.hasBadWords(url)) return true;
+        else if (removeExplicitContent && filterExplicitContent && filtration.hasExplicitContent(url)) return true;
 
+        // Stop Check #2 - Terminates code if necessary AFTER message removal.
         if (dontRender) return false;
-        lastSent.put(uuid, System.currentTimeMillis());
-        if (settings.isStrictCooldown() && underCooldown) return false;
+        lastSent.put(uuid, System.currentTimeMillis()); // Cooldown starts over early with Strict Cooldown enabled
+        if (strictCooldown && underCooldown) return false;
 
         // Renders the image AFTER the message has been sent.
         plugin.runAsyncTaskLater(() -> {
 
-            // ! Filtration Here !
+            // Filtration #2 - Only prevents rendering; if message removal is disabled, it's ideal to run on a separate thread.
+            if (!removeBadWords && filterBadWords && filtration.hasBadWords(url)) return;
+            else if (!removeExplicitContent && filterExplicitContent && filtration.hasExplicitContent(url)) return;
 
             BufferedImage image = loadImage(url);
             if (image == null) return;
@@ -204,6 +218,10 @@ public class ChatImage {
 
     public static ChatImage getInstance() {
         return instance;
+    }
+
+    public Filtration getFiltration() {
+        return filtration;
     }
 
     public PluginAdapter getPlugin() {

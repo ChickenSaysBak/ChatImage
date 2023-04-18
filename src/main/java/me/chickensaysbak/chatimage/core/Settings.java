@@ -72,7 +72,8 @@ public class Settings {
         removeExplicitContent = config.getBoolean("explicit_content.remove_message", false);
         debug = config.getBoolean("debug", false);
 
-        // if (!exclusions.equals(oldExclusions)) ! CLEAR CACHE ! // Clears cache to disregard old exclusions if they have changed.
+        // Clears cache to disregard old exclusions if they have changed.
+        if (!exclusions.equals(oldExclusions)) ChatImage.getInstance().getFiltration().clearBadWordsCache();
 
         YamlAdapter messages = plugin.loadYaml(messagesFile);
         msgs.clear();
