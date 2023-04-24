@@ -3,6 +3,7 @@
 # Seen by anyone
 ignore_enabled: "&7Now ignoring images!"
 ignore_disabled: "&aNow showing images!"
+hover_message: "&a[View Image]"
 
 # Seen by admins
 reload_config: "&aSuccessfully reloaded ChatImage!"

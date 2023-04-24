@@ -92,8 +92,8 @@ public class Settings {
         plugin.publishStat("cooldowns", String.valueOf(cooldown));
         plugin.publishStat("strict_cooldown", String.valueOf(strictCooldown));
         plugin.publishStat("hover_mode", String.valueOf(hoverMode));
-        plugin.publishStat("hover_max_width", String.valueOf(hoverWidth));
-        plugin.publishStat("hover_max_width", String.valueOf(hoverWidth));
+        plugin.publishStat("max_hover_width", String.valueOf(hoverWidth));
+        plugin.publishStat("max_hover_width", String.valueOf(hoverWidth));
         plugin.publishStat("bad_word_filtration", String.valueOf(filterBadWords));
         plugin.publishStat("bad_word_message_removal", String.valueOf(removeBadWords));
         plugin.publishStat("explicit_content_filtration", String.valueOf(filterExplicitContent));
