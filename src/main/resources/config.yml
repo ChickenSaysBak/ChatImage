@@ -34,6 +34,22 @@ cooldown: 3
 strict_cooldown: false
 
 
+# HOVER SETTINGS #
+
+hover_mode:
+
+  # With hover mode enabled, images sent in chat will only appear when users hover over an image link.
+  # If enabled, consider disabling the cooldown as this option already reduces spam.
+  # Note: Wide images will render smaller than normal. This mode may possibly interfere with chat formatting plugins.
+  enabled: false
+
+  # Maximum dimensions for hover images. Only applies to image links sent in chat. Images created via the command will default to the dimensions above.
+  # Note that if a client's window size is too small, the images will appear broken if the width is too big.
+  # 23 x 24 images can be viewed correctly on the standard 854 x 480 window, but if you want to risk creating broken images, you can use 26 x 27 for full-screen users.
+  max_width: 23
+  max_height: 24
+
+
 # FILTRATION SETTINGS #
 
 bad_words:

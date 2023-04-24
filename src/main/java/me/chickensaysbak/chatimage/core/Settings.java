@@ -23,6 +23,9 @@ public class Settings {
     private int maxHeight;
     private int cooldown;
     private boolean strictCooldown;
+    private boolean hoverMode;
+    private int hoverWidth;
+    private int hoverHeight;
     private boolean filterBadWords;
     private boolean removeBadWords;
     private List<String> exclusions;
@@ -64,6 +67,9 @@ public class Settings {
         maxHeight = config.getInt("max_height", 20);
         cooldown = config.getInt("cooldown", 3);
         strictCooldown = config.getBoolean("strict_cooldown", false);
+        hoverMode = config.getBoolean("hover_mode.enabled", false);
+        hoverWidth = config.getInt("hover_mode.max_width", 23);
+        hoverHeight = config.getInt("hover_mode.max_height", 24);
         filterBadWords = config.getBoolean("bad_words.enabled", false);
         removeBadWords = config.getBoolean("bad_words.remove_message", false);
         exclusions = config.getStringList("bad_words.exclusions");
@@ -85,6 +91,9 @@ public class Settings {
         plugin.publishStat("max_height", String.valueOf(maxHeight));
         plugin.publishStat("cooldowns", String.valueOf(cooldown));
         plugin.publishStat("strict_cooldown", String.valueOf(strictCooldown));
+        plugin.publishStat("hover_mode", String.valueOf(hoverMode));
+        plugin.publishStat("hover_max_width", String.valueOf(hoverWidth));
+        plugin.publishStat("hover_max_width", String.valueOf(hoverWidth));
         plugin.publishStat("bad_word_filtration", String.valueOf(filterBadWords));
         plugin.publishStat("bad_word_message_removal", String.valueOf(removeBadWords));
         plugin.publishStat("explicit_content_filtration", String.valueOf(filterExplicitContent));
@@ -96,6 +105,9 @@ public class Settings {
     public boolean isTrimTransparency() {return trimTransparency;}
     public int getMaxWidth() {return maxWidth;}
     public int getMaxHeight() {return maxHeight;}
+    public boolean isHoverMode() {return hoverMode;}
+    public int getHoverMaxWidth() {return hoverWidth;}
+    public int getHoverMaxHeight() {return hoverHeight;}
     public int getCooldown() {return cooldown;}
     public boolean isStrictCooldown() {return strictCooldown;}
     public boolean isFilterBadWords() {return filterBadWords;}
