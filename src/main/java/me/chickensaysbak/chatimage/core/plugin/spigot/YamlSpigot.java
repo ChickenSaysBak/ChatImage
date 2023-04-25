@@ -3,10 +3,12 @@
 package me.chickensaysbak.chatimage.core.plugin.spigot;
 
 import me.chickensaysbak.chatimage.core.adapters.YamlAdapter;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -31,6 +33,17 @@ public class YamlSpigot implements YamlAdapter {
     @Override
     public Collection<String> getKeys() {
         return config.getKeys(false);
+    }
+
+    @Override
+    public Collection<String> getKeys(String path) {
+
+        ArrayList<String> keys = new ArrayList<>();
+        ConfigurationSection section = config.getConfigurationSection(path);
+        if (section != null) keys.addAll(section.getKeys(false));
+
+        return keys;
+
     }
 
     @Override

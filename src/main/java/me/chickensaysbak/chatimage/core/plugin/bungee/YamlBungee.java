@@ -9,6 +9,7 @@ import net.md_5.bungee.config.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -33,6 +34,17 @@ public class YamlBungee implements YamlAdapter {
     @Override
     public Collection<String> getKeys() {
         return config.getKeys();
+    }
+
+    @Override
+    public Collection<String> getKeys(String path) {
+
+        ArrayList<String> keys = new ArrayList<>();
+        Configuration section = config.getSection(path);
+        if (section != null) keys.addAll(section.getKeys());
+
+        return keys;
+
     }
 
     @Override
