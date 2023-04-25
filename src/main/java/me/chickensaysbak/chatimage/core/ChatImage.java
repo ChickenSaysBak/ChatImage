@@ -5,7 +5,8 @@ package me.chickensaysbak.chatimage.core;
 import me.chickensaysbak.chatimage.core.adapters.PlayerAdapter;
 import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 import me.chickensaysbak.chatimage.core.commands.ChatImageCommand;
-import me.chickensaysbak.chatimage.core.commands.IgnoreImagesCommand;
+import me.chickensaysbak.chatimage.core.commands.HideImagesCommand;
+import me.chickensaysbak.chatimage.core.commands.ShowImagesCommand;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 
@@ -39,7 +40,8 @@ public class ChatImage {
         playerPreferences = new PlayerPreferences(plugin);
 
         plugin.registerCommand(new ChatImageCommand(plugin));
-        plugin.registerCommand(new IgnoreImagesCommand(plugin));
+        plugin.registerCommand(new HideImagesCommand(plugin));
+        plugin.registerCommand(new ShowImagesCommand(plugin));
 
     }
 

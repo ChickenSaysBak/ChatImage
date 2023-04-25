@@ -10,5 +10,8 @@ commands:
   chatimage:
     description: Admin command for the ChatImage plugin.
     permission: chatimage.admin
-  ignoreimages:
+  hideimages:
     description: Hides images created by links in chat.
+    aliases: [ignoreimages]
+  showimages:
+    description: Shows images in their fully expanded form.
