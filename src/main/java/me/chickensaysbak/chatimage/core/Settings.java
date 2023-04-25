@@ -93,7 +93,7 @@ public class Settings {
         plugin.publishStat("strict_cooldown", String.valueOf(strictCooldown));
         plugin.publishStat("auto_hide", String.valueOf(autoHide));
         plugin.publishStat("max_hidden_width", String.valueOf(hiddenWidth));
-        plugin.publishStat("max_hidden_width", String.valueOf(hiddenHeight));
+        plugin.publishStat("max_hidden_height", String.valueOf(hiddenHeight));
         plugin.publishStat("bad_word_filtration", String.valueOf(filterBadWords));
         plugin.publishStat("bad_word_message_removal", String.valueOf(removeBadWords));
         plugin.publishStat("explicit_content_filtration", String.valueOf(filterExplicitContent));
