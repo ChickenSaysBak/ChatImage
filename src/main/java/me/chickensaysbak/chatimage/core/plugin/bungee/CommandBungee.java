@@ -16,7 +16,7 @@ public class CommandBungee extends Command implements TabExecutor {
     private CommandAdapter command;
 
     public CommandBungee(CommandAdapter command) {
-        super(command.getName(), command.getPermission());
+        super(command.getName(), command.getPermission(), command.getAliases());
         this.command = command;
     }
 

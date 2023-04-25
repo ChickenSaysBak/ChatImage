@@ -17,6 +17,7 @@ public abstract class CommandAdapter {
 
     public abstract String getName();
     public abstract String getPermission();
+    public abstract String[] getAliases();
     public abstract void onCommand(UUID sender, String[] args);
     public abstract List<String> onTabComplete(UUID sender, String[] args);
 

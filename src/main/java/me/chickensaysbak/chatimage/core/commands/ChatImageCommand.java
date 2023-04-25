@@ -34,6 +34,11 @@ public class ChatImageCommand extends CommandAdapter {
     }
 
     @Override
+    public String[] getAliases() {
+        return new String[0];
+    }
+
+    @Override
     public void onCommand(UUID sender, String[] args) {
 
         ChatImage chatImage = ChatImage.getInstance();
@@ -59,11 +64,6 @@ public class ChatImageCommand extends CommandAdapter {
 
             if (recipient == null) {
                 chatImage.sendUIMessage(sender, "error_player_offline");
-                return;
-            }
-
-            if (chatImage.getIgnoringImages().isIgnoring(recipient.getUniqueId())) {
-                chatImage.sendUIMessage(sender, "error_ignoring");
                 return;
             }
 
