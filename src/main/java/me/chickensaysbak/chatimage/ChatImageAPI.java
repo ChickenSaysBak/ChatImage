@@ -14,12 +14,13 @@ public class ChatImageAPI {
     private ChatImageAPI() {}
 
     /**
-     * Check if a player is ignoring images via /ignoreimages.
+     * Check if a player is hiding images via /hideimages.
+     * Hiding an image means minimizing it where it must be hovered over to be seen.
      * @param uuid the uuid of the player to check
-     * @return true if the player is ignoring images
+     * @return true if the player is hiding images
      */
-    public static boolean isIgnoringImages(UUID uuid) {
-        return ChatImage.getInstance().getIgnoringImages().isIgnoring(uuid);
+    public static boolean isHidingImages(UUID uuid) {
+        return !ChatImage.getInstance().getPlayerPreferences().isShowingImages(uuid);
     }
 
     /**

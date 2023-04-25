@@ -26,7 +26,7 @@ public class ChatImage {
     private PluginAdapter plugin;
     private Filtration filtration;
     private Settings settings;
-    private IgnoringImages ignoringImages;
+    private PlayerPreferences playerPreferences;
 
     private HashMap<String, Long> lastSent = new HashMap<>(); // Contains UUIDs and Discord IDs.
 
@@ -36,7 +36,7 @@ public class ChatImage {
         this.plugin = plugin;
         filtration = new Filtration(plugin);
         settings = new Settings(plugin);
-        ignoringImages = new IgnoringImages(plugin);
+        playerPreferences = new PlayerPreferences(plugin);
 
         plugin.registerCommand(new ChatImageCommand(plugin));
         plugin.registerCommand(new IgnoreImagesCommand(plugin));
@@ -47,7 +47,7 @@ public class ChatImage {
      * Called when the server shuts down and the plugin is disabled.
      */
     public void onDisable() {
-        if (ignoringImages.isSaveQueued()) ignoringImages.saveFile();
+        if (playerPreferences.isSaveQueued()) playerPreferences.saveFile();
     }
 
     /**
@@ -147,7 +147,7 @@ public class ChatImage {
      */
     public void reload() {
         settings.reload();
-        ignoringImages.reload();
+        playerPreferences.reload();
     }
 
     /**
@@ -239,8 +239,8 @@ public class ChatImage {
     public Settings getSettings() {
         return settings;
     }
-    public IgnoringImages getIgnoringImages() {
-        return ignoringImages;
+    public PlayerPreferences getPlayerPreferences() {
+        return playerPreferences;
     }
 
 }
