@@ -10,6 +10,7 @@ import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 import me.chickensaysbak.chatimage.core.adapters.YamlAdapter;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
+import org.bstats.charts.SingleLineChart;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -99,6 +100,11 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
     @Override
     public void publishStat(String id, String value) {
         bStats.addCustomChart(new SimplePie(id, () -> value));
+    }
+
+    @Override
+    public void publishStat(String id, int value) {
+        bStats.addCustomChart(new SingleLineChart(id, () -> value));
     }
 
 }

@@ -19,6 +19,7 @@ import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
 import org.bstats.bungeecord.Metrics;
 import org.bstats.charts.SimplePie;
+import org.bstats.charts.SingleLineChart;
 
 import java.io.File;
 import java.io.IOException;
@@ -112,6 +113,11 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
     @Override
     public void publishStat(String id, String value) {
         bStats.addCustomChart(new SimplePie(id, () -> value));
+    }
+
+    @Override
+    public void publishStat(String id, int value) {
+        bStats.addCustomChart(new SingleLineChart(id, () -> value));
     }
 
 }
