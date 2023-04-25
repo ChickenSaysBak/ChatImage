@@ -43,7 +43,7 @@ public class PlayerBungee implements PlayerAdapter {
     }
 
     @Override
-    public void sendMessage(BaseComponent component) {
+    public void sendMessage(BaseComponent... component) {
         player.sendMessage(component);
     }
 

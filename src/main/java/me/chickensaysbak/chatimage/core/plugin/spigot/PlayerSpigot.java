@@ -42,7 +42,7 @@ public class PlayerSpigot implements PlayerAdapter {
     }
 
     @Override
-    public void sendMessage(BaseComponent component) {
+    public void sendMessage(BaseComponent... component) {
         player.spigot().sendMessage(component);
     }
 
