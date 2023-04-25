@@ -42,6 +42,7 @@ public class PlayerPreferences {
             preferences.put(uuid, showImages);
         } else preferences.remove(uuid);
 
+        updateStats();
         queueSave();
 
     }
@@ -54,6 +55,15 @@ public class PlayerPreferences {
     public boolean isShowingImages(UUID uuid) {
         boolean autoHide = ChatImage.getInstance().getSettings().isAutoHide();
         return preferences.getOrDefault(uuid, !autoHide);
+    }
+
+    /**
+     * Updates bStats on how many players are individually hiding images without Auto Hide enabled.
+     */
+    public void updateStats() {
+        int hiding = 0;
+        for (UUID uuid : preferences.keySet()) if (!preferences.get(uuid)) ++hiding;
+        plugin.publishStat("players_hiding_images", hiding);
     }
 
     /**
@@ -76,6 +86,8 @@ public class PlayerPreferences {
             }
 
         }
+
+        updateStats();
 
     }
 
