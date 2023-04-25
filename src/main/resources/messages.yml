@@ -1,9 +1,12 @@
 # To stop sending a message entirely, delete the whole line including the key/prefix.
 
 # Seen by anyone
-ignore_enabled: "&7Now ignoring images!"
-ignore_disabled: "&aNow showing images!"
-hover_message: "&a[View Image]"
+show_image: "&a[Show Image]"
+hover_tip: "&7Type &f/hideimages &7to hide future images."
+hiding_images: "&cNow hiding images! &7Type &f/showimages &7to undo."
+showing_images: "&aNow showing images! &7Type &f/hideimages &7to undo."
+error_hiding: "&cYou are already hiding images!"
+error_showing: "&cYou are already showing images!"
 
 # Seen by admins
 reload_config: "&aSuccessfully reloaded ChatImage!"
@@ -13,4 +16,3 @@ chatimage_send_usage: "&cUsage: /chatimage send <player> <url> [smooth] [trim] [
 error_player_offline: "&cThat player is not online!"
 error_load: "&cThat image could not be loaded!"
 error_outdated: "&cThat player is on an outdated version!"
-error_ignoring: "&cThat player is ignoring images!"

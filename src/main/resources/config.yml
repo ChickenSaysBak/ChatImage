@@ -20,6 +20,7 @@ smooth_render: true
 trim_transparency: true
 
 # Maximum dimensions for an image. The maximum for default Minecraft chat settings is 35 x 20.
+# See HIDDEN IMAGE SETTINGS for changing the dimensions of hidden images.
 max_width: 35
 max_height: 20
 
@@ -34,17 +35,21 @@ cooldown: 3
 strict_cooldown: false
 
 
-# HOVER SETTINGS #
+# HIDDEN IMAGE SETTINGS #
 
-hover_mode:
+# When a player runs /hideimages, images sent in chat are minimized, and they can be viewed by hovering.
+# Hidden images that are wide will appear smaller than normal.
+hidden_images:
 
-  # Images sent in chat are minimized instead of taking up excessive chat space, and they can be viewed by hovering.
-  # Note: Wide images will render smaller than normal.
-  enabled: false
+  # Hides images by default. Players can individually override this with /showimages.
+  # If enabled, consider reducing the cooldown since this option already reduces line spam.
+  auto_hide: false
 
-  # Maximum dimensions for hover images. Only applies to image links sent in chat. Images created via the command will default to the dimensions above.
-  # Note that if a client's window size is too small, the images will appear broken if the width is too big.
-  # 23 x 24 images can be viewed correctly on the standard 854 x 480 window, but if you want to risk creating broken images, you can use 26 x 27 for full-screen users.
+  # Maximum dimensions for hidden images only.
+  # If you increase the width, beware that you risk creating broken images for users on a smaller window size or bigger GUI scale.
+  # Conversely, on a smaller GUI scale, you can render way larger images, but there's no way to know who's using what scale.
+  # 23 x 24 is a safe default for the standard 854 x 480 window or larger.
+  # If you don't mind potentially breaking images for some users, you can increase it to 26 x 27 for full-screen users.
   max_width: 23
   max_height: 24
 
