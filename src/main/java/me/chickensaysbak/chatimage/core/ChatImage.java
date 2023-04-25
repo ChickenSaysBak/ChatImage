@@ -9,6 +9,8 @@ import me.chickensaysbak.chatimage.core.commands.HideImagesCommand;
 import me.chickensaysbak.chatimage.core.commands.ShowImagesCommand;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.*;
+import net.md_5.bungee.api.chat.hover.content.Text;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -111,13 +113,16 @@ public class ChatImage {
             BufferedImage image = loadImage(url);
             if (image == null) return;
 
-            Dimension dim = new Dimension(settings.getMaxWidth(), settings.getMaxHeight());
             boolean smooth = settings.isSmoothRender(), trim = settings.isTrimTransparency();
-            TextComponent component = ImageMaker.createChatImage(image, dim, smooth, trim);
+            Dimension dim = new Dimension(settings.getMaxWidth(), settings.getMaxHeight());
+            Dimension hiddenDim = new Dimension(settings.getMaxHiddenWidth(), settings.getMaxHiddenHeight());
+
+            BaseComponent[] expandedImage = getExpandedImage(url, ImageMaker.createChatImage(image, dim, smooth, trim));
+            BaseComponent[] hiddenImage = getHiddenImage(url, ImageMaker.createChatImage(image, hiddenDim, smooth, trim));
 
             for (PlayerAdapter p : plugin.getOnlinePlayers()) {
-                if (!isVersionValid(p.getVersion()) || ignoringImages.isIgnoring(p.getUniqueId())) continue;
-                p.sendMessage(component);
+                if (!isVersionValid(p.getVersion())) continue;
+                p.sendMessage(playerPreferences.isShowingImages(p.getUniqueId()) ? expandedImage : hiddenImage);
             }
 
         }, 1);
@@ -150,34 +155,6 @@ public class ChatImage {
     public void reload() {
         settings.reload();
         playerPreferences.reload();
-    }
-
-    /**
-     * Loads an image.
-     * @param url the url string of the image
-     * @return the loaded image or null if it failed to load
-     */
-    public BufferedImage loadImage(String url) {
-
-        try {
-            URLConnection connection = new URL(url).openConnection();
-            // Prevents 403 Forbidden errors.
-            connection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
-            return ImageIO.read(connection.getInputStream());
-        }
-
-        catch (IOException e) {
-
-            if (settings.isDebug()) {
-                plugin.getLogger().warning("ChatImage Debugger - Error loading image");
-                plugin.getLogger().warning("URL: " + url);
-                e.printStackTrace();
-            }
-
-        }
-
-        return null;
-
     }
 
     /**
@@ -214,6 +191,73 @@ public class ChatImage {
         String[] words = ChatColor.stripColor(text).split(" ");
         for (String word : words) if (word.startsWith("http")) return stripURL(word);
         return null;
+    }
+
+    /**
+     * Loads an image.
+     * @param url the url string of the image
+     * @return the loaded image or null if it failed to load
+     */
+    public BufferedImage loadImage(String url) {
+
+        try {
+            URLConnection connection = new URL(url).openConnection();
+            // Prevents 403 Forbidden errors.
+            connection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
+            return ImageIO.read(connection.getInputStream());
+        }
+
+        catch (IOException e) {
+
+            if (settings.isDebug()) {
+                plugin.getLogger().warning("ChatImage Debugger - Error loading image");
+                plugin.getLogger().warning("URL: " + url);
+                e.printStackTrace();
+            }
+
+        }
+
+        return null;
+
+    }
+
+    /**
+     * Gets an expanded image that can be clicked on to open and contains a tip about /hideimages.
+     * @param url the url of the image
+     * @param imageComponent the chat image
+     * @return the expanded image
+     */
+    public BaseComponent[] getExpandedImage(String url, TextComponent imageComponent) {
+
+        ComponentBuilder builder = new ComponentBuilder(imageComponent);
+        String hoverTip = settings.getMessage("hover_tip");
+
+        if (hoverTip != null) {
+            Text tip = new Text(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', hoverTip)));
+            builder.event(new HoverEvent(tip.requiredAction(), tip));
+        }
+
+        return builder.event(new ClickEvent(ClickEvent.Action.OPEN_URL, url)).create();
+
+    }
+
+    /**
+     * Gets a hidden image that can be clicked on to open and hovered over to view.
+     * @param url the url of the image
+     * @param imageComponent the chat image
+     * @return the hidden image
+     */
+    public BaseComponent[] getHiddenImage(String url, TextComponent imageComponent) {
+
+        String showImage = settings.getMessage("show_image");
+        showImage = ChatColor.translateAlternateColorCodes('&', showImage != null ? showImage : "&a[Show Image]");
+
+        Text hoverImage = new Text(new ComponentBuilder("\n").append(imageComponent).create()); // New line prevents odd spacing.
+        HoverEvent hoverEvent = new HoverEvent(hoverImage.requiredAction(), hoverImage);
+        ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.OPEN_URL, url);
+
+        return new ComponentBuilder().appendLegacy(showImage).event(hoverEvent).event(clickEvent).create();
+
     }
 
     /**
