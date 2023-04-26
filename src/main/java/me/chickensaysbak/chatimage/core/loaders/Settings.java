@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Settings {
+public class Settings implements Loadable {
 
     private PluginAdapter plugin;
 
@@ -53,6 +53,7 @@ public class Settings {
      * Loads or reloads all settings from their files and creates the files if they do not exist.
      * If any setting is not found, a default value is used.
      */
+    @Override
     public void reload() {
 
         createFile(configFile);

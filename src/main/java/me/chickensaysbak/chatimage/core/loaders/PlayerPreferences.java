@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class PlayerPreferences {
+public class PlayerPreferences implements Loadable {
 
     private PluginAdapter plugin;
     private File preferencesFile;
@@ -70,6 +70,7 @@ public class PlayerPreferences {
     /**
      * Loads or reloads players' preferences.
      */
+    @Override
     public void reload() {
 
         preferences.clear();

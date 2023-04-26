@@ -7,6 +7,7 @@ import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 import me.chickensaysbak.chatimage.core.commands.ChatImageCommand;
 import me.chickensaysbak.chatimage.core.commands.HideImagesCommand;
 import me.chickensaysbak.chatimage.core.commands.ShowImagesCommand;
+import me.chickensaysbak.chatimage.core.loaders.Loadable;
 import me.chickensaysbak.chatimage.core.loaders.PlayerPreferences;
 import me.chickensaysbak.chatimage.core.loaders.Settings;
 import net.md_5.bungee.api.ChatColor;
@@ -20,6 +21,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -30,8 +33,10 @@ public class ChatImage {
     private static ChatImage instance;
     private PluginAdapter plugin;
     private Filtration filtration;
+
     private Settings settings;
     private PlayerPreferences playerPreferences;
+    private ArrayList<Loadable> loaders = new ArrayList<>();
 
     private HashMap<String, Long> lastSent = new HashMap<>(); // Contains UUIDs and Discord IDs.
 
@@ -40,8 +45,10 @@ public class ChatImage {
         instance = this;
         this.plugin = plugin;
         filtration = new Filtration(plugin);
+
         settings = new Settings(plugin);
         playerPreferences = new PlayerPreferences(plugin);
+        loaders.addAll(Arrays.asList(settings, playerPreferences));
 
         plugin.registerCommand(new ChatImageCommand(plugin));
         plugin.registerCommand(new HideImagesCommand(plugin));
@@ -155,8 +162,7 @@ public class ChatImage {
      * Reloads all files.
      */
     public void reload() {
-        settings.reload();
-        playerPreferences.reload();
+        for (Loadable loadable : loaders) loadable.reload();
     }
 
     /**
