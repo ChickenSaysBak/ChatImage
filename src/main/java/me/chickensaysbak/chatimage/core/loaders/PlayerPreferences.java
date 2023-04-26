@@ -1,7 +1,8 @@
 // ChatImage © 2023 ChickenSaysBak
 // This code is licensed under MIT license (see LICENSE file for details).
-package me.chickensaysbak.chatimage.core;
+package me.chickensaysbak.chatimage.core.loaders;
 
+import me.chickensaysbak.chatimage.core.ChatImage;
 import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 import me.chickensaysbak.chatimage.core.adapters.YamlAdapter;
 
@@ -17,7 +18,7 @@ public class PlayerPreferences {
     private HashMap<UUID, Boolean> preferences = new HashMap<>();
     private int saveTimeRemaining = 0;
 
-    PlayerPreferences(PluginAdapter plugin) {
+    public PlayerPreferences(PluginAdapter plugin) {
 
         this.plugin = plugin;
         preferencesFile = new File(plugin.getDataFolder(), "player_preferences.yml");

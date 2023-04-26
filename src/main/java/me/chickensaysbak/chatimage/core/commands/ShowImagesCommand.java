@@ -1,7 +1,7 @@
 package me.chickensaysbak.chatimage.core.commands;
 
 import me.chickensaysbak.chatimage.core.ChatImage;
-import me.chickensaysbak.chatimage.core.PlayerPreferences;
+import me.chickensaysbak.chatimage.core.loaders.PlayerPreferences;
 import me.chickensaysbak.chatimage.core.adapters.CommandAdapter;
 import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 

@@ -7,6 +7,8 @@ import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 import me.chickensaysbak.chatimage.core.commands.ChatImageCommand;
 import me.chickensaysbak.chatimage.core.commands.HideImagesCommand;
 import me.chickensaysbak.chatimage.core.commands.ShowImagesCommand;
+import me.chickensaysbak.chatimage.core.loaders.PlayerPreferences;
+import me.chickensaysbak.chatimage.core.loaders.Settings;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.*;

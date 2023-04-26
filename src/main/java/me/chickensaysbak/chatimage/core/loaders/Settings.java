@@ -1,7 +1,8 @@
 // ChatImage © 2023 ChickenSaysBak
 // This code is licensed under MIT license (see LICENSE file for details).
-package me.chickensaysbak.chatimage.core;
+package me.chickensaysbak.chatimage.core.loaders;
 
+import me.chickensaysbak.chatimage.core.ChatImage;
 import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 import me.chickensaysbak.chatimage.core.adapters.YamlAdapter;
 
@@ -38,7 +39,7 @@ public class Settings {
     private File messagesFile;
     private HashMap<String, String> msgs = new HashMap<>();
 
-    Settings(PluginAdapter plugin) {
+    public Settings(PluginAdapter plugin) {
 
         this.plugin = plugin;
         configFile = new File(plugin.getDataFolder(), "config.yml");

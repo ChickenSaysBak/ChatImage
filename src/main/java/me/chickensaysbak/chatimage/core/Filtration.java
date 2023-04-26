@@ -5,6 +5,7 @@ package me.chickensaysbak.chatimage.core;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
+import me.chickensaysbak.chatimage.core.loaders.Settings;
 
 import java.io.BufferedReader;
 import java.io.IOException;
