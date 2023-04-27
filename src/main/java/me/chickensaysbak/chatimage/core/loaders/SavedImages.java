@@ -1,17 +1,18 @@
 package me.chickensaysbak.chatimage.core.loaders;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.JsonParseException;
 import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.chat.TextComponentSerializer;
+import net.md_5.bungee.chat.ComponentSerializer;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Collection;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class SavedImages implements Loadable {
@@ -39,18 +40,14 @@ public class SavedImages implements Loadable {
 
         try {
 
-            JsonElement json = new TextComponentSerializer().serialize(image, image.getClass(), null);
             File file = new File(imagesDirectory, name + ".json");
 
             if (!file.exists()) {
-                file.mkdirs();
+                file.getParentFile().mkdirs();
                 file.createNewFile();
             }
 
-            FileWriter writer = new FileWriter(file);
-            writer.write(json.toString());
-            writer.flush();
-            writer.close();
+            FileUtils.write(file, ComponentSerializer.toString(image), StandardCharsets.UTF_8);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -107,21 +104,35 @@ public class SavedImages implements Loadable {
         savedImages.clear();
         if (!imagesDirectory.exists()) return;
 
-        for (File file : imagesDirectory.listFiles()) if (file.getName().endsWith(".json")) {
+        for (File file : imagesDirectory.listFiles()) if (FilenameUtils.isExtension(file.getName(), "json")) {
 
-            JsonObject json;
+            String jsonString;
 
             try {
-                FileReader reader = new FileReader(file);
-                json = new JsonParser().parse(reader).getAsJsonObject();
-                reader.close();
+                jsonString = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
             } catch (IOException e) {
                 e.printStackTrace();
                 continue;
             }
 
+            BaseComponent[] components;
+
+            try {
+                components = ComponentSerializer.parse(jsonString);
+            } catch (JsonParseException | UnsupportedOperationException e) {
+                plugin.getLogger().warning("Could not load '" + file.getName() + "' because the file is corrupt!");
+                e.printStackTrace();
+                return;
+            }
+
+            TextComponent image = null;
+
+            for (BaseComponent bc : components) if (bc instanceof TextComponent) {
+                image = (TextComponent) bc;
+                break;
+            }
+
             String name = file.getName().replace(".json", "");
-            TextComponent image = new TextComponentSerializer().deserialize(json, TextComponent.class, null);
             if (image != null) savedImages.put(name, image);
 
         }
