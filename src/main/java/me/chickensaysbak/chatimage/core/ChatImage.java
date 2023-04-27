@@ -9,6 +9,7 @@ import me.chickensaysbak.chatimage.core.commands.HideImagesCommand;
 import me.chickensaysbak.chatimage.core.commands.ShowImagesCommand;
 import me.chickensaysbak.chatimage.core.loaders.Loadable;
 import me.chickensaysbak.chatimage.core.loaders.PlayerPreferences;
+import me.chickensaysbak.chatimage.core.loaders.SavedImages;
 import me.chickensaysbak.chatimage.core.loaders.Settings;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -36,6 +37,7 @@ public class ChatImage {
 
     private Settings settings;
     private PlayerPreferences playerPreferences;
+    private SavedImages savedImages;
     private ArrayList<Loadable> loaders = new ArrayList<>();
 
     private HashMap<String, Long> lastSent = new HashMap<>(); // Contains UUIDs and Discord IDs.
@@ -48,7 +50,8 @@ public class ChatImage {
 
         settings = new Settings(plugin);
         playerPreferences = new PlayerPreferences(plugin);
-        loaders.addAll(Arrays.asList(settings, playerPreferences));
+        savedImages = new SavedImages(plugin);
+        loaders.addAll(Arrays.asList(settings, playerPreferences, savedImages));
 
         plugin.registerCommand(new ChatImageCommand(plugin));
         plugin.registerCommand(new HideImagesCommand(plugin));
@@ -293,8 +296,13 @@ public class ChatImage {
     public Settings getSettings() {
         return settings;
     }
+
     public PlayerPreferences getPlayerPreferences() {
         return playerPreferences;
+    }
+
+    public SavedImages getSavedImages() {
+        return savedImages;
     }
 
 }
