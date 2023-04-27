@@ -22,10 +22,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 public class ChatImage {
 
@@ -149,9 +146,21 @@ public class ChatImage {
      * @param key the setting key for the message
      */
     public void sendUIMessage(UUID recipient, String key) {
+        sendUIMessage(recipient, key, null);
+    }
+
+    /**
+     * Sends a UI message with variables if it exists in the settings. If the recipient is null, the message is sent to console.
+     * @param recipient the UUID of the recipient or null for console
+     * @param key the setting key for the message
+     * @param variables variables to be replaced in the message (name followed by value)
+     */
+    public void sendUIMessage(UUID recipient, String key, Map<String, String> variables) {
 
         String message = settings.getMessage(key);
         if (message == null) return;
+
+        if (variables != null) for (String name : variables.keySet()) message = message.replace("%" + name + "%", variables.get(name));
         message = ChatColor.translateAlternateColorCodes('&', message);
 
         if (recipient != null) {
