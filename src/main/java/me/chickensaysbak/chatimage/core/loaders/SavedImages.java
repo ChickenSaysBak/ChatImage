@@ -90,10 +90,12 @@ public class SavedImages implements Loadable {
 
     /**
      * Gets all saved image names
-     * @return a list of image names
+     * @return an alphabetized list of image names
      */
-    public Collection<String> getImageNames() {
-        return savedImages.keySet();
+    public ArrayList<String> getImageNames() {
+        ArrayList<String> names = new ArrayList<>(savedImages.keySet());
+        Collections.sort(names);
+        return names;
     }
 
     /**
