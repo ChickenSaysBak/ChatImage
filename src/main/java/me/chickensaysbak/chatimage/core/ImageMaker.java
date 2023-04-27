@@ -20,7 +20,6 @@ public class ImageMaker {
 
     public static final String SOLID_PIXEL = "█";
     public static final String TRANSPARENT_PIXEL = "▒";
-    public static final String BLANK_PIXEL = ChatColor.BOLD + " " + ChatColor.RESET + " ";
 
     public static final int MID_ALPHA = 128;
     public static final int LOW_ALPHA = 64;
@@ -108,7 +107,17 @@ public class ImageMaker {
                     pixel.setText(alpha > MID_ALPHA ? SOLID_PIXEL : TRANSPARENT_PIXEL);
                     if (hasPartialTransparency && alpha <= LOW_ALPHA) pixel.setFont("minecraft:uniform"); // Uses smaller pixels.
 
-                } else pixel.setText(BLANK_PIXEL);
+                } else {
+
+                    // Blank pixel.
+                    pixel.setText(" ");
+                    pixel.setBold(true);
+
+                    TextComponent space = new TextComponent(" ");
+                    space.setBold(false);
+                    pixel.addExtra(space);
+
+                }
 
                 result.addExtra(pixel);
 
