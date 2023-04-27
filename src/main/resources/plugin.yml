@@ -5,6 +5,7 @@ description: Send images in Minecraft!
 version: ${project.version}
 api-version: 1.16
 softdepend: [DiscordSRV]
+libraries: [commons-io:commons-io:2.11.0, com.google.code.gson:gson:2.10.1]
 main: me.chickensaysbak.chatimage.core.plugin.spigot.PluginSpigot
 commands:
   chatimage:
