@@ -7,7 +7,11 @@ import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.TextComponentSerializer;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 
 public class SavedImages implements Loadable {
@@ -59,7 +63,7 @@ public class SavedImages implements Loadable {
     }
 
     /**
-     * Deletes a saved chat image.
+     * Deletes a saved chat image and the parent directory if it is empty.
      * @param name the name of the image
      * @return true if deleted successfully
      */
@@ -67,6 +71,8 @@ public class SavedImages implements Loadable {
 
         File file = new File(imagesDirectory, name + ".json");
         boolean successful = !file.exists() || file.delete();
+
+        if (imagesDirectory.listFiles().length == 0) imagesDirectory.delete();
 
         if (successful) savedImages.remove(name);
         return successful;
@@ -80,6 +86,14 @@ public class SavedImages implements Loadable {
      */
     public TextComponent getImage(String name) {
         return savedImages.getOrDefault(name, null);
+    }
+
+    /**
+     * Gets all saved image names
+     * @return a list of image names
+     */
+    public Collection<String> getImageNames() {
+        return savedImages.keySet();
     }
 
     /**
