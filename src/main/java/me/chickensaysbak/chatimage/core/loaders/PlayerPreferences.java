@@ -146,6 +146,7 @@ public class PlayerPreferences implements Loadable {
             }
 
             YamlAdapter preferencesYaml = plugin.loadYaml(preferencesFile);
+            preferencesYaml.set("preferences", null); // Clears outdated preferences.
             for (UUID uuid : preferences.keySet()) preferencesYaml.set("preferences." + uuid.toString(), preferences.get(uuid));
             preferencesYaml.save(preferencesFile);
 
