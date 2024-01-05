@@ -75,12 +75,22 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
 
     @Override
     public PlayerAdapter getPlayer(UUID uuid) {
-        return new PlayerBungee(getProxy().getPlayer(uuid));
+
+        ProxiedPlayer player = getProxy().getPlayer(uuid);
+        if (player == null) return null;
+
+        return new PlayerBungee(player);
+
     }
 
     @Override
     public PlayerAdapter getPlayer(String name) {
-        return new PlayerBungee(getProxy().getPlayer(name));
+
+        ProxiedPlayer player = getProxy().getPlayer(name);
+        if (player == null) return null;
+
+        return new PlayerBungee(player);
+
     }
 
     @Override

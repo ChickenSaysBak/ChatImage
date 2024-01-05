@@ -12,6 +12,7 @@ import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bstats.charts.SingleLineChart;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -69,12 +70,22 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
 
     @Override
     public PlayerAdapter getPlayer(UUID uuid) {
-        return new PlayerSpigot(getServer().getPlayer(uuid));
+
+        Player player = getServer().getPlayer(uuid);
+        if (player == null) return null;
+
+        return new PlayerSpigot(player);
+
     }
 
     @Override
     public PlayerAdapter getPlayer(String name) {
-        return new PlayerSpigot(getServer().getPlayer(name));
+
+        Player player = getServer().getPlayer(name);
+        if (player == null) return null;
+
+        return new PlayerSpigot(player);
+
     }
 
     @Override
