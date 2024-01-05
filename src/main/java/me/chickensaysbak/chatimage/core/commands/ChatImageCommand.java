@@ -15,6 +15,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ChatImageCommand extends CommandAdapter {
 
@@ -63,7 +64,7 @@ public class ChatImageCommand extends CommandAdapter {
 
             PlayerAdapter recipient = getPlugin().getPlayer(args[1]);
 
-            if (recipient == null) {
+            if (recipient == null && !args[1].equalsIgnoreCase("all")) {
                 chatImage.sendUIMessage(sender, "error_player_offline");
                 return;
             }
@@ -87,8 +88,7 @@ public class ChatImageCommand extends CommandAdapter {
                     savedImage = ImageMaker.addText(savedImage, text);
                 }
 
-                if (recipient.isOnline()) recipient.sendMessage(savedImage);
-                if (sender != null && !sender.equals(recipient.getUniqueId())) chatImage.sendUIMessage(sender, "image_sent");
+                sendImage(savedImage, recipient, sender);
 
             }
 
@@ -128,8 +128,7 @@ public class ChatImageCommand extends CommandAdapter {
                     component = ImageMaker.addText(component, text);
                 }
 
-                if (recipient.isOnline()) recipient.sendMessage(component);
-                if (sender != null && !sender.equals(recipient.getUniqueId())) chatImage.sendUIMessage(sender, "image_sent");
+                sendImage(component, recipient, sender);
 
             }, 0);
 
@@ -224,8 +223,9 @@ public class ChatImageCommand extends CommandAdapter {
         else if (args[0].equalsIgnoreCase("send")) switch (args.length) {
 
             case 2:
-                for (PlayerAdapter p : getPlugin().getOnlinePlayers())
-                    if (p.getName().toLowerCase().startsWith(args[1].toLowerCase())) result.add(p.getName());
+                List<String> names = getPlugin().getOnlinePlayers().stream().map(PlayerAdapter::getName).collect(Collectors.toList());
+                names.add("all");
+                for (String name : names) if (name.toLowerCase().startsWith(args[1].toLowerCase())) result.add(name);
                 break;
 
             case 3:
@@ -275,6 +275,29 @@ public class ChatImageCommand extends CommandAdapter {
         }
 
         return result;
+
+    }
+
+    /**
+     * Handles the logic of sending an image to one or more players.
+     * @param image the image to send as a component
+     * @param recipient the recipient or null to send to all players
+     * @param sender the sender of the send command
+     */
+    private void sendImage(TextComponent image, PlayerAdapter recipient, UUID sender) {
+
+        ChatImage chatImage = ChatImage.getInstance();
+
+        // Send all
+        if (recipient == null) {
+            for (PlayerAdapter p : getPlugin().getOnlinePlayers()) p.sendMessage(image);
+            chatImage.sendUIMessage(sender, "image_sent_all");
+        }
+
+        else {
+            if (recipient.isOnline()) recipient.sendMessage(image);
+            if (sender != null && !sender.equals(recipient.getUniqueId())) chatImage.sendUIMessage(sender, "image_sent");
+        }
 
     }
 
