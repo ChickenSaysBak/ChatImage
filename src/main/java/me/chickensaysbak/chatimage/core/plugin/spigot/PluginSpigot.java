@@ -4,6 +4,7 @@ package me.chickensaysbak.chatimage.core.plugin.spigot;
 
 import me.chickensaysbak.chatimage.core.ChatImage;
 import me.chickensaysbak.chatimage.core.DiscordSRVHandler;
+import me.chickensaysbak.chatimage.core.PAPIHandler;
 import me.chickensaysbak.chatimage.core.adapters.CommandAdapter;
 import me.chickensaysbak.chatimage.core.adapters.PlayerAdapter;
 import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
@@ -29,6 +30,7 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
     private ChatImage core;
     private Metrics bStats;
     private DiscordSRVHandler discordSRVHandler = null;
+    private PAPIHandler papiHandler = null;
 
     @Override
     public void onEnable() {
@@ -42,7 +44,13 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
             if (core.getSettings().isDebug()) getLogger().info("ChatImage Debugger - DiscordSRV found");
         }
 
+        if (getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            papiHandler = new PAPIHandler();
+            if (core.getSettings().isDebug()) getLogger().info("ChatImage Debugger - PlaceholderAPI found");
+        }
+
         publishStat("discordsrv", String.valueOf(discordSRVHandler != null));
+        publishStat("papi", String.valueOf(papiHandler != null));
 
     }
 
@@ -116,6 +124,12 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
     @Override
     public void publishStat(String id, int value) {
         bStats.addCustomChart(new SingleLineChart(id, () -> value));
+    }
+
+    @Override
+    public String setPlaceholders(UUID uuid, String text) {
+        if (papiHandler != null) text = papiHandler.setPlaceholders(getServer().getPlayer(uuid), text);
+        return text;
     }
 
 }

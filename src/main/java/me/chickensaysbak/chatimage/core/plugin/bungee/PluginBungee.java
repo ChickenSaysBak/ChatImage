@@ -130,4 +130,9 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
         bStats.addCustomChart(new SingleLineChart(id, () -> value));
     }
 
+    @Override
+    public String setPlaceholders(UUID uuid, String text) {
+        return text;
+    }
+
 }
