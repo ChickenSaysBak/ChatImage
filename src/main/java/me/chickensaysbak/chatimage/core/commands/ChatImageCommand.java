@@ -82,13 +82,9 @@ public class ChatImageCommand extends CommandAdapter {
 
                 String text = "";
                 for (int i = 3; i < args.length; ++i) text += args[i].replace("\\n", "\n") + " ";
+                if (!text.isEmpty()) text = text.substring(0, text.length()-1);
 
-                if (!text.isEmpty()) {
-                    text = text.substring(0, text.length()-1);
-                    savedImage = ImageMaker.addText(savedImage, text);
-                }
-
-                sendImage(savedImage, recipient, sender);
+                sendImage(savedImage, text, recipient, sender);
 
             }
 
@@ -122,13 +118,9 @@ public class ChatImageCommand extends CommandAdapter {
 
                 String text = "";
                 for (int i = 7; i < args.length; ++i) text += args[i].replace("\\n", "\n") + " ";
+                if (!text.isEmpty()) text = text.substring(0, text.length()-1);
 
-                if (!text.isEmpty()) {
-                    text = text.substring(0, text.length()-1);
-                    component = ImageMaker.addText(component, text);
-                }
-
-                sendImage(component, recipient, sender);
+                sendImage(component, text, recipient, sender);
 
             }, 0);
 
@@ -279,24 +271,38 @@ public class ChatImageCommand extends CommandAdapter {
     }
 
     /**
-     * Handles the logic of sending an image to one or more players.
+     * Handles the logic of sending an image to one or more players. Sets placeholders if PlaceholderAPI is enabled.
      * @param image the image to send as a component
+     * @param text optional text to append to the image
      * @param recipient the recipient or null to send to all players
      * @param sender the sender of the send command
      */
-    private void sendImage(TextComponent image, PlayerAdapter recipient, UUID sender) {
+    private void sendImage(TextComponent image, String text, PlayerAdapter recipient, UUID sender) {
 
         ChatImage chatImage = ChatImage.getInstance();
+        boolean hasText = text != null && !text.isEmpty();
 
         // Send all
         if (recipient == null) {
-            for (PlayerAdapter p : getPlugin().getOnlinePlayers()) p.sendMessage(image);
+
+            for (PlayerAdapter p : getPlugin().getOnlinePlayers()) {
+                if (hasText) image = ImageMaker.addText(image, getPlugin().setPlaceholders(p.getUniqueId(), text));
+                p.sendMessage(image);
+            }
+
             chatImage.sendUIMessage(sender, "image_sent_all");
+
         }
 
         else {
-            if (recipient.isOnline()) recipient.sendMessage(image);
+
+            if (recipient.isOnline()) {
+                if (hasText) image = ImageMaker.addText(image, getPlugin().setPlaceholders(recipient.getUniqueId(), text));
+                recipient.sendMessage(image);
+            }
+
             if (sender != null && !sender.equals(recipient.getUniqueId())) chatImage.sendUIMessage(sender, "image_sent");
+
         }
 
     }
