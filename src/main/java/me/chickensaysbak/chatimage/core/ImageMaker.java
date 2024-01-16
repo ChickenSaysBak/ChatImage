@@ -22,7 +22,6 @@ public class ImageMaker {
     public static final String TRANSPARENT_PIXEL = "▒";
 
     public static final int MID_ALPHA = 128;
-    public static final int LOW_ALPHA = 64;
 
     private ImageMaker() {}
 
@@ -105,7 +104,6 @@ public class ImageMaker {
                     pixel.setColor(ChatColor.of(standardHex));
 
                     pixel.setText(alpha > MID_ALPHA ? SOLID_PIXEL : TRANSPARENT_PIXEL);
-                    if (hasPartialTransparency && alpha <= LOW_ALPHA) pixel.setFont("minecraft:uniform"); // Uses smaller pixels.
 
                 } else {
 
