@@ -157,16 +157,39 @@ public class ChatImage {
      */
     public void sendUIMessage(UUID recipient, String key, Map<String, String> variables) {
 
-        String message = settings.getMessage(key);
+        String message = getUIMessage(key, variables);
         if (message == null) return;
-
-        if (variables != null) for (String name : variables.keySet()) message = message.replace("%" + name + "%", variables.get(name));
-        message = ChatColor.translateAlternateColorCodes('&', message);
 
         if (recipient != null) {
             PlayerAdapter player = plugin.getPlayer(recipient);
             if (player != null) player.sendMessage(message);
         } else plugin.sendConsoleMessage(message);
+
+    }
+
+    /**
+     * Gets a UI message with variables if it exists in the settings.
+     * @param key the setting key for the message
+     * @return the UI message or null if it doesn't exist
+     */
+    public String getUIMessage(String key) {
+        return getUIMessage(key, null);
+    }
+
+    /**
+     * Gets a UI message with variables if it exists in the settings.
+     * @param key the setting key for the message
+     * @param variables variables to be replaced in the message (name followed by value)
+     * @return the UI message or null if it doesn't exist
+     */
+    public String getUIMessage(String key, Map<String, String> variables) {
+
+        String message = settings.getMessage(key);
+        if (message == null) return null;
+
+        if (variables != null) for (String name : variables.keySet()) message = message.replace("%" + name + "%", variables.get(name));
+        message = ChatColor.translateAlternateColorCodes('&', message);
+        return message;
 
     }
 
