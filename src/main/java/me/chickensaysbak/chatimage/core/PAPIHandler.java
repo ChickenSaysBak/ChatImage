@@ -46,6 +46,8 @@ public class PAPIHandler extends PlaceholderExpansion {
             SavedImages savedImages = chatImage.getSavedImages();
 
             String[] args = argString.split(" ");
+            if (args.length < 2) return null;
+
             String imageRef = args[1];
 
             if (!imageRef.startsWith("http")) {
