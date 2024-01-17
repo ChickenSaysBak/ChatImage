@@ -7,6 +7,8 @@ hiding_images: "&cNow hiding images! &7Type &f/showimages&7 to undo."
 showing_images: "&aNow showing images! &7Type &f/hideimages&7 to undo."
 error_hiding: "&cYou are already hiding images! Type &4/showimages&c to revert."
 error_showing: "&cYou are already showing images! Type &4/hideimages&c to revert."
+error_load: "&cThat image could not be loaded!"
+error_doesnt_exist: "&cThe image '&4%name%&c' does not exist!"
 
 # Seen by admins
 reload_config: "&aSuccessfully reloaded ChatImage!"
@@ -21,8 +23,6 @@ chatimage_save_usage: "&cUsage: /chatimage save <name> <url> [smooth] [trim] [wi
 chatimage_delete_usage: "&cUsage: /chatimage delete <name>"
 error_player_offline: "&cThat player is not online!"
 error_outdated: "&cThat player is on an outdated version!"
-error_load: "&cThat image could not be loaded!"
-error_doesnt_exist: "&cThe image '&4%name%&c' does not exist!"
 error_already_exists: "&cThe image '&4%name%&c' already exists!"
 error_save: "&cThere was an error saving the image. Check console!"
 error_delete: "&cThere was an error deleting the image. Check console!"
