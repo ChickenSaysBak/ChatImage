@@ -94,6 +94,7 @@ public class Filtration {
                             logger.warning("ChatImage Debugger - API error");
                             logger.warning("URL: " + url);
                             logger.warning("ERROR: " + errorCode + " - " + newJson.get("error").getAsString());
+                            return false;
                         }
 
                     }
@@ -193,6 +194,7 @@ public class Filtration {
                             logger.warning("ChatImage Debugger - API error");
                             logger.warning("URL: " + url);
                             logger.warning("ERROR: " + errorCode + " - " + newJson.get("error").getAsString());
+                            return false;
                         }
 
                     }
