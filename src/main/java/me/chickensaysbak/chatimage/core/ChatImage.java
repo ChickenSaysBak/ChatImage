@@ -244,10 +244,19 @@ public class ChatImage {
     public BufferedImage loadImage(String url) {
 
         try {
+
             URLConnection connection = new URL(url).openConnection();
             // Prevents 403 Forbidden errors.
             connection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
-            return ImageIO.read(connection.getInputStream());
+            BufferedImage img = ImageIO.read(connection.getInputStream());
+
+            if (img == null && settings.isDebug()) {
+                plugin.getLogger().warning("ChatImage Debugger - Error loading image: Null BufferedImage");
+                plugin.getLogger().warning("URL: " + url);
+            }
+
+            return img;
+
         }
 
         catch (IOException e) {
