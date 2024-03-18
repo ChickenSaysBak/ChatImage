@@ -26,8 +26,6 @@ import java.util.*;
 
 public class ChatImage {
 
-    public static final String[] SUPPORTED_EXTENSIONS = new String[] {".png", ".jpg", ".jpeg", ".gif"};
-
     private static ChatImage instance;
     private PluginAdapter plugin;
     private Filtration filtration;
@@ -201,38 +199,13 @@ public class ChatImage {
     }
 
     /**
-     * Gets rid of extraneous specifications after the file extension of an image url.
-     * Helps to prevent incompatible links in moderatecontent.com
-     * @param url the url to strip
-     * @return the image url without extra parameters after the extension
-     */
-    public static String stripURL(String url) {
-
-        String[] split1 = url.split("//", 2);
-        if (split1.length < 2) return url;
-        String urlMiddle = split1[1]; // Everything after the protocol (http or https).
-
-        String[] split2 = urlMiddle.split("/", 2);
-        if (split2.length < 2) return url;
-        String urlEnd = split2[1]; // Everything after the domain.
-
-        for (String ext : SUPPORTED_EXTENSIONS) if (urlEnd.contains(ext)) {
-            urlEnd = urlEnd.split(ext)[0] + ext;
-            break;
-        }
-
-        return split1[0] + "//" + split2[0] + "/" + urlEnd;
-
-    }
-
-    /**
      * Finds the first url in a string of text.
      * @param text the text to search
      * @return the first url found
      */
     public static String findURL(String text) {
         String[] words = ChatColor.stripColor(text).split(" ");
-        for (String word : words) if (word.startsWith("http")) return stripURL(word);
+        for (String word : words) if (word.startsWith("http")) return word;
         return null;
     }
 

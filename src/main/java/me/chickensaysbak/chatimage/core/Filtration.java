@@ -23,6 +23,8 @@ public class Filtration {
     private HashMap<String, JsonObject> badWordsCache = new HashMap<>();
     private HashMap<String, JsonObject> explicitCache = new HashMap<>();
 
+    public static final String[] SUPPORTED_EXTENSIONS = new String[] {".png", ".jpg", ".jpeg", ".gif"};
+
     Filtration(PluginAdapter plugin) {
         this.plugin = plugin;
     }
@@ -41,6 +43,8 @@ public class Filtration {
      * @return true if bad words were detected in the image
      */
     public boolean hasBadWords(String url) {
+
+        url = stripURL(url);
 
         ChatImage chatImage = ChatImage.getInstance();
         Settings settings = chatImage.getSettings();
@@ -147,6 +151,8 @@ public class Filtration {
      */
     public boolean hasExplicitContent(String url) {
 
+        url = stripURL(url);
+
         ChatImage chatImage = ChatImage.getInstance();
         Settings settings = chatImage.getSettings();
         boolean debug = settings.isDebug();
@@ -233,6 +239,31 @@ public class Filtration {
         }
 
         return true;
+
+    }
+
+    /**
+     * Gets rid of extraneous specifications after the file extension of an image url.
+     * Helps to prevent incompatible links in moderatecontent.com
+     * @param url the url to strip
+     * @return the image url without extra parameters after the extension
+     */
+    public static String stripURL(String url) {
+
+        String[] split1 = url.split("//", 2);
+        if (split1.length < 2) return url;
+        String urlMiddle = split1[1]; // Everything after the protocol (http or https).
+
+        String[] split2 = urlMiddle.split("/", 2);
+        if (split2.length < 2) return url;
+        String urlEnd = split2[1]; // Everything after the domain.
+
+        for (String ext : SUPPORTED_EXTENSIONS) if (urlEnd.contains(ext)) {
+            urlEnd = urlEnd.split(ext)[0] + ext;
+            break;
+        }
+
+        return split1[0] + "//" + split2[0] + "/" + urlEnd;
 
     }
 
