@@ -1,11 +1,12 @@
 // ChatImage © 2023 ChickenSaysBak
 // This code is licensed under MIT license (see LICENSE file for details).
-package me.chickensaysbak.chatimage.core;
+package me.chickensaysbak.chatimage.core.softdepend;
 
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.api.Subscribe;
 import github.scarsz.discordsrv.api.events.DiscordGuildMessagePostProcessEvent;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Message;
+import me.chickensaysbak.chatimage.core.ChatImage;
 
 public class DiscordSRVHandler {
 

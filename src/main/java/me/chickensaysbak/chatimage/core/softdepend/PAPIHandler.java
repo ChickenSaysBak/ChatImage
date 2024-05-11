@@ -1,5 +1,7 @@
-package me.chickensaysbak.chatimage.core;
+package me.chickensaysbak.chatimage.core.softdepend;
 
+import me.chickensaysbak.chatimage.core.ChatImage;
+import me.chickensaysbak.chatimage.core.ImageMaker;
 import me.chickensaysbak.chatimage.core.loaders.SavedImages;
 import me.chickensaysbak.chatimage.core.loaders.Settings;
 import me.clip.placeholderapi.PlaceholderAPI;

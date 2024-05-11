@@ -1,5 +1,6 @@
-package me.chickensaysbak.chatimage.core;
+package me.chickensaysbak.chatimage.core.softdepend;
 
+import me.chickensaysbak.chatimage.core.ChatImage;
 import net.essentialsx.api.v2.events.discord.DiscordRelayEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

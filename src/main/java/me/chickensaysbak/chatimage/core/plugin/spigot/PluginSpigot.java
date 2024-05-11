@@ -3,9 +3,9 @@
 package me.chickensaysbak.chatimage.core.plugin.spigot;
 
 import me.chickensaysbak.chatimage.core.ChatImage;
-import me.chickensaysbak.chatimage.core.DiscordSRVHandler;
-import me.chickensaysbak.chatimage.core.EssXDiscordHandler;
-import me.chickensaysbak.chatimage.core.PAPIHandler;
+import me.chickensaysbak.chatimage.core.softdepend.DiscordSRVHandler;
+import me.chickensaysbak.chatimage.core.softdepend.EssXDiscordHandler;
+import me.chickensaysbak.chatimage.core.softdepend.PAPIHandler;
 import me.chickensaysbak.chatimage.core.adapters.CommandAdapter;
 import me.chickensaysbak.chatimage.core.adapters.PlayerAdapter;
 import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
