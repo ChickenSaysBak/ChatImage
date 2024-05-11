@@ -4,6 +4,7 @@ package me.chickensaysbak.chatimage.core.plugin.spigot;
 
 import me.chickensaysbak.chatimage.core.ChatImage;
 import me.chickensaysbak.chatimage.core.DiscordSRVHandler;
+import me.chickensaysbak.chatimage.core.EssXDiscordHandler;
 import me.chickensaysbak.chatimage.core.PAPIHandler;
 import me.chickensaysbak.chatimage.core.adapters.CommandAdapter;
 import me.chickensaysbak.chatimage.core.adapters.PlayerAdapter;
@@ -18,6 +19,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -30,6 +32,7 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
     private ChatImage core;
     private Metrics bStats;
     private DiscordSRVHandler discordSRVHandler = null;
+    private EssXDiscordHandler essXDiscordHandler = null;
     private PAPIHandler papiHandler = null;
 
     @Override
@@ -37,19 +40,29 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
 
         bStats = new Metrics(this, 12672);
         core = new ChatImage(this);
-        getServer().getPluginManager().registerEvents(this, this);
+        boolean debug = core.getSettings().isDebug();
 
-        if (getServer().getPluginManager().isPluginEnabled("DiscordSRV")) {
+        PluginManager pluginManager = getServer().getPluginManager();
+        pluginManager.registerEvents(this, this);
+
+        if (pluginManager.isPluginEnabled("DiscordSRV")) {
             discordSRVHandler = new DiscordSRVHandler();
-            if (core.getSettings().isDebug()) getLogger().info("ChatImage Debugger - DiscordSRV found");
+            if (debug) getLogger().info("ChatImage Debugger - DiscordSRV found");
         }
 
-        if (getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+        if (pluginManager.isPluginEnabled("EssentialsDiscord")) {
+            essXDiscordHandler = new EssXDiscordHandler();
+            pluginManager.registerEvents(essXDiscordHandler, this);
+            if (debug) getLogger().info("ChatImage Debugger - EssentialsDiscord found");
+        }
+
+        if (pluginManager.isPluginEnabled("PlaceholderAPI")) {
             papiHandler = new PAPIHandler();
-            if (core.getSettings().isDebug()) getLogger().info("ChatImage Debugger - PlaceholderAPI found");
+            if (debug) getLogger().info("ChatImage Debugger - PlaceholderAPI found");
         }
 
         publishStat("discordsrv", String.valueOf(discordSRVHandler != null));
+        publishStat("essxdiscord", String.valueOf(essXDiscordHandler != null));
         publishStat("papi", String.valueOf(papiHandler != null));
 
     }
