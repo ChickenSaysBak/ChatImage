@@ -83,6 +83,7 @@
             <url>https://repo.essentialsx.net/releases/</url>
         </repository>
         <repository>
+            <!-- Required for EssentialsXDiscord -->
             <id>jitpack</id>
             <url>https://jitpack.io/</url>
         </repository>
@@ -136,21 +137,8 @@
         </dependency>
         <dependency>
             <groupId>net.essentialsx</groupId>
-            <artifactId>EssentialsX</artifactId>
-            <version>2.20.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.essentialsx</groupId>
             <artifactId>EssentialsXDiscord</artifactId>
             <version>2.20.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <!-- Required for EssentialsXDiscord -->
-            <groupId>com.github.minndevelopment</groupId>
-            <artifactId>emoji-java</artifactId>
-            <version>6.1.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
