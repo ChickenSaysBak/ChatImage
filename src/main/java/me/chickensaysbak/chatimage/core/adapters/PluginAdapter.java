@@ -30,6 +30,13 @@ public interface PluginAdapter {
     InputStream getResource(String name);
 
     /**
+     * Saves a resource into the plugin's data folder.
+     * @param path the path of the resource
+     * @param replace replaces an existing file if true
+     */
+    void saveResource(String path, boolean replace);
+
+    /**
      * Gets the plugin's console logger.
      * @return the logger
      */
