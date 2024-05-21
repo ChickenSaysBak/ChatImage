@@ -15,5 +15,6 @@ public interface PlayerAdapter {
     void sendMessage(String message);
     void sendMessage(BaseComponent... component);
     int getVersion();
+    String getLocale();
 
 }

@@ -52,4 +52,9 @@ public class PlayerBungee implements PlayerAdapter {
         return player.getPendingConnection().getVersion();
     }
 
+    @Override
+    public String getLocale() {
+        return player.getLocale().toString().toLowerCase();
+    }
+
 }

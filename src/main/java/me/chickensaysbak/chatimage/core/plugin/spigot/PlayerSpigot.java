@@ -51,4 +51,9 @@ public class PlayerSpigot implements PlayerAdapter {
         return -1;
     }
 
+    @Override
+    public String getLocale() {
+        return player.getLocale();
+    }
+
 }
