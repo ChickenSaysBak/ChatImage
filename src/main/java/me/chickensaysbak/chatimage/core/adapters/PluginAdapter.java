@@ -24,17 +24,16 @@ public interface PluginAdapter {
 
     /**
      * Gets resources built into the plugin jar like config defaults.
-     * @param name the file name including the extension
+     * @param path the path of the resource
      * @return the resource
      */
-    InputStream getResource(String name);
+    InputStream getResource(String path);
 
     /**
-     * Saves a resource into the plugin's data folder.
+     * Saves a resource into the plugin's data folder if it does not exist.
      * @param path the path of the resource
-     * @param replace replaces an existing file if true
      */
-    void saveResource(String path, boolean replace);
+    void saveResource(String path);
 
     /**
      * Gets the plugin's console logger.

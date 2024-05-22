@@ -85,6 +85,12 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
     }
 
     @Override
+    public void saveResource(String path) {
+        File target = new File(getDataFolder(), path);
+        if (!target.exists()) saveResource(path, false);
+    }
+
+    @Override
     public void sendConsoleMessage(String message) {
         getServer().getConsoleSender().sendMessage(message);
     }

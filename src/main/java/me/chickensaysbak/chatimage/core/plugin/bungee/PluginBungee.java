@@ -70,7 +70,7 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
 
     // Adapted from the Spigot API.
     @Override
-    public void saveResource(String resourcePath, boolean replace) {
+    public void saveResource(String resourcePath) {
 
         File dataFolder = getDataFolder(), file = getFile();
         Logger logger = getLogger();
@@ -94,7 +94,7 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
         }
 
         try {
-            if (!outFile.exists() || replace) {
+            if (!outFile.exists()) {
                 OutputStream out = new FileOutputStream(outFile);
                 byte[] buf = new byte[1024];
                 int len;
@@ -103,8 +103,6 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
                 }
                 out.close();
                 in.close();
-            } else {
-                logger.log(Level.WARNING, "Could not save " + outFile.getName() + " to " + outFile + " because " + outFile.getName() + " already exists.");
             }
         } catch (IOException ex) {
             logger.log(Level.SEVERE, "Could not save " + outFile.getName() + " to " + outFile, ex);
