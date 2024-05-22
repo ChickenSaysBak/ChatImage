@@ -61,6 +61,12 @@ public class ChatImage {
         if (playerPreferences.isSaveQueued()) playerPreferences.saveFile();
     }
 
+    public void onJoin(PlayerAdapter player) {
+
+
+
+    }
+
     /**
      * Called when a player sends a message in chat.
      * @param player the player that chatted

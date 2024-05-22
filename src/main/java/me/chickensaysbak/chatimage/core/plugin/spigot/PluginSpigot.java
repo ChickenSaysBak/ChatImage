@@ -20,6 +20,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -73,6 +74,11 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
     public void onDisable() {
         if (discordSRVHandler != null) discordSRVHandler.unsubscribe();
         core.onDisable();
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+        core.onJoin(new PlayerSpigot(event.getPlayer()));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
