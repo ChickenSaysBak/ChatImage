@@ -89,5 +89,13 @@ explicit_content:
   # NOTE: This includes messages from people that do not have permission to render images. Any images scanned will count toward your monthly limit!
   remove_message: false
 
+
+# GENERAL SETTINGS #
+
+# The default language to use if a player's client language is unsupported.
+# You can add languages in the messages folder. Please consider sharing these on the plugin's GitHub or SpigotMC page!
+# If adding a language, name the file with a valid in-game language code: https://minecraft.wiki/w/Language#Languages
+language_default: en_us
+
 # Prints extra messages to console to help find the source of issues
 debug: false

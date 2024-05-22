@@ -6,9 +6,9 @@ import me.chickensaysbak.chatimage.core.ChatImage;
 import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 import me.chickensaysbak.chatimage.core.adapters.YamlAdapter;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,17 +33,19 @@ public class Settings implements Loadable {
     private String apiKey;
     private boolean filterExplicitContent;
     private boolean removeExplicitContent;
+    private String languageDefault;
     private boolean debug;
 
     // Message fields
-    private File messagesFile;
-    private HashMap<String, String> msgs = new HashMap<>();
+    private File messagesDirectory;
+    private HashMap<String, HashMap<String, String>> multilingualMsgs = new HashMap<>();
+    private String[] suppliedLangs = {"en_us", "zh_cn"};
 
     public Settings(PluginAdapter plugin) {
 
         this.plugin = plugin;
         configFile = new File(plugin.getDataFolder(), "config.yml");
-        messagesFile = new File(plugin.getDataFolder(), "messages.yml");
+        messagesDirectory = new File(plugin.getDataFolder(), "messages");
 
         reload();
 
@@ -56,8 +58,8 @@ public class Settings implements Loadable {
     @Override
     public void reload() {
 
-        createFile(configFile);
-        createFile(messagesFile);
+        plugin.saveResource("config.yml");
+        Arrays.stream(suppliedLangs).forEach(lang -> plugin.saveResource("messages/" + lang + ".yml"));
 
         List<String> oldExclusions = new ArrayList<>();
         if (exclusions != null) oldExclusions.addAll(exclusions);
@@ -78,14 +80,23 @@ public class Settings implements Loadable {
         apiKey = config.getString("explicit_content.api_key", "");
         filterExplicitContent = config.getBoolean("explicit_content.enabled", false);
         removeExplicitContent = config.getBoolean("explicit_content.remove_message", false);
+        languageDefault = config.getString("language_default", "en_us");
         debug = config.getBoolean("debug", false);
 
         // Clears cache to disregard old exclusions if they have changed.
         if (!exclusions.equals(oldExclusions)) ChatImage.getInstance().getFiltration().clearBadWordsCache();
 
-        YamlAdapter messages = plugin.loadYaml(messagesFile);
-        msgs.clear();
-        for (String key : messages.getKeys()) msgs.put(key, messages.getString(key, ""));
+        multilingualMsgs.clear();
+
+        for (File f : messagesDirectory.listFiles()) if (f != null && f.getName().endsWith(".yml")) {
+
+            YamlAdapter messages = plugin.loadYaml(f);
+            HashMap<String, String> msgs = new HashMap<>();
+
+            for (String key : messages.getKeys()) msgs.put(key, messages.getString(key, ""));
+            multilingualMsgs.put(f.getName().split("\\.")[0], msgs);
+
+        }
 
         plugin.publishStat("smooth_render", String.valueOf(smoothRender));
         plugin.publishStat("trim_transparency", String.valueOf(trimTransparency));
@@ -118,54 +129,32 @@ public class Settings implements Loadable {
     public String getApiKey() {return apiKey;}
     public boolean isFilterExplicitContent() {return filterExplicitContent;}
     public boolean isRemoveExplicitContent() {return removeExplicitContent;}
+    public String getLanguageDefault() {return languageDefault;}
     public boolean isDebug() {return debug;}
 
-    public String getMessage(String name) {return msgs.getOrDefault(name, null);}
-
     /**
-     * If the file does not exist, it is created and written based on the corresponding resource file.
-     * @param file the file to create
+     * Gets a message from the messages folder based on the recipient's locale.
+     * If a locale doesn't exist, a variant will be used if one is available, otherwise the default is used.
+     * @param name the name of the message key
+     * @param locale the locale of the recipient
+     * @return the corresponding translated message
      */
-    private void createFile(File file) {
+    public String getMessage(String name, String locale) {
 
-        if (file.exists()) return;
+        locale = locale.toLowerCase();
 
-        try {
+        if (!multilingualMsgs.containsKey(locale)) {
 
-            file.getParentFile().mkdirs();
-            file.createNewFile();
+            String baseLang = locale.split("_")[0] + "_";
 
-            String content = convertStreamToString(plugin.getResource(file.getName()));
-            FileWriter writer = new FileWriter(file);
-            writer.write(content);
-            writer.flush();
-            writer.close();
+            locale = multilingualMsgs.keySet().stream()
+                    .filter(l -> l.startsWith(baseLang))
+                    .findFirst()
+                    .orElseGet(() -> multilingualMsgs.containsKey(languageDefault) ? languageDefault : "en_us");
 
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
-    }
-
-    /**
-     * Converts InputStream to String
-     * @param in the InputStream to convert
-     * @return a String containing the content of the InputStream
-     */
-    private String convertStreamToString(InputStream in) {
-
-        String result = null;
-
-        try {
-            ByteArrayOutputStream output = new ByteArrayOutputStream();
-            byte[] buffer = new byte[1024];
-            for (int length; (length = in.read(buffer)) != -1;) output.write(buffer, 0, length);
-            result = output.toString(StandardCharsets.UTF_8.name());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return result;
+        return multilingualMsgs.get(locale).get(name);
 
     }
 

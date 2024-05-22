@@ -124,13 +124,22 @@ public class ChatImage {
             Dimension dim = new Dimension(settings.getMaxWidth(), settings.getMaxHeight());
             Dimension hiddenDim = new Dimension(settings.getMaxHiddenWidth(), settings.getMaxHiddenHeight());
 
-            BaseComponent[] expandedImage = getExpandedImage(url, ImageMaker.createChatImage(image, dim, smooth, trim));
-            BaseComponent[] hiddenImage = getHiddenImage(url, ImageMaker.createChatImage(image, hiddenDim, smooth, trim));
+            TextComponent expandedImageRaw = ImageMaker.createChatImage(image, dim, smooth, trim);
+            TextComponent hiddenImageRaw = ImageMaker.createChatImage(image, hiddenDim, smooth, trim);
 
-            for (PlayerAdapter p : plugin.getOnlinePlayers()) {
-                if (!isVersionValid(p.getVersion())) continue;
-                p.sendMessage(playerPreferences.isShowingImages(p.getUniqueId()) ? expandedImage : hiddenImage);
-            }
+            plugin.getOnlinePlayers().stream()
+                    .filter(p -> isVersionValid(p.getVersion()))
+                    .forEach(p -> {
+
+                        boolean showing = playerPreferences.isShowingImages(p.getUniqueId());
+                        String locale = p.getLocale();
+
+                        BaseComponent[] expandedImage = getExpandedImage(url, expandedImageRaw, locale);
+                        BaseComponent[] hiddenImage = getHiddenImage(url, hiddenImageRaw, locale);
+
+                        p.sendMessage(showing ? expandedImage : hiddenImage);
+
+                    });
 
         }, 1);
 
@@ -155,11 +164,13 @@ public class ChatImage {
      */
     public void sendUIMessage(UUID recipient, String key, Map<String, String> variables) {
 
-        String message = getUIMessage(key, variables);
+        PlayerAdapter player = recipient != null ? plugin.getPlayer(recipient) : null;
+        String locale = player != null ? player.getLocale() : settings.getLanguageDefault();
+
+        String message = getUIMessage(key, variables, locale);
         if (message == null) return;
 
         if (recipient != null) {
-            PlayerAdapter player = plugin.getPlayer(recipient);
             if (player != null) player.sendMessage(message);
         } else plugin.sendConsoleMessage(message);
 
@@ -168,21 +179,23 @@ public class ChatImage {
     /**
      * Gets a UI message with variables if it exists in the settings.
      * @param key the setting key for the message
+     * @param locale the locale of the recipient
      * @return the UI message or null if it doesn't exist
      */
-    public String getUIMessage(String key) {
-        return getUIMessage(key, null);
+    public String getUIMessage(String key, String locale) {
+        return getUIMessage(key, null, locale);
     }
 
     /**
      * Gets a UI message with variables if it exists in the settings.
      * @param key the setting key for the message
      * @param variables variables to be replaced in the message (name followed by value)
+     * @param locale the locale of the recipient
      * @return the UI message or null if it doesn't exist
      */
-    public String getUIMessage(String key, Map<String, String> variables) {
+    public String getUIMessage(String key, Map<String, String> variables, String locale) {
 
-        String message = settings.getMessage(key);
+        String message = settings.getMessage(key, locale);
         if (message == null) return null;
 
         if (variables != null) for (String name : variables.keySet()) message = message.replace("%" + name + "%", variables.get(name));
@@ -250,12 +263,13 @@ public class ChatImage {
      * Gets an expanded image that can be clicked on to open and contains a tip about /hideimages.
      * @param url the url of the image
      * @param imageComponent the chat image
+     * @param locale the locale of the recipient
      * @return the expanded image
      */
-    public BaseComponent[] getExpandedImage(String url, TextComponent imageComponent) {
+    public BaseComponent[] getExpandedImage(String url, TextComponent imageComponent, String locale) {
 
         ComponentBuilder builder = new ComponentBuilder(imageComponent);
-        String hoverTip = settings.getMessage("hover_tip");
+        String hoverTip = settings.getMessage("hover_tip", locale);
 
         if (hoverTip != null) {
             Text tip = new Text(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', hoverTip)));
@@ -270,11 +284,12 @@ public class ChatImage {
      * Gets a hidden image that can be clicked on to open and hovered over to view.
      * @param url the url of the image
      * @param imageComponent the chat image
+     * @param locale the locale of the recipient
      * @return the hidden image
      */
-    public BaseComponent[] getHiddenImage(String url, TextComponent imageComponent) {
+    public BaseComponent[] getHiddenImage(String url, TextComponent imageComponent, String locale) {
 
-        String showImage = settings.getMessage("show_image");
+        String showImage = settings.getMessage("show_image", locale);
         showImage = ChatColor.translateAlternateColorCodes('&', showImage != null ? showImage : "&a[Show Image]");
 
         Text hoverImage = new Text(new ComponentBuilder("\n").append(imageComponent).create()); // New line prevents odd spacing.

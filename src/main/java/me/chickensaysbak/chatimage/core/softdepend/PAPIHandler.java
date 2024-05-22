@@ -44,10 +44,12 @@ public class PAPIHandler extends PlaceholderExpansion {
     @Override
     public String onRequest(OfflinePlayer player, String argString) {
 
-        if (argString.startsWith("image")) {
+        ChatImage chatImage = ChatImage.getInstance();
+        SavedImages savedImages = chatImage.getSavedImages();
+        Settings settings = chatImage.getSettings();
+        String locale = player.isOnline() ? player.getPlayer().getLocale() : settings.getLanguageDefault();
 
-            ChatImage chatImage = ChatImage.getInstance();
-            SavedImages savedImages = chatImage.getSavedImages();
+        if (argString.startsWith("image")) {
 
             String[] args = argString.split(" ");
             if (args.length < 2) return null;
@@ -57,7 +59,9 @@ public class PAPIHandler extends PlaceholderExpansion {
             if (!imageRef.startsWith("http")) {
 
                 TextComponent savedImage = savedImages.getImage(imageRef);
-                if (savedImage == null) return chatImage.getUIMessage("error_doesnt_exist", Collections.singletonMap("name", imageRef));
+
+                if (savedImage == null) return chatImage.getUIMessage("error_doesnt_exist",
+                        Collections.singletonMap("name", imageRef), locale);
 
                 String text = "";
                 for (int i = 2; i < args.length; ++i) text += args[i].replace("\\n", "\n") + " ";
@@ -74,9 +78,8 @@ public class PAPIHandler extends PlaceholderExpansion {
             else {
 
                 BufferedImage image = chatImage.loadImage(imageRef);
-                if (image == null) return chatImage.getUIMessage("error_load");
+                if (image == null) return chatImage.getUIMessage("error_load", locale);
 
-                Settings settings = chatImage.getSettings();
                 boolean smooth = settings.isSmoothRender(), trim = settings.isTrimTransparency();
                 int width = settings.getMaxWidth(), height = settings.getMaxHeight();
 
