@@ -5,8 +5,10 @@ package me.chickensaysbak.chatimage.core.loaders;
 import me.chickensaysbak.chatimage.core.ChatImage;
 import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 import me.chickensaysbak.chatimage.core.adapters.YamlAdapter;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -59,6 +61,7 @@ public class Settings implements Loadable {
     public void reload() {
 
         plugin.saveResource("config.yml");
+        convertLegacyMessages();
         Arrays.stream(suppliedLangs).forEach(lang -> plugin.saveResource("messages/" + lang + ".yml"));
 
         List<String> oldExclusions = new ArrayList<>();
@@ -155,6 +158,26 @@ public class Settings implements Loadable {
         }
 
         return multilingualMsgs.get(locale).get(name);
+
+    }
+
+    /**
+     * Converts messages.yml from versions 2.5.0 and below to en_us.yml within the messages folder.
+     */
+    private void convertLegacyMessages() {
+
+        File legacyMessages = new File(plugin.getDataFolder(), "messages.yml");
+        if (!legacyMessages.exists()) return;
+
+        File enUS = new File(messagesDirectory, "en_us.yml");
+        if (enUS.exists()) return;
+
+        try {
+            FileUtils.copyFile(legacyMessages, enUS);
+            legacyMessages.delete();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
