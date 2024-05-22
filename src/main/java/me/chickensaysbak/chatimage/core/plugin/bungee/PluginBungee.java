@@ -166,6 +166,11 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
     }
 
     @Override
+    public int runTaskLater(Runnable task, int ticks) {
+        return runAsyncTaskLater(task, ticks);
+    }
+
+    @Override
     public boolean isBungee() {
         return true;
     }
