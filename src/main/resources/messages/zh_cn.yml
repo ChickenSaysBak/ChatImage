@@ -1,6 +1,6 @@
-# To stop sending a message entirely, delete the whole line including the key/prefix.
+# 若要完全停止发送消息，请删除包括键/前缀在内的整行
 
-# Seen by anyone
+# 对所有人可见
 show_image: "&a[显示图片]"
 hover_tip: "&7输入 &f/hideimages&7 来隐藏图片"
 hiding_images: "&c正在隐藏图片！&7输入 &f/showimages&7 撤销"
@@ -10,7 +10,7 @@ error_showing: "&c您已经在显示图片！输入 &4/hideimages&c 恢复"
 error_load: "&c无法加载该图片！"
 error_doesnt_exist: "&c图片 '&4%name%&c' 不存在！"
 
-# Seen by admins
+# 仅管理员可见
 reload_config: "&a成功重新加载 ChatImage！"
 image_sent: "&a成功发送图片！"
 image_sent_all: "&a成功向所有玩家发送图片！"
@@ -27,4 +27,3 @@ error_already_exists: "&c图片 '&4%name%&c' 已存在！"
 error_save: "&c保存图片时出现错误！请检查控制台！"
 error_delete: "&c删除图片时出现错误！请检查控制台！"
 error_order: "&c请在网址之前放置图片名称！"
-
