@@ -8,6 +8,7 @@ import me.chickensaysbak.chatimage.core.adapters.YamlAdapter;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -17,6 +18,7 @@ public class PlayerPreferences implements Loadable {
     private File preferencesFile;
     private HashMap<UUID, Boolean> preferences = new HashMap<>();
     private int saveTimeRemaining = 0;
+    private ArrayList<UUID> recordedPlayerPreference = new ArrayList<>();
 
     public PlayerPreferences(PluginAdapter plugin) {
 
@@ -62,9 +64,16 @@ public class PlayerPreferences implements Loadable {
      * Updates bStats on how many players are individually hiding images without Auto Hide enabled.
      */
     public void updateStats() {
+
         int hiding = 0;
-        for (UUID uuid : preferences.keySet()) if (!preferences.get(uuid)) ++hiding;
-        plugin.publishStat("players_hiding_images", hiding);
+
+        for (UUID uuid : preferences.keySet()) if (!preferences.get(uuid) && !recordedPlayerPreference.contains(uuid)) {
+            ++hiding;
+            recordedPlayerPreference.add(uuid);
+        }
+
+        if (hiding > 0) plugin.publishStat("players_hiding_images2", hiding);
+
     }
 
     /**
