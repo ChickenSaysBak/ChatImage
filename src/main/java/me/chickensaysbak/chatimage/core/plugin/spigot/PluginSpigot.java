@@ -11,6 +11,7 @@ import me.chickensaysbak.chatimage.core.adapters.PlayerAdapter;
 import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 import me.chickensaysbak.chatimage.core.adapters.YamlAdapter;
 import org.bstats.bukkit.Metrics;
+import org.bstats.charts.DrilldownPie;
 import org.bstats.charts.SimplePie;
 import org.bstats.charts.SingleLineChart;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -24,6 +25,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -143,6 +145,11 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
     @Override
     public void publishStat(String id, int value) {
         bStats.addCustomChart(new SingleLineChart(id, () -> value));
+    }
+
+    @Override
+    public void publishStat(String id, Map<String, Map<String, Integer>> value) {
+        bStats.addCustomChart(new DrilldownPie(id, () -> value));
     }
 
     @Override

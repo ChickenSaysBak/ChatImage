@@ -18,11 +18,13 @@ import net.md_5.bungee.config.YamlConfiguration;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
 import org.bstats.bungeecord.Metrics;
+import org.bstats.charts.DrilldownPie;
 import org.bstats.charts.SimplePie;
 import org.bstats.charts.SingleLineChart;
 
 import java.io.*;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -170,6 +172,11 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
     @Override
     public void publishStat(String id, int value) {
         bStats.addCustomChart(new SingleLineChart(id, () -> value));
+    }
+
+    @Override
+    public void publishStat(String id, Map<String, Map<String, Integer>> value) {
+        bStats.addCustomChart(new DrilldownPie(id, () -> value));
     }
 
     @Override

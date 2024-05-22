@@ -5,6 +5,7 @@ package me.chickensaysbak.chatimage.core.adapters;
 import java.io.File;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -101,6 +102,13 @@ public interface PluginAdapter {
      * @param value the value of the stat
      */
     void publishStat(String id, int value);
+
+    /**
+     * Publishes a drilldown pie chart statistic to bStats.
+     * @param id the id of the stat
+     * @param value the value of the stat
+     */
+    void publishStat(String id, Map<String, Map<String, Integer>> value);
 
     /**
      * Sets placeholders in a string of text if PlaceholderAPI is enabled.
