@@ -1,0 +1,29 @@
+# 若要完全停止發送消息，請刪除包括鍵/前綴在內的整行
+
+# 對所有人可見
+show_image: "&a[顯示圖片]"
+hover_tip: "&7輸入 &f/hideimages&7 來隱藏圖片"
+hiding_images: "&c正在隱藏圖片！&7輸入 &f/showimages&7 撤銷"
+showing_images: "&a正在顯示圖片！&7輸入 &f/hideimages&7 撤銷"
+error_hiding: "&c您已經在隱藏圖片！輸入 &4/showimages&c 恢復"
+error_showing: "&c您已經在顯示圖片！輸入 &4/hideimages&c 恢復"
+error_load: "&c無法加載該圖片！"
+error_doesnt_exist: "&c圖片 '&4%name%&c' 不存在！"
+
+# 僅管理員可見
+reload_config: "&a成功重新加載 ChatImage！"
+image_sent: "&a成功發送圖片！"
+image_sent_all: "&a成功向所有玩家發送圖片！"
+image_saved: "&a已保存圖片為 '&f%name%&a'"
+image_deleted: "&c已刪除圖片 '&4%name%&c'"
+chatimage_usage: "&c用法：/chatimage <reload|send|save|delete>"
+chatimage_send_usage: "&c用法：/chatimage send <player>|all <url> [smooth] [trim] [max-width] [max-height] [text]"
+chatimage_send_usage_2: "&c用法：/chatimage send <player>|all <name> [text]"
+chatimage_save_usage: "&c用法：/chatimage save <name> <url> [smooth] [trim] [width] [height]"
+chatimage_delete_usage: "&c用法：/chatimage delete <name>"
+error_player_offline: "&c該玩家不在線！"
+error_outdated: "&c該玩家使用的是過時的版本！"
+error_already_exists: "&c圖片 '&4%name%&c' 已存在！"
+error_save: "&c保存圖片時出現錯誤。請檢查控制台！"
+error_delete: "&c刪除圖片時出現錯誤。請檢查控制台！"
+error_order: "&c請在網址之前放置圖片名稱！"

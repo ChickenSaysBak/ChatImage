@@ -1,0 +1,29 @@
+# Om het verzenden van een bericht volledig te stoppen, verwijder de hele regel inclusief de sleutel/voorvoegsel.
+
+# Zichtbaar voor iedereen
+show_image: "&a[Afbeelding tonen]"
+hover_tip: "&7Typ &f/hideimages&7 om toekomstige afbeeldingen te verbergen."
+hiding_images: "&cAfbeeldingen worden nu verborgen! Typ &f/showimages&7 om dit ongedaan te maken."
+showing_images: "&aAfbeeldingen worden nu getoond! Typ &f/hideimages&7 om dit ongedaan te maken."
+error_hiding: "&cJe verbergt al afbeeldingen! Typ &4/showimages&c om terug te keren."
+error_showing: "&cJe toont al afbeeldingen! Typ &4/hideimages&c om terug te keren."
+error_load: "&cDe afbeelding kon niet worden geladen!"
+error_doesnt_exist: "&cDe afbeelding '&4%name%&c' bestaat niet!"
+
+# Zichtbaar voor beheerders
+reload_config: "&aChatImage-configuratie succesvol herladen!"
+image_sent: "&aAfbeelding succesvol verzonden!"
+image_sent_all: "&aAfbeelding succesvol naar alle spelers verzonden!"
+image_saved: "&aAfbeelding opgeslagen als '&f%name%&a'"
+image_deleted: "&cAfbeelding '&4%name%&c' verwijderd"
+chatimage_usage: "&cGebruik: /chatimage <reload|send|save|delete>"
+chatimage_send_usage: "&cGebruik: /chatimage send <player>|all <url> [smooth] [trim] [max-width] [max-height] [text]"
+chatimage_send_usage_2: "&cGebruik: /chatimage send <player>|all <name> [text]"
+chatimage_save_usage: "&cGebruik: /chatimage save <name> <url> [smooth] [trim] [width] [height]"
+chatimage_delete_usage: "&cGebruik: /chatimage delete <name>"
+error_player_offline: "&cDie speler is niet online!"
+error_outdated: "&cDie speler gebruikt een verouderde versie!"
+error_already_exists: "&cDe afbeelding '&4%name%&c' bestaat al!"
+error_save: "&cEr was een fout bij het opslaan van de afbeelding. Controleer de console!"
+error_delete: "&cEr was een fout bij het verwijderen van de afbeelding. Controleer de console!"
+error_order: "&cPlaats de afbeeldingsnaam voor de url!"

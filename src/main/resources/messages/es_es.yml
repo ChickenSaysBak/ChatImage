@@ -1,0 +1,29 @@
+# Para dejar de enviar un mensaje por completo, elimina toda la línea incluyendo la clave/prefijo.
+
+# Visto por cualquiera
+show_image: "&a[Mostrar Imagen]"
+hover_tip: "&7Escribe &f/ocultarimagenes&7 para ocultar imágenes futuras."
+hiding_images: "&c¡Ocultando imágenes ahora! &7Escribe &f/mostrarimagenes&7 para deshacer."
+showing_images: "&a¡Mostrando imágenes ahora! &7Escribe &f/ocultarimagenes&7 para deshacer."
+error_hiding: "&c¡Ya estás ocultando imágenes! Escribe &4/mostrarimagenes&c para revertir."
+error_showing: "&c¡Ya estás mostrando imágenes! Escribe &4/ocultarimagenes&c para revertir."
+error_load: "&c¡No se pudo cargar la imagen!"
+error_doesnt_exist: "&c¡La imagen '&4%name%&c' no existe!"
+
+# Visto por administradores
+reload_config: "&a¡Configuración de ChatImage recargada con éxito!"
+image_sent: "&a¡Imagen enviada con éxito!"
+image_sent_all: "&a¡Imagen enviada a todos los jugadores con éxito!"
+image_saved: "&aImagen guardada como '&f%name%&a'"
+image_deleted: "&cImagen '&4%name%&c' eliminada"
+chatimage_usage: "&cUso: /chatimage <recargar|enviar|guardar|eliminar>"
+chatimage_send_usage: "&cUso: /chatimage enviar <jugador>|todos <url> [suave] [recortar] [ancho-máximo] [alto-máximo] [texto]"
+chatimage_send_usage_2: "&cUso: /chatimage enviar <jugador>|todos <nombre> [texto]"
+chatimage_save_usage: "&cUso: /chatimage guardar <nombre> <url> [suave] [recortar] [ancho] [alto]"
+chatimage_delete_usage: "&cUso: /chatimage eliminar <nombre>"
+error_player_offline: "&c¡Ese jugador no está en línea!"
+error_outdated: "&c¡Ese jugador tiene una versión desactualizada!"
+error_already_exists: "&c¡La imagen '&4%name%&c' ya existe!"
+error_save: "&c¡Hubo un error al guardar la imagen. Revisa la consola!"
+error_delete: "&c¡Hubo un error al eliminar la imagen. Revisa la consola!"
+error_order: "&c¡Por favor, pon el nombre de la imagen antes de la url!"

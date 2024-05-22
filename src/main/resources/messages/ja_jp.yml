@@ -1,0 +1,29 @@
+# メッセージの送信を完全に停止するには、キー/プレフィックスを含む行全体を削除してください。
+
+# 誰でも見ることができます
+show_image: "&a[画像を表示]"
+hover_tip: "&7将来の画像を非表示にするには、&f/hideimages&7と入力してください。"
+hiding_images: "&cこれから画像を非表示にします！ &7元に戻すには、&f/showimages&7と入力してください。"
+showing_images: "&aこれから画像を表示します！ &7非表示にするには、&f/hideimages&7と入力してください。"
+error_hiding: "&cあなたはすでに画像を非表示にしています！ 元に戻すには、&4/showimages&cと入力してください。"
+error_showing: "&cあなたはすでに画像を表示しています！ 非表示にするには、&4/hideimages&cと入力してください。"
+error_load: "&cその画像を読み込むことができませんでした！"
+error_doesnt_exist: "&c画像 '&4%name%&c' は存在しません！"
+
+# 管理者が見ることができます
+reload_config: "&aChatImageの設定を正常にリロードしました！"
+image_sent: "&a画像を正常に送信しました！"
+image_sent_all: "&aすべてのプレイヤーに画像を正常に送信しました！"
+image_saved: "&a画像を '&f%name%&a' として保存しました"
+image_deleted: "&c画像 '&4%name%&c' を削除しました"
+chatimage_usage: "&c使用法: /chatimage <reload|send|save|delete>"
+chatimage_send_usage: "&c使用法: /chatimage send <player>|all <url> [smooth] [trim] [max-width] [max-height] [text]"
+chatimage_send_usage_2: "&c使用法: /chatimage send <player>|all <name> [text]"
+chatimage_save_usage: "&c使用法: /chatimage save <name> <url> [smooth] [trim] [width] [height]"
+chatimage_delete_usage: "&c使用法: /chatimage delete <name>"
+error_player_offline: "&cそのプレイヤーはオンラインではありません！"
+error_outdated: "&cそのプレイヤーは古いバージョンを使用しています！"
+error_already_exists: "&c画像 '&4%name%&c' はすでに存在しています！"
+error_save: "&c画像を保存中にエラーが発生しました。コンソールを確認してください！"
+error_delete: "&c画像を削除中にエラーが発生しました。コンソールを確認してください！"
+error_order: "&cURLの前に画像名を入れてください！"

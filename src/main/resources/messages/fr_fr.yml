@@ -1,0 +1,29 @@
+# Pour arrêter d'envoyer un message entièrement, supprimez toute la ligne y compris la clé/préfixe.
+
+# Vu par tout le monde
+show_image: "&a[Affichez l'image]"
+hover_tip: "&7Tapez &f/hideimages&7 pour cacher les images futures."
+hiding_images: "&cCachez les images maintenant ! &7Tapez &f/showimages&7 pour annuler."
+showing_images: "&aAffichez les images maintenant ! &7Tapez &f/hideimages&7 pour annuler."
+error_hiding: "&cVous cachez déjà les images ! Tapez &4/showimages&c pour revenir en arrière."
+error_showing: "&cVous affichez déjà les images ! Tapez &4/hideimages&c pour revenir en arrière."
+error_load: "&cImpossible de charger l'image !"
+error_doesnt_exist: "&cL'image '&4%name%&c' n'existe pas !"
+
+# Vu par les administrateurs
+reload_config: "&aChatImage rechargé avec succès !"
+image_sent: "&aImage envoyée avec succès !"
+image_sent_all: "&aImage envoyée à tous les joueurs avec succès !"
+image_saved: "&aImage enregistrée sous '&f%name%&a'"
+image_deleted: "&cImage '&4%name%&c' supprimée"
+chatimage_usage: "&cUtilisation : /chatimage <reload|send|save|delete>"
+chatimage_send_usage: "&cUtilisation : /chatimage send <player>|all <url> [smooth] [trim] [max-width] [max-height] [text]"
+chatimage_send_usage_2: "&cUtilisation : /chatimage send <player>|all <name> [text]"
+chatimage_save_usage: "&cUtilisation : /chatimage save <name> <url> [smooth] [trim] [width] [height]"
+chatimage_delete_usage: "&cUtilisation : /chatimage delete <name>"
+error_player_offline: "&cCe joueur n'est pas en ligne !"
+error_outdated: "&cCe joueur utilise une version obsolète !"
+error_already_exists: "&cL'image '&4%name%&c' existe déjà !"
+error_save: "&cUne erreur s'est produite lors de l'enregistrement de l'image. Vérifiez la console !"
+error_delete: "&cUne erreur s'est produite lors de la suppression de l'image. Vérifiez la console !"
+error_order: "&cVeuillez mettre le nom de l'image avant l'url !"

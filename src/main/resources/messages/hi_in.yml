@@ -1,0 +1,29 @@
+# पूरी तरह से संदेश भेजना बंद करने के लिए, कुंजी/प्रीफिक्स सहित पूरी लाइन को हटा दें।
+
+# सभी के द्वारा देखा गया
+show_image: "&a[छवि दिखाएं]"
+hover_tip: "&7भविष्य की छवियों को छिपाने के लिए &f/hideimages&7 टाइप करें।"
+hiding_images: "&cअब छवियों को छिपा रहे हैं! &7इसे पूर्ववत करने के लिए &f/showimages&7 टाइप करें।"
+showing_images: "&aअब छवियों को दिखा रहे हैं! &7छिपाने के लिए &f/hideimages&7 टाइप करें।"
+error_hiding: "&cआप पहले से ही छवियों को छिपा रहे हैं! पूर्ववत करने के लिए &4/showimages&c टाइप करें।"
+error_showing: "&cआप पहले से ही छवियों को दिखा रहे हैं! छिपाने के लिए &4/hideimages&c टाइप करें।"
+error_load: "&cउस छवि को लोड नहीं किया जा सका!"
+error_doesnt_exist: "&cछवि '&4%name%&c' मौजूद नहीं है!"
+
+# केवल एडमिन द्वारा देखा गया
+reload_config: "&aChatImage को सफलतापूर्वक पुनः लोड किया गया!"
+image_sent: "&aछवि सफलतापूर्वक भेजी गई!"
+image_sent_all: "&aसभी खिलाड़ियों को छवि सफलतापूर्वक भेजी गई!"
+image_saved: "&aछवि को '&f%name%&a' के रूप में सहेजा गया"
+image_deleted: "&cछवि '&4%name%&c' को हटा दिया गया"
+chatimage_usage: "&cप्रयोग: /chatimage <reload|send|save|delete>"
+chatimage_send_usage: "&cप्रयोग: /chatimage send <player>|all <url> [smooth] [trim] [max-width] [max-height] [text]"
+chatimage_send_usage_2: "&cप्रयोग: /chatimage send <player>|all <name> [text]"
+chatimage_save_usage: "&cप्रयोग: /chatimage save <name> <url> [smooth] [trim] [width] [height]"
+chatimage_delete_usage: "&cप्रयोग: /chatimage delete <name>"
+error_player_offline: "&cवह खिलाड़ी ऑनलाइन नहीं है!"
+error_outdated: "&cवह खिलाड़ी एक पुराने संस्करण पर है!"
+error_already_exists: "&cछवि '&4%name%&c' पहले से ही मौजूद है!"
+error_save: "&cछवि को सहेजने में एक त्रुटि हुई। कंसोल चेक करें!"
+error_delete: "&cछवि को हटाने में एक त्रुटि हुई। कंसोल चेक करें!"
+error_order: "&cकृपया यूआरएल से पहले छवि का नाम डालें!"
