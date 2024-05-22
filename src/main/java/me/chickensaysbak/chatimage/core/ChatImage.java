@@ -36,6 +36,7 @@ public class ChatImage {
     private ArrayList<Loadable> loaders = new ArrayList<>();
 
     private HashMap<String, Long> lastSent = new HashMap<>(); // Contains UUIDs and Discord IDs.
+    private ArrayList<UUID> recordedPlayerLocale = new ArrayList<>();
 
     public ChatImage(PluginAdapter plugin) {
 
@@ -61,9 +62,26 @@ public class ChatImage {
         if (playerPreferences.isSaveQueued()) playerPreferences.saveFile();
     }
 
+    /**
+     * Called when a player joins.
+     * @param player the player that joined
+     */
     public void onJoin(PlayerAdapter player) {
 
+        UUID uuid = player.getUniqueId();
+        if (recordedPlayerLocale.contains(uuid)) return;
 
+        plugin.runTaskLater(() -> {
+
+            Map<String, Map<String, Integer>> map = new HashMap<>();
+            Map<String, Integer> entry = new HashMap<>();
+
+            entry.put(player.getLocale(), 1);
+            map.put(settings.getLanguageDefault(), entry);
+            plugin.publishStat("locale", map);
+            if (!recordedPlayerLocale.contains(uuid)) recordedPlayerLocale.add(uuid);
+
+        }, 20);
 
     }
 
