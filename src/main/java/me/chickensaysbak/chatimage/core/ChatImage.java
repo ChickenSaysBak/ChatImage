@@ -76,7 +76,7 @@ public class ChatImage {
             Map<String, Map<String, Integer>> map = new HashMap<>();
             Map<String, Integer> entry = new HashMap<>();
 
-            entry.put(player.getLocale(), 1);
+            entry.put(player.getLocale().toLowerCase(), 1);
             map.put(settings.getLanguageDefault(), entry);
             plugin.publishStat("locale", map);
             if (!recordedPlayerLocale.contains(uuid)) recordedPlayerLocale.add(uuid);
