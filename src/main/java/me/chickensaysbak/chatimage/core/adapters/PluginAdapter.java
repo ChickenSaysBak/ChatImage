@@ -79,17 +79,15 @@ public interface PluginAdapter {
      * Runs an asynchronous task after a certain amount of server ticks.
      * @param task the task to run
      * @param ticks the amount of ticks (1 tick = 50 milliseconds)
-     * @return the task ID
      */
-    int runAsyncTaskLater(Runnable task, int ticks);
+    void runAsyncTaskLater(Runnable task, int ticks);
 
     /**
      * Runs a synchronous task after a certain amount of server ticks.
      * @param task the task to run
      * @param ticks the amount of ticks (1 tick = 50 milliseconds)
-     * @return the task ID
      */
-    int runTaskLater(Runnable task, int ticks);
+    void runTaskLater(Runnable task, int ticks);
 
     /**
      * Publishes a pie chart statistic to bStats.
