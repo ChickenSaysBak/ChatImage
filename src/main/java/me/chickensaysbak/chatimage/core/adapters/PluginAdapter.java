@@ -92,12 +92,6 @@ public interface PluginAdapter {
     int runTaskLater(Runnable task, int ticks);
 
     /**
-     * Check whether the plugin is Bungee or Spigot.
-     * @return true if the plugin is Bungee
-     */
-    boolean isBungee();
-
-    /**
      * Publishes a pie chart statistic to bStats.
      * @param id the id of the stat
      * @param value the value of the stat

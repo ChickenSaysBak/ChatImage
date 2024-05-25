@@ -144,11 +144,6 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
     }
 
     @Override
-    public boolean isBungee() {
-        return false;
-    }
-
-    @Override
     public void publishStat(String id, String value) {
         bStats.addCustomChart(new SimplePie(id, () -> value));
     }

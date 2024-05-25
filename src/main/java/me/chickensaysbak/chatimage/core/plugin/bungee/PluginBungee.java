@@ -171,11 +171,6 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
     }
 
     @Override
-    public boolean isBungee() {
-        return true;
-    }
-
-    @Override
     public void publishStat(String id, String value) {
         bStats.addCustomChart(new SimplePie(id, () -> value));
     }
