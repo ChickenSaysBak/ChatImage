@@ -21,14 +21,14 @@ public class CommandSpigot implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        UUID uuid = sender instanceof Player ? ((Player) sender).getUniqueId() : null;
+        UUID uuid = sender instanceof Player player ? player.getUniqueId() : null;
         command.onCommand(uuid, args);
         return true;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
-        UUID uuid = sender instanceof Player ? ((Player) sender).getUniqueId() : null;
+        UUID uuid = sender instanceof Player player ? player.getUniqueId() : null;
         return command.onTabComplete(uuid, args);
     }
 

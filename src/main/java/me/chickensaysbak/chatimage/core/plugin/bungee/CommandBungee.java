@@ -22,13 +22,13 @@ public class CommandBungee extends Command implements TabExecutor {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        UUID uuid = sender instanceof ProxiedPlayer ? ((ProxiedPlayer) sender).getUniqueId() : null;
+        UUID uuid = sender instanceof ProxiedPlayer player ? player.getUniqueId() : null;
         command.onCommand(uuid, args);
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, String[] args) {
-        UUID uuid = sender instanceof ProxiedPlayer ? ((ProxiedPlayer) sender).getUniqueId() : null;
+        UUID uuid = sender instanceof ProxiedPlayer player ? player.getUniqueId() : null;
         return command.onTabComplete(uuid, args);
     }
 

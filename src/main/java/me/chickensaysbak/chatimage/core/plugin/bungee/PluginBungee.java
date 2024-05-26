@@ -8,7 +8,6 @@ import me.chickensaysbak.chatimage.core.adapters.PlayerAdapter;
 import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 import me.chickensaysbak.chatimage.core.adapters.YamlAdapter;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.connection.Connection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
@@ -57,12 +56,10 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onChat(ChatEvent event) {
 
-        Connection sender = event.getSender();
-        if (event.isCancelled() || event.isCommand() || !(sender instanceof ProxiedPlayer)) return;
-
-        ProxiedPlayer player = (ProxiedPlayer) sender;
-        boolean cancelEvent = core.onChat(new PlayerBungee(player), event.getMessage());
-        if (cancelEvent) event.setCancelled(true);
+        if (!event.isCancelled() && !event.isCommand() && event.getSender() instanceof ProxiedPlayer player) {
+            boolean cancelEvent = core.onChat(new PlayerBungee(player), event.getMessage());
+            if (cancelEvent) event.setCancelled(true);
+        }
 
     }
 

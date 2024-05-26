@@ -127,8 +127,8 @@ public class SavedImages implements Loadable {
 
             TextComponent image = null;
 
-            for (BaseComponent bc : components) if (bc instanceof TextComponent) {
-                image = (TextComponent) bc;
+            for (BaseComponent bc : components) if (bc instanceof TextComponent tc) {
+                image = tc;
                 break;
             }
 
