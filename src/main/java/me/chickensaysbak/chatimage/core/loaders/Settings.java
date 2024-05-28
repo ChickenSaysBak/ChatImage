@@ -5,10 +5,10 @@ package me.chickensaysbak.chatimage.core.loaders;
 import me.chickensaysbak.chatimage.core.ChatImage;
 import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 import me.chickensaysbak.chatimage.core.adapters.YamlAdapter;
-import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -175,7 +175,7 @@ public class Settings implements Loadable {
         if (enUS.exists()) return;
 
         try {
-            FileUtils.copyFile(legacyMessages, enUS);
+            Files.copy(legacyMessages.toPath(), enUS.toPath());
             legacyMessages.delete();
         } catch (IOException e) {
             e.printStackTrace();

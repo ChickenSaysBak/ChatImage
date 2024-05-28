@@ -5,12 +5,10 @@ import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -47,7 +45,7 @@ public class SavedImages implements Loadable {
                 file.createNewFile();
             }
 
-            FileUtils.write(file, ComponentSerializer.toString(image), StandardCharsets.UTF_8);
+            Files.writeString(file.toPath(), ComponentSerializer.toString(image));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -104,12 +102,12 @@ public class SavedImages implements Loadable {
         savedImages.clear();
         if (!imagesDirectory.exists()) return;
 
-        for (File file : imagesDirectory.listFiles()) if (FilenameUtils.isExtension(file.getName(), "json")) {
+        for (File file : imagesDirectory.listFiles()) if (file.getName().toLowerCase().endsWith(".json")) {
 
             String jsonString;
 
             try {
-                jsonString = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
+                jsonString = Files.readString(file.toPath());
             } catch (IOException e) {
                 e.printStackTrace();
                 continue;
