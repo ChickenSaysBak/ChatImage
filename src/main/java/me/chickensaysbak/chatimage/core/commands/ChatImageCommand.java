@@ -210,7 +210,8 @@ public class ChatImageCommand extends CommandAdapter {
         List<String> result = new ArrayList<>();
         boolean usingURL = args.length >= 3 && args[2].startsWith("http");
 
-        if (args.length == 1) result.addAll(Arrays.asList("reload", "send", "save", "delete"));
+        if (args.length < 1) return result;
+        else if (args.length == 1) result.addAll(Arrays.asList("reload", "send", "save", "delete"));
 
         else if (args[0].equalsIgnoreCase("send")) switch (args.length) {
 

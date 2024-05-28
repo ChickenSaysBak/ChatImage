@@ -46,7 +46,7 @@ public class HideImagesCommand extends CommandAdapter {
 
     @Override
     public List<String> onTabComplete(UUID sender, String[] args) {
-        return null;
+        return List.of();
     }
 
 }
