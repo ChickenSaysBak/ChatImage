@@ -42,7 +42,7 @@ public class Settings implements Loadable {
     private File messagesDirectory;
     private HashMap<String, HashMap<String, String>> multilingualMsgs = new HashMap<>();
     private String[] suppliedLangs = {
-            "de_de", "en_us", "es_es", "fi_fi", "fr_fr", "hi_in", "id_id", "ja_jp", "nl_nl", "pt_pt", "zh_cn", "zh_hk"
+            "de_de", "en_us", "es_es", "fi_fi", "fr_fr", "hi_in", "id_id", "ja_jp", "nl_nl", "pl_pl", "pt_pt", "zh_cn", "zh_hk"
     };
 
     public Settings(PluginAdapter plugin) {
