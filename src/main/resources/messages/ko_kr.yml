@@ -1,0 +1,29 @@
+# 메시지 전송을 완전히 중지하려면 키/접두사를 포함한 해당 라인 전체를 삭제하세요.
+
+# 누구나 볼 수 있음
+show_image: "&a[이미지 보기]"
+hover_tip: "&7향후 이미지를 숨기려면 &f/hideimages&7를 입력하세요."
+hiding_images: "&c이미지 숨기기 활성화! &7취소하려면 &f/showimages&7를 입력하세요."
+showing_images: "&a이미지 숨기기 비활성화! &7다시 숨기려면 &f/hideimages&7를 입력하세요."
+error_hiding: "&c이미 이미지 숨기기가 활성화되어 있습니다! 되돌리려면 &4/showimages&c를 입력하세요."
+error_showing: "&c이미 이미지 숨기기가 비활성화되어 있습니다! 다시 활성화하려면 &4/hideimages&c를 입력하세요."
+error_load: "&c해당 이미지를 불러올 수 없습니다!"
+error_doesnt_exist: "&c'&4%name%&c' 이미지가 존재하지 않습니다!"
+
+# 관리자만 볼 수 있음
+reload_config: "&aChatImage 설정을 성공적으로 다시 불러왔습니다!"
+image_sent: "&a이미지를 성공적으로 전송했습니다!"
+image_sent_all: "&a모든 플레이어에게 이미지를 성공적으로 전송했습니다!"
+image_saved: "&a'&f%name%&a'로 이미지를 저장했습니다"
+image_deleted: "&c'&4%name%&c' 이미지를 삭제했습니다"
+chatimage_usage: "&c사용법: /chatimage <reload|send|save|delete>"
+chatimage_send_usage: "&c사용법: /chatimage send <player>|all <url> [smooth] [trim] [max-width] [max-height] [text]"
+chatimage_send_usage_2: "&c사용법: /chatimage send <player>|all <name> [text]"
+chatimage_save_usage: "&c사용법: /chatimage save <name> <url> [smooth] [trim] [width] [height]"
+chatimage_delete_usage: "&c사용법: /chatimage delete <name>"
+error_player_offline: "&c해당 플레이어는 온라인 상태가 아닙니다!"
+error_outdated: "&c해당 플레이어는 구버전을 사용 중입니다!"
+error_already_exists: "&c'&4%name%&c' 이미지가 이미 존재합니다!"
+error_save: "&c이미지 저장 중 오류가 발생했습니다. 콘솔을 확인하세요!"
+error_delete: "&c이미지 삭제 중 오류가 발생했습니다. 콘솔을 확인하세요!"
+error_order: "&cURL 전에 이미지 이름을 입력해 주세요!"
