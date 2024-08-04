@@ -2,11 +2,11 @@
 
 # Visto por cualquiera
 show_image: "&a[Mostrar Imagen]"
-hover_tip: "&7Escribe &f/ocultarimagenes&7 para ocultar imágenes futuras."
-hiding_images: "&c¡Ocultando imágenes ahora! &7Escribe &f/mostrarimagenes&7 para deshacer."
-showing_images: "&a¡Mostrando imágenes ahora! &7Escribe &f/ocultarimagenes&7 para deshacer."
-error_hiding: "&c¡Ya estás ocultando imágenes! Escribe &4/mostrarimagenes&c para revertir."
-error_showing: "&c¡Ya estás mostrando imágenes! Escribe &4/ocultarimagenes&c para revertir."
+hover_tip: "&7Escribe &f/hideimages&7 para ocultar imágenes futuras."
+hiding_images: "&c¡Ocultando imágenes ahora! &7Escribe &f/showimages&7 para deshacer."
+showing_images: "&a¡Mostrando imágenes ahora! &7Escribe &f/hideimages&7 para deshacer."
+error_hiding: "&c¡Ya estás ocultando imágenes! Escribe &4/showimages&c para revertir."
+error_showing: "&c¡Ya estás mostrando imágenes! Escribe &4/hideimages&c para revertir."
 error_load: "&c¡No se pudo cargar la imagen!"
 error_doesnt_exist: "&c¡La imagen '&4%name%&c' no existe!"
 
