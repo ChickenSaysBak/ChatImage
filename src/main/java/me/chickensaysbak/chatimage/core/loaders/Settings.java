@@ -2,17 +2,14 @@
 // This code is licensed under MIT license (see LICENSE file for details).
 package me.chickensaysbak.chatimage.core.loaders;
 
-import me.chickensaysbak.chatimage.core.ChatImage;
 import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 import me.chickensaysbak.chatimage.core.adapters.YamlAdapter;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 public class Settings implements Loadable {
 
@@ -29,10 +26,6 @@ public class Settings implements Loadable {
     private boolean autoHide;
     private int hiddenWidth;
     private int hiddenHeight;
-    private boolean filterBadWords;
-    private boolean removeBadWords;
-    private List<String> exclusions;
-    private String apiKey;
     private boolean filterExplicitContent;
     private boolean removeExplicitContent;
     private String languageDefault;
@@ -66,9 +59,6 @@ public class Settings implements Loadable {
         convertLegacyMessages();
         Arrays.stream(suppliedLangs).forEach(lang -> plugin.saveResource("messages/" + lang + ".yml"));
 
-        List<String> oldExclusions = new ArrayList<>();
-        if (exclusions != null) oldExclusions.addAll(exclusions);
-
         YamlAdapter config = plugin.loadYaml(configFile);
         smoothRender = config.getBoolean("smooth_render", config.getBoolean("fancy_render", true)); // Legacy support.
         trimTransparency = config.getBoolean("trim_transparency", true);
@@ -79,17 +69,10 @@ public class Settings implements Loadable {
         autoHide = config.getBoolean("hidden_images.auto_hide", false);
         hiddenWidth = config.getInt("hidden_images.max_width", 23);
         hiddenHeight = config.getInt("hidden_images.max_height", 24);
-        filterBadWords = config.getBoolean("bad_words.enabled", false);
-        removeBadWords = config.getBoolean("bad_words.remove_message", false);
-        exclusions = config.getStringList("bad_words.exclusions");
-        apiKey = config.getString("explicit_content.api_key", "");
         filterExplicitContent = config.getBoolean("explicit_content.enabled", false);
         removeExplicitContent = config.getBoolean("explicit_content.remove_message", false);
         languageDefault = config.getString("language_default", "en_us");
         debug = config.getBoolean("debug", false);
-
-        // Clears cache to disregard old exclusions if they have changed.
-        if (!exclusions.equals(oldExclusions)) ChatImage.getInstance().getFiltration().clearBadWordsCache();
 
         multilingualMsgs.clear();
 
@@ -112,10 +95,8 @@ public class Settings implements Loadable {
         plugin.publishStat("auto_hide", String.valueOf(autoHide));
         plugin.publishStat("max_hidden_width", String.valueOf(hiddenWidth));
         plugin.publishStat("max_hidden_height", String.valueOf(hiddenHeight));
-        plugin.publishStat("bad_word_filtration", String.valueOf(filterBadWords));
-        plugin.publishStat("bad_word_message_removal", String.valueOf(removeBadWords));
-        plugin.publishStat("explicit_content_filtration", String.valueOf(filterExplicitContent));
-        plugin.publishStat("explicit_content_message_removal", String.valueOf(removeExplicitContent));
+        plugin.publishStat("explicit_content_filtration2", String.valueOf(filterExplicitContent));
+        plugin.publishStat("explicit_content_message_removal2", String.valueOf(removeExplicitContent));
 
     }
 
@@ -128,10 +109,6 @@ public class Settings implements Loadable {
     public int getMaxHiddenHeight() {return hiddenHeight;}
     public int getCooldown() {return cooldown;}
     public boolean isStrictCooldown() {return strictCooldown;}
-    public boolean isFilterBadWords() {return filterBadWords;}
-    public boolean isRemoveBadWords() {return removeBadWords;}
-    public List<String> getExclusions() {return new ArrayList<>(exclusions);}
-    public String getApiKey() {return apiKey;}
     public boolean isFilterExplicitContent() {return filterExplicitContent;}
     public boolean isRemoveExplicitContent() {return removeExplicitContent;}
     public String getLanguageDefault() {return languageDefault;}

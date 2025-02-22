@@ -106,8 +106,8 @@ public class ChatImage {
 
         int cooldown = settings.getCooldown();
         boolean strictCooldown = settings.isStrictCooldown();
-        boolean filterBadWords = settings.isFilterBadWords(), filterExplicitContent = settings.isFilterExplicitContent();
-        boolean removeBadWords = settings.isRemoveBadWords(), removeExplicitContent = settings.isRemoveExplicitContent();
+        boolean filterExplicitContent = settings.isFilterExplicitContent();
+        boolean removeExplicitContent = settings.isRemoveExplicitContent();
 
         boolean underCooldown = cooldown > 0 && lastSent.containsKey(id) && (System.currentTimeMillis()-lastSent.get(id))/1000 < cooldown;
         boolean underRegularCooldown = !strictCooldown && underCooldown;
@@ -120,14 +120,13 @@ public class ChatImage {
         */
 
         // Stop Check #1 - Terminates code early if possible; optimal if message removal is disabled.
-        if (!removeBadWords && !removeExplicitContent && dontRender) return false;
+        if (!removeExplicitContent && dontRender) return false;
 
         String url = findURL(message);
         if (url == null) return false;
 
         // Filtration #1 - Removes message and prevents rendering.
-        if (removeBadWords && filterBadWords && filtration.hasBadWords(url)) return true;
-        else if (removeExplicitContent && filterExplicitContent && filtration.hasExplicitContent(url)) return true;
+        if (removeExplicitContent && filterExplicitContent && filtration.hasExplicitContent(url)) return true;
 
         // Stop Check #2 - Terminates code if necessary AFTER message removal.
         if (dontRender) return false;
@@ -138,8 +137,7 @@ public class ChatImage {
         plugin.runAsyncTaskLater(() -> {
 
             // Filtration #2 - Only prevents rendering; if message removal is disabled, it's ideal to run on a separate thread.
-            if (!removeBadWords && filterBadWords && filtration.hasBadWords(url)) return;
-            else if (!removeExplicitContent && filterExplicitContent && filtration.hasExplicitContent(url)) return;
+            if (!removeExplicitContent && filterExplicitContent && filtration.hasExplicitContent(url)) return;
 
             BufferedImage image = loadImage(url);
             if (image == null) return;

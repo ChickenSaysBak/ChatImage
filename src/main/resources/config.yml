@@ -56,37 +56,15 @@ hidden_images:
 
 # FILTRATION SETTINGS #
 
-bad_words:
-
-  # Prevents an image from rendering if bad words are found. Does not apply to '/chatimage send'
-  # This will impact speed by a couple seconds. Duplicates cache within the plugin to increase speed.
-  enabled: false
-
-  # If an image contains bad words, the entire message with the link will not be sent.
-  # This includes messages from people that do not have permission to render images.
-  remove_message: false
-
-  # Specify words that should be allowed. Example:
-  # exclusions: ["word", "word", "word"]
-  exclusions: []
-
 explicit_content:
 
-  # You can obtain an api key for free here: https://moderatecontent.com/signup
-  # All you need is to submit an email address, and you will receive one with no additional account setup required.
-  # With this, you can scan up to 10,000 images a month. If you need more, upgrades are available.
-  # To check your server's usage stats, go here: https://client.moderatecontent.com/
-  # If you're running a public server, please don't test images in chat. You can test them using this (add key and url):
-  # https://api.moderatecontent.com/moderate/?key=API_KEY_HERE&url=URL_HERE
-  api_key: ""
-
-  # YOU MUST HAVE AN API KEY TO USE THIS FEATURE.
   # Prevents an image from rendering if explicit content is found. Does not apply to '/chatimage send'
-  # This will impact speed by a couple seconds. Duplicates cache within the plugin to increase speed.
+  # This will impact speed by a couple seconds. Duplicate images cache within the plugin to increase speed.
+  # Feature provided by: https://api4.ai/apis/nsfw
   enabled: false
 
   # If an image contains explicit content, the entire message with the link will not be sent.
-  # NOTE: This includes messages from people that do not have permission to render images. Any images scanned will count toward your monthly limit!
+  # NOTE: This includes messages from people that do not have permission to render images.
   remove_message: false
 
 

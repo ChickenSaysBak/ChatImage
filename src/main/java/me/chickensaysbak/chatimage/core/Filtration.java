@@ -7,152 +7,30 @@ import com.google.gson.JsonParser;
 import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 import me.chickensaysbak.chatimage.core.loaders.Settings;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Logger;
 
 public class Filtration {
 
     private PluginAdapter plugin;
-
-    private HashMap<String, JsonObject> badWordsCache = new HashMap<>();
     private HashMap<String, JsonObject> explicitCache = new HashMap<>();
-
-    public static final String[] SUPPORTED_EXTENSIONS = new String[] {".png", ".jpg", ".jpeg", ".gif"};
 
     Filtration(PluginAdapter plugin) {
         this.plugin = plugin;
     }
 
     /**
-     * Clears the cache of images that contain bad words.
-     */
-    public void clearBadWordsCache() {
-        badWordsCache.clear();
-    }
-
-    /**
-     * Checks if image contains bad words that aren't excluded in the config.yml
-     * Provided by https://moderatecontent.com/
-     * @param url the url of the image
-     * @return true if bad words were detected in the image
-     */
-    public boolean hasBadWords(String url) {
-
-        url = stripURL(url);
-
-        ChatImage chatImage = ChatImage.getInstance();
-        Settings settings = chatImage.getSettings();
-        boolean debug = settings.isDebug();
-        Logger logger = plugin.getLogger();
-
-        JsonObject json = badWordsCache.getOrDefault(url, null);
-        boolean cached = true;
-
-        if (json == null) {
-
-            cached = false;
-            String exclude = "";
-            List<String> exclusions = settings.getExclusions();
-
-            if (!exclusions.isEmpty()) {
-                exclude = "exclude=";
-                for (String exclusion : exclusions) exclude += exclusion + ",";
-                exclude = exclude.substring(0, exclude.length()-1) + "&";
-            }
-
-            try {
-
-                URL apiURL = new URL("https://api.moderatecontent.com/ocr/?" + exclude + "url=" + url);
-                HttpURLConnection con = (HttpURLConnection) apiURL.openConnection();
-                con.setRequestMethod("GET");
-
-                if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
-
-                    BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                    String inputLine, response = "";
-                    while ((inputLine = in.readLine()) != null) response += inputLine;
-                    in.close();
-
-                    JsonObject newJson = new JsonParser().parse(response).getAsJsonObject();
-
-                    if (newJson != null) {
-
-                        int errorCode = newJson.get("error_code").getAsInt();
-
-                        if (errorCode == 0) {
-                            json = newJson;
-                            badWordsCache.put(url, newJson);
-                        }
-
-                        else if (debug) {
-                            logger.warning("ChatImage Debugger - API error");
-                            logger.warning("URL: " + url);
-                            logger.warning("ERROR: " + errorCode + " - " + newJson.get("error").getAsString());
-                            return false;
-                        }
-
-                    }
-
-                    else if (debug) {
-                        logger.warning("ChatImage Debugger - Null json");
-                        logger.warning("URL: " + url);
-                        logger.warning("RESPONSE: " + response);
-                    }
-
-                }
-
-                else if (debug) {
-                    logger.warning("ChatImage Debugger - Bad http response");
-                    logger.warning("URL: " + url);
-                    logger.warning("HTTP RESPONSE: " + con.getResponseMessage());
-                }
-
-            }
-
-            catch (IOException e) {
-
-                if (debug) {
-                    logger.warning("ChatImage Debugger - Attempted bad word filtration");
-                    logger.warning("URL: " + url);
-                    e.printStackTrace();
-                }
-
-            }
-
-        }
-
-        if (json != null) {
-
-            if (!json.get("bad_words").isJsonObject()) return false;
-
-            else if (debug) {
-                logger.info("ChatImage Debugger - Bad word filtration");
-                logger.info("URL: " + url);
-                logger.info("RESPONSE: " + json);
-                logger.info("CACHED: " + cached);
-            }
-
-        }
-
-        return true;
-
-    }
-
-    /**
      * Checks if image contains explicit content.
-     * API key from https://moderatecontent.com/ is required; can be obtained for free.
      * @param url the url of the image
      * @return true if explicit content was detected in the image
      */
     public boolean hasExplicitContent(String url) {
-
-        url = stripURL(url);
 
         ChatImage chatImage = ChatImage.getInstance();
         Settings settings = chatImage.getSettings();
@@ -168,24 +46,33 @@ public class Filtration {
 
             try {
 
-                URL apiURL = new URL("https://api.moderatecontent.com/moderate/?key=" + settings.getApiKey() + "&url=" + url);
-                HttpURLConnection con = (HttpURLConnection) apiURL.openConnection();
-                con.setRequestMethod("GET");
+                HttpClient client = HttpClient.newHttpClient();
 
-                if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                String body = "--$bound%\r\n" +
+                        "Content-Disposition: form-data; name=\"url\"\r\n\r\n" +
+                        url + "\r\n" +
+                        "--$bound%--\r\n";
 
-                    BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                    String inputLine, response = "";
-                    while ((inputLine = in.readLine()) != null) response += inputLine;
-                    in.close();
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create("https://demo.api4ai.cloud/nsfw/v1/results"))
+                        .header("Content-Type", "multipart/form-data; boundary=$bound%")
+                        .POST(HttpRequest.BodyPublishers.ofString(body))
+                        .build();
 
-                    JsonObject newJson = new JsonParser().parse(response).getAsJsonObject();
+                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                int httpCode = response.statusCode();
+
+                if (httpCode == HttpURLConnection.HTTP_OK) {
+
+                    JsonObject newJson = new JsonParser().parse(response.body()).getAsJsonObject();
 
                     if (newJson != null) {
 
-                        int errorCode = newJson.get("error_code").getAsInt();
+                        newJson = newJson.getAsJsonArray("results").get(0).getAsJsonObject();
+                        JsonObject status = newJson.getAsJsonObject("status");
+                        String statusCode = status.get("code").getAsString();
 
-                        if (errorCode == 0) {
+                        if (statusCode.equalsIgnoreCase("ok")) {
                             json = newJson;
                             explicitCache.put(url, newJson);
                         }
@@ -193,7 +80,7 @@ public class Filtration {
                         else if (debug) {
                             logger.warning("ChatImage Debugger - API error");
                             logger.warning("URL: " + url);
-                            logger.warning("ERROR: " + errorCode + " - " + newJson.get("error").getAsString());
+                            logger.warning("ERROR: " + statusCode + " - " + status.get("message").getAsString());
                             return false;
                         }
 
@@ -210,12 +97,12 @@ public class Filtration {
                 else if (debug) {
                     logger.warning("ChatImage Debugger - Bad http response");
                     logger.warning("URL: " + url);
-                    logger.warning("HTTP RESPONSE: " + con.getResponseMessage());
+                    logger.warning("HTTP CODE: " + httpCode);
                 }
 
             }
 
-            catch (IOException e) {
+            catch (IOException | InterruptedException e) {
 
                 if (debug) {
                     logger.warning("ChatImage Debugger - Attempted explicit content filtration");
@@ -229,43 +116,22 @@ public class Filtration {
 
         if (json != null) {
 
-            if (json.get("rating_index").getAsInt() == 1) return false;
+            double nsfwConfidence = json.getAsJsonArray("entities").get(0).getAsJsonObject()
+                    .getAsJsonObject("classes")
+                    .get("nsfw").getAsDouble();
 
-            else if (debug) {
+            if (debug) {
                 logger.info("ChatImage Debugger - Explicit content filtration");
                 logger.info("URL: " + url);
                 logger.info("RESPONSE: " + json);
                 logger.info("CACHED: " + cached);
             }
 
+            return nsfwConfidence > 0.5;
+
         }
 
-        return true;
-
-    }
-
-    /**
-     * Gets rid of extraneous specifications after the file extension of an image url.
-     * Helps to prevent incompatible links in moderatecontent.com
-     * @param url the url to strip
-     * @return the image url without extra parameters after the extension
-     */
-    public static String stripURL(String url) {
-
-        String[] split1 = url.split("//", 2);
-        if (split1.length < 2) return url;
-        String urlMiddle = split1[1]; // Everything after the protocol (http or https).
-
-        String[] split2 = urlMiddle.split("/", 2);
-        if (split2.length < 2) return url;
-        String urlEnd = split2[1]; // Everything after the domain.
-
-        for (String ext : SUPPORTED_EXTENSIONS) if (urlEnd.contains(ext)) {
-            urlEnd = urlEnd.split(ext)[0] + ext;
-            break;
-        }
-
-        return split1[0] + "//" + split2[0] + "/" + urlEnd;
+        return false;
 
     }
 
