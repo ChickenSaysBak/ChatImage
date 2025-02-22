@@ -7,6 +7,7 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.util.Locale;
 import java.util.UUID;
 
 public class PlayerBungee implements PlayerAdapter {
@@ -54,7 +55,8 @@ public class PlayerBungee implements PlayerAdapter {
 
     @Override
     public String getLocale() {
-        return player.getLocale().toString().toLowerCase();
+        Locale locale = player.getLocale();
+        return locale != null ? locale.toString().toLowerCase() : "en_us";
     }
 
 }
