@@ -318,7 +318,15 @@ public class ChatImage {
         HoverEvent hoverEvent = new HoverEvent(hoverImage.requiredAction(), hoverImage);
         ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.OPEN_URL, url);
 
-        return new ComponentBuilder().appendLegacy(showImage).event(hoverEvent).event(clickEvent).create();
+        ComponentBuilder builder = new ComponentBuilder();
+
+        Arrays.stream(TextComponent.fromLegacyText(showImage)).forEach(bc -> {
+            bc.setHoverEvent(hoverEvent);
+            bc.setClickEvent(clickEvent);
+            builder.append(bc);
+        });
+
+        return builder.create();
 
     }
 
