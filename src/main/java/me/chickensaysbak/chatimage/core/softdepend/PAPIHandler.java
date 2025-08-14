@@ -8,7 +8,10 @@ import me.chickensaysbak.chatimage.core.loaders.SavedImages;
 import me.chickensaysbak.chatimage.core.loaders.Settings;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.OfflinePlayer;
 
 import java.awt.*;
@@ -71,7 +74,8 @@ public class PAPIHandler extends PlaceholderExpansion {
                     savedImage = ImageMaker.addText(savedImage, PlaceholderAPI.setBracketPlaceholders(player, text));
                 }
 
-                return TextComponent.toLegacyText(savedImage);
+                String imageJson = ComponentSerializer.toString(savedImage);
+                return MiniMessage.miniMessage().serialize(JSONComponentSerializer.json().deserialize(imageJson));
 
             }
 
@@ -106,7 +110,8 @@ public class PAPIHandler extends PlaceholderExpansion {
                     component = ImageMaker.addText(component, PlaceholderAPI.setBracketPlaceholders(player, text));
                 }
 
-                return TextComponent.toLegacyText(component);
+                String imageJson = ComponentSerializer.toString(component);
+                return MiniMessage.miniMessage().serialize(JSONComponentSerializer.json().deserialize(imageJson));
 
             }
 
