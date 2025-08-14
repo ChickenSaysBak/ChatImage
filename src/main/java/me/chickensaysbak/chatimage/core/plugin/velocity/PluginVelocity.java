@@ -70,7 +70,7 @@ public class PluginVelocity implements PluginAdapter {
         core.onJoin(new PlayerVelocity(event.getPlayer()));
     }
 
-    @Subscribe(order = PostOrder.LAST)
+    @Subscribe(order = PostOrder.LATE)
     public void onChat(PlayerChatEvent event) {
 
         if (!event.getResult().isAllowed()) return;

@@ -53,7 +53,7 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
         core.onJoin(new PlayerBungee(event.getPlayer()));
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onChat(ChatEvent event) {
 
         if (!event.isCancelled() && !event.isCommand() && event.getSender() instanceof ProxiedPlayer player) {
