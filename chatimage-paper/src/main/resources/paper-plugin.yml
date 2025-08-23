@@ -1,0 +1,18 @@
+name: ${plugin.name}
+author: ${plugin.author}
+website: ${plugin.website}
+description: ${plugin.description}
+version: ${project.version}
+api-version: ${plugin.api-version}
+main: me.chickensaysbak.chatimage.paper.PluginPaper
+dependencies:
+  server:
+    DiscordSRV:
+      required: false
+      join-classpath: true
+    EssentialsDiscord:
+      required: false
+      join-classpath: true
+    PlaceholderAPI:
+      required: false
+      join-classpath: true

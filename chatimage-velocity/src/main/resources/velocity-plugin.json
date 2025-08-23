@@ -1,0 +1,10 @@
+{
+  "id": "chatimage",
+  "name": "${plugin.name}",
+  "authors": ["${plugin.author}"],
+  "url": "${plugin.website}",
+  "description": "${plugin.description}",
+  "version": "${project.version}",
+  "main": "me.chickensaysbak.chatimage.velocity.PluginVelocity",
+  "dependencies": []
+}

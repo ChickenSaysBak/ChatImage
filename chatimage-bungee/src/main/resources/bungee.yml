@@ -1,0 +1,7 @@
+name: ${plugin.name}
+author: ${plugin.author}
+website: ${plugin.website}
+description: ${plugin.description}
+version: ${project.version}
+libraries: [commons-io:commons-io:2.11.0, com.google.code.gson:gson:2.10.1]
+main: me.chickensaysbak.chatimage.bungee.PluginBungee

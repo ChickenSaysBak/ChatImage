@@ -1,0 +1,18 @@
+name: ${plugin.name}
+author: ${plugin.author}
+website: ${plugin.website}
+description: ${plugin.description}
+version: ${project.version}
+api-version: ${plugin.api-version}
+softdepend: [DiscordSRV, EssentialsDiscord, PlaceholderAPI]
+libraries: [com.google.code.gson:gson:2.10.1]
+main: me.chickensaysbak.chatimage.spigot.PluginSpigot
+commands:
+  chatimage:
+    description: Admin command for the ChatImage plugin.
+    permission: chatimage.admin
+  hideimages:
+    description: Hides images created by links in chat.
+    aliases: [ignoreimages]
+  showimages:
+    description: Shows images in their fully expanded form.
