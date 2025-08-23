@@ -1,0 +1,86 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>me.chickensaysbak</groupId>
+        <artifactId>chatimage</artifactId>
+        <version>3.0.0</version>
+    </parent>
+    <artifactId>chatimage-core</artifactId>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.14.0</version>
+                <configuration>
+                    <release>21</release>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>bungeecord-repo</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+        <repository>
+            <id>Scarsz-Nexus</id>
+            <url>https://nexus.scarsz.me/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>essentials-releases</id>
+            <url>https://repo.essentialsx.net/releases/</url>
+        </repository>
+        <repository>
+            <!-- Required for EssentialsXDiscord -->
+            <id>jitpack</id>
+            <url>https://jitpack.io/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.mortennobel</groupId>
+            <artifactId>java-image-scaling</artifactId>
+            <version>0.8.6</version>
+        </dependency>
+        <dependency>
+            <groupId>net.md-5</groupId>
+            <artifactId>bungeecord-chat</artifactId>
+            <version>1.21-R0.3-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-minimessage</artifactId>
+            <version>4.24.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-platform-bungeecord</artifactId>
+            <version>4.4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.discordsrv</groupId>
+            <artifactId>discordsrv</artifactId>
+            <version>1.29.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.essentialsx</groupId>
+            <artifactId>EssentialsXDiscord</artifactId>
+            <version>2.20.1</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+</project>
