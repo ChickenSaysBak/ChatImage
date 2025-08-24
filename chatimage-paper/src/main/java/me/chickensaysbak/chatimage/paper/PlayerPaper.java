@@ -51,7 +51,7 @@ public class PlayerPaper implements PlayerAdapter {
 
     @Override
     public String getLocale() {
-        return player.getLocale();
+        return player.locale().toString().toLowerCase();
     }
 
 }

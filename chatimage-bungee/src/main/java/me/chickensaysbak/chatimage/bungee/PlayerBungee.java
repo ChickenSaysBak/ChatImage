@@ -55,8 +55,7 @@ public class PlayerBungee implements PlayerAdapter {
 
     @Override
     public String getLocale() {
-        Locale locale = player.getLocale();
-        return locale != null ? locale.toString().toLowerCase() : "en_us";
+        return player.getLocale().toString().toLowerCase();
     }
 
 }
