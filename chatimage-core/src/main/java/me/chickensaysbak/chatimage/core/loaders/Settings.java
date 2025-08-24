@@ -142,7 +142,7 @@ public class Settings implements Loadable {
     }
 
     /**
-     * Converts messages.yml from versions 2.5.0 and below to en_us.yml within the messages folder.
+     * Converts messages.yml (from versions 2.5.0 and below) to en_us.yml within the messages folder.
      */
     private void convertLegacyMessages() {
 

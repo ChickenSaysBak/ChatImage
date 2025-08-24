@@ -167,7 +167,7 @@ public class PlayerPreferences implements Loadable {
     }
 
     /**
-     * Converts old ignoring.yml into new player_preferences.yml
+     * Converts old ignoring.yml (from versions 2.0.0 and below) into new player_preferences.yml
      */
     private void convertIgnoringFile() {
 
