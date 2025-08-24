@@ -28,19 +28,6 @@
             <id>bungeecord-repo</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </repository>
-        <repository>
-            <id>Scarsz-Nexus</id>
-            <url>https://nexus.scarsz.me/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>essentials-releases</id>
-            <url>https://repo.essentialsx.net/releases/</url>
-        </repository>
-        <repository>
-            <!-- Required for EssentialsXDiscord -->
-            <id>jitpack</id>
-            <url>https://jitpack.io/</url>
-        </repository>
     </repositories>
 
     <dependencies>
@@ -69,18 +56,6 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bungeecord</artifactId>
             <version>4.4.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.discordsrv</groupId>
-            <artifactId>discordsrv</artifactId>
-            <version>1.29.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.essentialsx</groupId>
-            <artifactId>EssentialsXDiscord</artifactId>
-            <version>2.20.1</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
