@@ -46,7 +46,7 @@ public class PlayerPaper implements PlayerAdapter {
 
     @Override
     public int getVersion() {
-        return -1;
+        return player.getProtocolVersion();
     }
 
     @Override
