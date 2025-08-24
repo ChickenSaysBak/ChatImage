@@ -149,9 +149,9 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
     public YamlAdapter loadYaml(File file) {
 
         try {
-            return new YamlBungee(ConfigurationProvider.getProvider(YamlConfiguration.class).load(file));
+            return new YamlBungee(this, ConfigurationProvider.getProvider(YamlConfiguration.class).load(file));
         } catch (IOException e) {
-            e.printStackTrace();
+            getLogger().log(Level.SEVERE, e.getMessage(), e);
             return null;
         }
 

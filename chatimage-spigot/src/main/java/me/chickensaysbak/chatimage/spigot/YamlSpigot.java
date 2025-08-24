@@ -14,9 +14,11 @@ import java.util.List;
 
 public class YamlSpigot implements YamlAdapter {
 
+    private PluginSpigot plugin;
     private YamlConfiguration config;
 
-    YamlSpigot(YamlConfiguration config) {
+    YamlSpigot(PluginSpigot plugin, YamlConfiguration config) {
+        this.plugin = plugin;
         this.config = config;
     }
 

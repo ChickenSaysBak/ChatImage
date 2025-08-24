@@ -14,6 +14,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Filtration {
@@ -107,7 +108,7 @@ public class Filtration {
                 if (debug) {
                     logger.warning("ChatImage Debugger - Attempted explicit content filtration");
                     logger.warning("URL: " + url);
-                    e.printStackTrace();
+                    logger.log(Level.WARNING, e.getMessage(), e);
                 }
 
             }

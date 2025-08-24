@@ -15,9 +15,11 @@ import java.util.List;
 
 public class YamlBungee implements YamlAdapter {
 
+    private PluginBungee plugin;
     private Configuration config;
 
-    YamlBungee(Configuration config) {
+    YamlBungee(PluginBungee plugin, Configuration config) {
+        this.plugin = plugin;
         this.config = config;
     }
 

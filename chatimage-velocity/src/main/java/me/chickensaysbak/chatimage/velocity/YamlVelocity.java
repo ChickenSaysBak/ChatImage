@@ -9,13 +9,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class YamlVelocity implements YamlAdapter {
 
+    private PluginVelocity plugin;
     private ConfigurationNode config;
 
-    YamlVelocity(ConfigurationNode config) {
+    YamlVelocity(PluginVelocity plugin, ConfigurationNode config) {
+        this.plugin = plugin;
         this.config = config;
     }
 
@@ -30,7 +33,7 @@ public class YamlVelocity implements YamlAdapter {
         try {
             config.node(path).set(value);
         } catch (SerializationException e) {
-            e.printStackTrace();
+            plugin.getLogger().log(Level.SEVERE, e.getMessage(), e);
         }
 
     }
@@ -76,7 +79,7 @@ public class YamlVelocity implements YamlAdapter {
         try {
             return config.node(path).getList(String.class);
         } catch (SerializationException e) {
-            e.printStackTrace();
+            plugin.getLogger().log(Level.SEVERE, e.getMessage(), e);
             return List.of();
         }
 

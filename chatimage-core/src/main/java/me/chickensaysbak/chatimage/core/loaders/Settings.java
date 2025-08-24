@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.logging.Level;
 
 public class Settings implements Loadable {
 
@@ -155,7 +156,7 @@ public class Settings implements Loadable {
             Files.copy(legacyMessages.toPath(), enUS.toPath());
             legacyMessages.delete();
         } catch (IOException e) {
-            e.printStackTrace();
+            plugin.getLogger().log(Level.WARNING, e.getMessage(), e);
         }
 
     }

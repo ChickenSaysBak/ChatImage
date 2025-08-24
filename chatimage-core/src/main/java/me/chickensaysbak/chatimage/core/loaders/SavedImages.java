@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.logging.Level;
 
 public class SavedImages implements Loadable {
 
@@ -48,7 +49,7 @@ public class SavedImages implements Loadable {
             Files.writeString(file.toPath(), ComponentSerializer.toString(image));
 
         } catch (IOException e) {
-            e.printStackTrace();
+            plugin.getLogger().log(Level.SEVERE, e.getMessage(), e);
             return false;
         }
 
@@ -109,7 +110,7 @@ public class SavedImages implements Loadable {
             try {
                 jsonString = Files.readString(file.toPath());
             } catch (IOException e) {
-                e.printStackTrace();
+                plugin.getLogger().log(Level.SEVERE, e.getMessage(), e);
                 continue;
             }
 
@@ -119,7 +120,7 @@ public class SavedImages implements Loadable {
                 components = ComponentSerializer.parse(jsonString);
             } catch (JsonParseException | UnsupportedOperationException e) {
                 plugin.getLogger().warning("Could not load '" + file.getName() + "' because the file is corrupt!");
-                e.printStackTrace();
+                plugin.getLogger().log(Level.WARNING, e.getMessage(), e);
                 return;
             }
 

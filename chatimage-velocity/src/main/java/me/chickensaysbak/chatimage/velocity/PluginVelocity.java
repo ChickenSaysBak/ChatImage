@@ -168,9 +168,9 @@ public class PluginVelocity implements PluginAdapter {
     public YamlAdapter loadYaml(File file) {
 
         try {
-            return new YamlVelocity(YamlConfigurationLoader.builder().file(file).build().load());
+            return new YamlVelocity(this, YamlConfigurationLoader.builder().file(file).build().load());
         } catch (ConfigurateException e) {
-            e.printStackTrace();
+            getLogger().log(Level.SEVERE, e.getMessage(), e);
             return null;
         }
 

@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.*;
+import java.util.logging.Level;
 
 public class ChatImage {
 
@@ -272,7 +273,7 @@ public class ChatImage {
             if (settings.isDebug()) {
                 plugin.getLogger().warning("ChatImage Debugger - Error loading image");
                 plugin.getLogger().warning("URL: " + url);
-                e.printStackTrace();
+                plugin.getLogger().log(Level.WARNING, e.getMessage(), e);
             }
 
         }
