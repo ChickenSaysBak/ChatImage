@@ -13,7 +13,7 @@ import org.bukkit.OfflinePlayer;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Collections;
+import java.util.Map;
 
 public class PAPIHandler extends PlaceholderExpansion {
 
@@ -61,7 +61,7 @@ public class PAPIHandler extends PlaceholderExpansion {
                 TextComponent savedImage = savedImages.getImage(imageRef);
 
                 if (savedImage == null) return chatImage.getUIMessage("error_doesnt_exist",
-                        Collections.singletonMap("name", imageRef), locale);
+                        Map.of("name", imageRef), locale);
 
                 String text = "";
                 for (int i = 2; i < args.length; ++i) text += args[i].replace("\\n", "\n") + " ";

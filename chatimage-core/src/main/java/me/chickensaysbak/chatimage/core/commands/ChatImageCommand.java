@@ -76,7 +76,7 @@ public class ChatImageCommand extends CommandAdapter {
                 TextComponent savedImage = savedImages.getImage(imageRef);
 
                 if (savedImage == null) {
-                    chatImage.sendUIMessage(sender, "error_doesnt_exist", Collections.singletonMap("name", imageRef));
+                    chatImage.sendUIMessage(sender, "error_doesnt_exist", Map.of("name", imageRef));
                     return;
                 }
 
@@ -141,7 +141,7 @@ public class ChatImageCommand extends CommandAdapter {
             }
 
             if (savedImages.getImage(name) != null) {
-                chatImage.sendUIMessage(sender, "error_already_exists", Collections.singletonMap("name", name));
+                chatImage.sendUIMessage(sender, "error_already_exists", Map.of("name", name));
                 return;
             }
 
@@ -173,7 +173,7 @@ public class ChatImageCommand extends CommandAdapter {
 
                 TextComponent component = ImageMaker.createChatImage(image, new Dimension(width, height), smooth, trim);
 
-                if (savedImages.saveImage(name, component)) chatImage.sendUIMessage(sender, "image_saved", Collections.singletonMap("name", name));
+                if (savedImages.saveImage(name, component)) chatImage.sendUIMessage(sender, "image_saved", Map.of("name", name));
                 else chatImage.sendUIMessage(sender, "error_save");
 
             }, 0);
@@ -190,11 +190,11 @@ public class ChatImageCommand extends CommandAdapter {
             String name = args[1];
 
             if (savedImages.getImage(name) == null) {
-                chatImage.sendUIMessage(sender, "error_doesnt_exist", Collections.singletonMap("name", name));
+                chatImage.sendUIMessage(sender, "error_doesnt_exist", Map.of("name", name));
                 return;
             }
 
-            if (savedImages.deleteImage(name)) chatImage.sendUIMessage(sender, "image_deleted", Collections.singletonMap("name", name));
+            if (savedImages.deleteImage(name)) chatImage.sendUIMessage(sender, "image_deleted", Map.of("name", name));
             else chatImage.sendUIMessage(sender, "error_delete");
 
         } else chatImage.sendUIMessage(sender, "chatimage_usage");
