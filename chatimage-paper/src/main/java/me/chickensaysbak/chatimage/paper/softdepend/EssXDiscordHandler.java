@@ -1,6 +1,6 @@
 // ChatImage © 2023 ChickenSaysBak
 // This code is licensed under MIT license (see LICENSE file for details).
-package me.chickensaysbak.chatimage.core.softdepend;
+package me.chickensaysbak.chatimage.paper.softdepend;
 
 import me.chickensaysbak.chatimage.core.ChatImage;
 import net.essentialsx.api.v2.events.discord.DiscordRelayEvent;
