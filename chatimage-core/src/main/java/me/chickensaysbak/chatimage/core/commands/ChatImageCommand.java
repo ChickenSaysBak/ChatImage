@@ -215,55 +215,54 @@ public class ChatImageCommand extends CommandAdapter {
 
         else if (args[0].equalsIgnoreCase("send")) switch (args.length) {
 
-            case 2:
+            case 2 -> {
+
                 List<String> names = getPlugin().getOnlinePlayers().stream().map(PlayerAdapter::getName).collect(Collectors.toList());
                 names.add("all");
-                for (String name : names) if (name.toLowerCase().startsWith(args[1].toLowerCase())) result.add(name);
-                break;
 
-            case 3:
-                for (String name : savedImages.getImageNames())
-                    if (name.toLowerCase().startsWith(args[2].toLowerCase())) result.add(name);
-                break;
+                names.stream()
+                        .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
+                        .forEach(result::add);
 
-            case 4:
-            case 5:
+            }
+
+            case 3 -> {
+
+                savedImages.getImageNames().stream()
+                        .filter(name -> name.toLowerCase().startsWith(args[2].toLowerCase()))
+                        .forEach(result::add);
+
+            }
+
+            case 4, 5 -> {
                 if (usingURL) result.addAll(Arrays.asList("default", "true", "false"));
-                break;
+            }
 
-            case 6:
+            case 6 -> {
                 if (usingURL) result.addAll(Arrays.asList("default", settings.getMaxWidth() + ""));
-                break;
+            }
 
-            case 7:
+            case 7 -> {
                 if (usingURL) result.addAll(Arrays.asList("default", settings.getMaxHeight() + ""));
-                break;
+            }
 
         }
 
         else if (args[0].equalsIgnoreCase("save")) switch (args.length) {
-
-            case 4:
-            case 5:
-                result.addAll(Arrays.asList("default", "true", "false"));
-                break;
-
-            case 6:
-                result.addAll(Arrays.asList("default", settings.getMaxWidth() + ""));
-                break;
-
-            case 7:
-                result.addAll(Arrays.asList("default", settings.getMaxHeight() + ""));
-                break;
-
+            case 4, 5 -> result.addAll(Arrays.asList("default", "true", "false"));
+            case 6 -> result.addAll(Arrays.asList("default", settings.getMaxWidth() + ""));
+            case 7 -> result.addAll(Arrays.asList("default", settings.getMaxHeight() + ""));
         }
 
         else if (args[0].equalsIgnoreCase("delete")) switch (args.length) {
 
-            case 2:
-                for (String name : savedImages.getImageNames())
-                    if (name.toLowerCase().startsWith(args[1].toLowerCase())) result.add(name);
-                break;
+            case 2 -> {
+
+                savedImages.getImageNames().stream()
+                        .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
+                        .forEach(result::add);
+
+            }
 
         }
 
