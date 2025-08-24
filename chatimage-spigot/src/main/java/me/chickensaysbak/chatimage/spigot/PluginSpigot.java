@@ -130,7 +130,7 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
 
     @Override
     public YamlAdapter loadYaml(File file) {
-        return new YamlSpigot(YamlConfiguration.loadConfiguration(file));
+        return new YamlSpigot(this, YamlConfiguration.loadConfiguration(file));
     }
 
     @Override

@@ -12,9 +12,11 @@ import java.util.List;
 
 public class YamlPaper implements YamlAdapter {
 
+    private PluginPaper plugin;
     private YamlConfiguration config;
 
-    YamlPaper(YamlConfiguration config) {
+    YamlPaper(PluginPaper plugin, YamlConfiguration config) {
+        this.plugin = plugin;
         this.config = config;
     }
 

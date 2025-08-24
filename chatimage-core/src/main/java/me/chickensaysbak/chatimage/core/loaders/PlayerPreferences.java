@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.logging.Level;
 
 public class PlayerPreferences implements Loadable {
 
@@ -93,7 +94,7 @@ public class PlayerPreferences implements Loadable {
                 UUID uuid = UUID.fromString(uuidString);
                 preferences.put(uuid, preferencesYaml.getBoolean("preferences." + uuidString, !autoHide));
             } catch (IllegalArgumentException e) {
-                e.printStackTrace();
+                plugin.getLogger().log(Level.WARNING, e.getMessage(), e);
             }
 
         }
@@ -160,7 +161,7 @@ public class PlayerPreferences implements Loadable {
             preferencesYaml.save(preferencesFile);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            plugin.getLogger().log(Level.SEVERE, e.getMessage(), e);
         }
 
     }
@@ -180,7 +181,7 @@ public class PlayerPreferences implements Loadable {
                 UUID uuid = UUID.fromString(uuidString);
                 preferences.put(uuid, false);
             } catch (IllegalArgumentException e) {
-                e.printStackTrace();
+                plugin.getLogger().log(Level.WARNING, e.getMessage(), e);
             }
 
         }

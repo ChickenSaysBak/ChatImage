@@ -129,7 +129,7 @@ public class PluginPaper extends JavaPlugin implements Listener, PluginAdapter {
 
     @Override
     public YamlAdapter loadYaml(File file) {
-        return new YamlPaper(YamlConfiguration.loadConfiguration(file));
+        return new YamlPaper(this, YamlConfiguration.loadConfiguration(file));
     }
 
     @Override
