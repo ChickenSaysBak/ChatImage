@@ -65,6 +65,7 @@ explicit_content:
 
   # If an image contains explicit content, the entire message with the link will not be sent.
   # NOTE: This includes messages from people that do not have permission to render images.
+  # NOTE for Velocity: You will need a plugin like SignedVelocity for this to work correctly on Velocity servers.
   remove_message: false
 
 
@@ -75,5 +76,5 @@ explicit_content:
 # If adding a language, name the file with a valid in-game language code: https://minecraft.wiki/w/Language#Languages
 language_default: en_us
 
-# Prints extra messages to console to help find the source of issues
+# Prints extra messages to console to help find the source of issues.
 debug: false
