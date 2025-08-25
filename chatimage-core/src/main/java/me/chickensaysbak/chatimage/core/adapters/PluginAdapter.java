@@ -2,6 +2,8 @@
 // This code is licensed under MIT license (see LICENSE file for details).
 package me.chickensaysbak.chatimage.core.adapters;
 
+import net.kyori.adventure.text.Component;
+
 import java.io.File;
 import java.io.InputStream;
 import java.util.List;
@@ -12,7 +14,7 @@ import java.util.logging.Logger;
 public interface PluginAdapter {
 
     /**
-     * Registers a command using the proper command executor for Spigot or Bungee.
+     * Registers a command using the proper command executor.
      * @param command the command to register
      */
     void registerCommand(CommandAdapter command);
@@ -46,7 +48,7 @@ public interface PluginAdapter {
      * Sends a message to console with color support.
      * @param message the message to send
      */
-    void sendConsoleMessage(String message);
+    void sendConsoleMessage(Component message);
 
     /**
      * Gets a player from their uuid.

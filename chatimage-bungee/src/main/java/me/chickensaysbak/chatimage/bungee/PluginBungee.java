@@ -7,7 +7,8 @@ import me.chickensaysbak.chatimage.core.adapters.CommandAdapter;
 import me.chickensaysbak.chatimage.core.adapters.PlayerAdapter;
 import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 import me.chickensaysbak.chatimage.core.adapters.YamlAdapter;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
@@ -30,6 +31,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+import static net.kyori.adventure.text.Component.text;
 
 public class PluginBungee extends Plugin implements Listener, PluginAdapter {
 
@@ -57,7 +60,7 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
     public void onChat(ChatEvent event) {
 
         if (!event.isCancelled() && !event.isCommand() && event.getSender() instanceof ProxiedPlayer player) {
-            boolean cancelEvent = core.onChat(new PlayerBungee(player), event.getMessage());
+            boolean cancelEvent = core.onChat(new PlayerBungee(player), text(event.getMessage()));
             if (cancelEvent) event.setCancelled(true);
         }
 
@@ -116,8 +119,8 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
     }
 
     @Override
-    public void sendConsoleMessage(String message) {
-        getProxy().getConsole().sendMessage(TextComponent.fromLegacyText(message));
+    public void sendConsoleMessage(Component message) {
+        getProxy().getConsole().sendMessage(BungeeComponentSerializer.get().serialize(message));
     }
 
     @Override

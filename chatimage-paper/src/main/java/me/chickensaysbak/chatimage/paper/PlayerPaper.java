@@ -1,7 +1,7 @@
 package me.chickensaysbak.chatimage.paper;
 
 import me.chickensaysbak.chatimage.core.adapters.PlayerAdapter;
-import net.md_5.bungee.api.chat.BaseComponent;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -35,13 +35,8 @@ public class PlayerPaper implements PlayerAdapter {
     }
 
     @Override
-    public void sendMessage(String message) {
-        player.sendMessage(message);
-    }
-
-    @Override
-    public void sendMessage(BaseComponent... component) {
-        player.spigot().sendMessage(component);
+    public void sendMessage(Component component) {
+        player.sendMessage(component);
     }
 
     @Override

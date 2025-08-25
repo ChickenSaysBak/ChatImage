@@ -8,12 +8,13 @@ import me.chickensaysbak.chatimage.core.loaders.SavedImages;
 import me.chickensaysbak.chatimage.core.loaders.Settings;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.OfflinePlayer;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Map;
 
 public class PAPIHandler extends PlaceholderExpansion {
 
@@ -44,10 +45,14 @@ public class PAPIHandler extends PlaceholderExpansion {
     @Override
     public String onRequest(OfflinePlayer player, String argString) {
 
-        ChatImage chatImage = ChatImage.getInstance();
-        SavedImages savedImages = chatImage.getSavedImages();
-        Settings settings = chatImage.getSettings();
-        String locale = player.isOnline() ? player.getPlayer().getLocale() : settings.getLanguageDefault();
+        ChatImage ci = ChatImage.getInstance();
+        SavedImages savedImages = ci.getSavedImages();
+        Settings settings = ci.getSettings();
+        MiniMessage mm = MiniMessage.miniMessage();
+
+        String locale = player.isOnline()
+                ? player.getPlayer().getLocale()
+                : settings.getLanguageDefault();
 
         if (argString.startsWith("image")) {
 
@@ -58,10 +63,12 @@ public class PAPIHandler extends PlaceholderExpansion {
 
             if (!imageRef.startsWith("http")) {
 
-                TextComponent savedImage = savedImages.getImage(imageRef);
+                Component savedImage = savedImages.getImage(imageRef);
 
-                if (savedImage == null) return chatImage.getUIMessage("error_doesnt_exist",
-                        Map.of("name", imageRef), locale);
+                if (savedImage == null) {
+                    Component errorMsg = ci.getUIMessage("error_doesnt_exist", locale, Placeholder.unparsed("name", imageRef));
+                    return mm.serialize(errorMsg);
+                }
 
                 String text = "";
                 for (int i = 2; i < args.length; ++i) text += args[i].replace("\\n", "\n") + " ";
@@ -71,14 +78,14 @@ public class PAPIHandler extends PlaceholderExpansion {
                     savedImage = ImageMaker.addText(savedImage, PlaceholderAPI.setBracketPlaceholders(player, text));
                 }
 
-                return ImageMaker.toMiniMessage(savedImage);
+                return mm.serialize(savedImage);
 
             }
 
             else {
 
-                BufferedImage image = chatImage.loadImage(imageRef);
-                if (image == null) return chatImage.getUIMessage("error_load", locale);
+                BufferedImage image = ci.loadImage(imageRef);
+                if (image == null) return mm.serialize(ci.getUIMessage("error_load", locale));
 
                 boolean smooth = settings.isSmoothRender(), trim = settings.isTrimTransparency();
                 int width = settings.getMaxWidth(), height = settings.getMaxHeight();
@@ -96,17 +103,17 @@ public class PAPIHandler extends PlaceholderExpansion {
                 if (args.length >= 5) try {width = Integer.parseInt(args[4]);} catch (NumberFormatException ignored) {}
                 if (args.length >= 6) try {height = Integer.parseInt(args[5]);} catch (NumberFormatException ignored) {}
 
-                TextComponent component = ImageMaker.createChatImage(image, new Dimension(width, height), smooth, trim);
+                Component chatImage = ImageMaker.createChatImage(image, new Dimension(width, height), smooth, trim);
 
                 String text = "";
                 for (int i = 6; i < args.length; ++i) text += args[i].replace("\\n", "\n") + " ";
 
                 if (!text.isEmpty()) {
                     text = text.substring(0, text.length()-1);
-                    component = ImageMaker.addText(component, PlaceholderAPI.setBracketPlaceholders(player, text));
+                    chatImage = ImageMaker.addText(chatImage, PlaceholderAPI.setBracketPlaceholders(player, text));
                 }
 
-                return ImageMaker.toMiniMessage(component);
+                return mm.serialize(chatImage);
 
             }
 

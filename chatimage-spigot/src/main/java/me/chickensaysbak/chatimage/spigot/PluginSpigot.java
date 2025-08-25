@@ -10,6 +10,9 @@ import me.chickensaysbak.chatimage.core.adapters.YamlAdapter;
 import me.chickensaysbak.chatimage.spigot.softdepend.DiscordSRVHandler;
 import me.chickensaysbak.chatimage.spigot.softdepend.EssXDiscordHandler;
 import me.chickensaysbak.chatimage.spigot.softdepend.PAPIHandler;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.DrilldownPie;
 import org.bstats.charts.SimplePie;
@@ -29,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static net.kyori.adventure.text.Component.text;
 
 public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter {
 
@@ -83,7 +88,7 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onChat(AsyncPlayerChatEvent event) {
-        boolean cancelEvent = core.onChat(new PlayerSpigot(event.getPlayer()), event.getMessage());
+        boolean cancelEvent = core.onChat(new PlayerSpigot(event.getPlayer()), text(event.getMessage()));
         if (cancelEvent) event.setCancelled(true);
     }
 
@@ -99,8 +104,9 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
     }
 
     @Override
-    public void sendConsoleMessage(String message) {
-        getServer().getConsoleSender().sendMessage(message);
+    public void sendConsoleMessage(Component message) {
+        String coloredString = TextComponent.toLegacyText(BungeeComponentSerializer.get().serialize(message));
+        getServer().getConsoleSender().sendMessage(coloredString);
     }
 
     @Override

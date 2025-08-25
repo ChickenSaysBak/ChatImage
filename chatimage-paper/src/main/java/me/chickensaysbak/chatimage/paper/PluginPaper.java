@@ -1,5 +1,6 @@
 package me.chickensaysbak.chatimage.paper;
 
+import io.papermc.paper.event.player.AsyncChatEvent;
 import me.chickensaysbak.chatimage.core.ChatImage;
 import me.chickensaysbak.chatimage.core.adapters.CommandAdapter;
 import me.chickensaysbak.chatimage.core.adapters.PlayerAdapter;
@@ -8,6 +9,7 @@ import me.chickensaysbak.chatimage.core.adapters.YamlAdapter;
 import me.chickensaysbak.chatimage.paper.softdepend.DiscordSRVHandler;
 import me.chickensaysbak.chatimage.paper.softdepend.EssXDiscordHandler;
 import me.chickensaysbak.chatimage.paper.softdepend.PAPIHandler;
+import net.kyori.adventure.text.Component;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.DrilldownPie;
 import org.bstats.charts.SimplePie;
@@ -17,7 +19,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -81,8 +82,8 @@ public class PluginPaper extends JavaPlugin implements Listener, PluginAdapter {
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onChat(AsyncPlayerChatEvent event) {
-        boolean cancelEvent = core.onChat(new PlayerPaper(event.getPlayer()), event.getMessage());
+    public void onChat(AsyncChatEvent event) {
+        boolean cancelEvent = core.onChat(new PlayerPaper(event.getPlayer()), event.message());
         if (cancelEvent) event.setCancelled(true);
     }
 
@@ -98,7 +99,7 @@ public class PluginPaper extends JavaPlugin implements Listener, PluginAdapter {
     }
 
     @Override
-    public void sendConsoleMessage(String message) {
+    public void sendConsoleMessage(Component message) {
         getServer().getConsoleSender().sendMessage(message);
     }
 
