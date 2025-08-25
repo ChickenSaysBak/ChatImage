@@ -3,11 +3,10 @@
 package me.chickensaysbak.chatimage.bungee;
 
 import me.chickensaysbak.chatimage.core.adapters.PlayerAdapter;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.util.Locale;
 import java.util.UUID;
 
 public class PlayerBungee implements PlayerAdapter {
@@ -39,13 +38,8 @@ public class PlayerBungee implements PlayerAdapter {
     }
 
     @Override
-    public void sendMessage(String message) {
-        player.sendMessage(TextComponent.fromLegacyText(message));
-    }
-
-    @Override
-    public void sendMessage(BaseComponent... component) {
-        player.sendMessage(component);
+    public void sendMessage(Component component) {
+        player.sendMessage(BungeeComponentSerializer.get().serialize(component));
     }
 
     @Override

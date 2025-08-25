@@ -5,7 +5,6 @@ package me.chickensaysbak.chatimage.velocity;
 import com.google.inject.Inject;
 import com.velocitypowered.api.command.CommandManager;
 import com.velocitypowered.api.command.CommandMeta;
-import com.velocitypowered.api.event.PostOrder;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.player.PlayerChatEvent;
 import com.velocitypowered.api.event.player.ServerConnectedEvent;
@@ -35,6 +34,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+import static net.kyori.adventure.text.Component.text;
 
 public class PluginVelocity implements PluginAdapter {
 
@@ -70,12 +71,12 @@ public class PluginVelocity implements PluginAdapter {
         core.onJoin(new PlayerVelocity(event.getPlayer()));
     }
 
-    @Subscribe(order = PostOrder.LATE)
+    @Subscribe(priority = Short.MIN_VALUE / 2)
     public void onChat(PlayerChatEvent event) {
 
         if (!event.getResult().isAllowed()) return;
 
-        boolean cancelEvent = core.onChat(new PlayerVelocity(event.getPlayer()), event.getMessage());
+        boolean cancelEvent = core.onChat(new PlayerVelocity(event.getPlayer()), text(event.getMessage()));
         if (cancelEvent) event.setResult(PlayerChatEvent.ChatResult.denied());
 
     }
@@ -145,8 +146,8 @@ public class PluginVelocity implements PluginAdapter {
     }
 
     @Override
-    public void sendConsoleMessage(String message) {
-        proxy.sendMessage(Component.text(message));
+    public void sendConsoleMessage(Component message) {
+        proxy.sendMessage(message);
     }
 
     @Override

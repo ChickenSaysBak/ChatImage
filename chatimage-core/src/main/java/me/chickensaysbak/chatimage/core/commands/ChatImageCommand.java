@@ -9,12 +9,13 @@ import me.chickensaysbak.chatimage.core.adapters.PlayerAdapter;
 import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 import me.chickensaysbak.chatimage.core.loaders.SavedImages;
 import me.chickensaysbak.chatimage.core.loaders.Settings;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ChatImageCommand extends CommandAdapter {
@@ -73,10 +74,10 @@ public class ChatImageCommand extends CommandAdapter {
 
             if (!imageRef.startsWith("http")) {
 
-                TextComponent savedImage = savedImages.getImage(imageRef);
+                Component savedImage = savedImages.getImage(imageRef);
 
                 if (savedImage == null) {
-                    chatImage.sendUIMessage(sender, "error_doesnt_exist", Map.of("name", imageRef));
+                    chatImage.sendUIMessage(sender, "error_doesnt_exist", Placeholder.unparsed("name", imageRef));
                     return;
                 }
 
@@ -114,7 +115,7 @@ public class ChatImageCommand extends CommandAdapter {
                 if (args.length >= 6) try {width = Integer.parseInt(args[5]);} catch (NumberFormatException ignored) {}
                 if (args.length >= 7) try {height = Integer.parseInt(args[6]);} catch (NumberFormatException ignored) {}
 
-                TextComponent component = ImageMaker.createChatImage(image, new Dimension(width, height), smooth, trim);
+                Component component = ImageMaker.createChatImage(image, new Dimension(width, height), smooth, trim);
 
                 String text = "";
                 for (int i = 7; i < args.length; ++i) text += args[i].replace("\\n", "\n") + " ";
@@ -141,7 +142,7 @@ public class ChatImageCommand extends CommandAdapter {
             }
 
             if (savedImages.getImage(name) != null) {
-                chatImage.sendUIMessage(sender, "error_already_exists", Map.of("name", name));
+                chatImage.sendUIMessage(sender, "error_already_exists", Placeholder.unparsed("name", name));
                 return;
             }
 
@@ -171,9 +172,9 @@ public class ChatImageCommand extends CommandAdapter {
                 if (args.length >= 6) try {width = Integer.parseInt(args[5]);} catch (NumberFormatException ignored) {}
                 if (args.length >= 7) try {height = Integer.parseInt(args[6]);} catch (NumberFormatException ignored) {}
 
-                TextComponent component = ImageMaker.createChatImage(image, new Dimension(width, height), smooth, trim);
+                Component component = ImageMaker.createChatImage(image, new Dimension(width, height), smooth, trim);
 
-                if (savedImages.saveImage(name, component)) chatImage.sendUIMessage(sender, "image_saved", Map.of("name", name));
+                if (savedImages.saveImage(name, component)) chatImage.sendUIMessage(sender, "image_saved", Placeholder.unparsed("name", name));
                 else chatImage.sendUIMessage(sender, "error_save");
 
             }, 0);
@@ -190,11 +191,11 @@ public class ChatImageCommand extends CommandAdapter {
             String name = args[1];
 
             if (savedImages.getImage(name) == null) {
-                chatImage.sendUIMessage(sender, "error_doesnt_exist", Map.of("name", name));
+                chatImage.sendUIMessage(sender, "error_doesnt_exist", Placeholder.unparsed("name", name));
                 return;
             }
 
-            if (savedImages.deleteImage(name)) chatImage.sendUIMessage(sender, "image_deleted", Map.of("name", name));
+            if (savedImages.deleteImage(name)) chatImage.sendUIMessage(sender, "image_deleted", Placeholder.unparsed("name", name));
             else chatImage.sendUIMessage(sender, "error_delete");
 
         } else chatImage.sendUIMessage(sender, "chatimage_usage");
@@ -277,7 +278,7 @@ public class ChatImageCommand extends CommandAdapter {
      * @param recipient the recipient or null to send to all players
      * @param sender the sender of the send command
      */
-    private void sendImage(TextComponent image, String text, PlayerAdapter recipient, UUID sender) {
+    private void sendImage(Component image, String text, PlayerAdapter recipient, UUID sender) {
 
         ChatImage chatImage = ChatImage.getInstance();
         boolean hasText = text != null && !text.isEmpty();

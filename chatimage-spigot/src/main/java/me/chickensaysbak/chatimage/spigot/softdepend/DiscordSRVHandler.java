@@ -8,6 +8,8 @@ import github.scarsz.discordsrv.api.events.DiscordGuildMessagePostProcessEvent;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Message;
 import me.chickensaysbak.chatimage.core.ChatImage;
 
+import static net.kyori.adventure.text.Component.text;
+
 public class DiscordSRVHandler {
 
     public DiscordSRVHandler() {
@@ -29,7 +31,7 @@ public class DiscordSRVHandler {
             break;
         }
 
-        boolean cancelEvent = ChatImage.getInstance().processChatLinks(message, event.getAuthor().getId(), true);
+        boolean cancelEvent = ChatImage.getInstance().processChatLinks(text(message), event.getAuthor().getId(), true);
         if (cancelEvent) event.setCancelled(true);
 
     }

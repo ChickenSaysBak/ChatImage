@@ -6,18 +6,17 @@ import com.mortennobel.imagescaling.ResampleFilters;
 import com.mortennobel.imagescaling.ResampleOp;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import static net.kyori.adventure.text.Component.*;
+import static net.kyori.adventure.text.format.TextColor.color;
+import static net.kyori.adventure.text.format.TextDecoration.BOLD;
 
 public class ImageMaker {
 
@@ -28,41 +27,34 @@ public class ImageMaker {
 
     private ImageMaker() {}
 
-    public static String toMiniMessage(TextComponent chatImage) {
-        Component component = BungeeComponentSerializer.get().deserialize(new BaseComponent[] {chatImage});
-        return MiniMessage.miniMessage().serialize(component);
-    }
-
     /**
      * Adds text to the right side of a Minecraft chat image
      * @param chatImage the Minecraft chat image to add text to
      * @param text the text to add
      * @return the updated Minecraft chat image with text
      */
-    public static TextComponent addText(TextComponent chatImage, String text) {
+    public static Component addText(Component chatImage, String text) {
 
-        List<BaseComponent> components = new ArrayList<>(chatImage.getExtra());
-        List<BaseComponent> newComponents = new ArrayList<>();
+        MiniMessage mm = MiniMessage.miniMessage();
+        List<Component> newChildren = new ArrayList<>();
 
-        String[] lines = text.split("\\n");
+        String[] lines = text.split("(?i)<newline>|<br>|\\n");
         int currentLine = 0;
 
-        for (BaseComponent component : components) {
+        for (Component child : chatImage.children()) {
 
-            // Adds text before existing image line breaks; text is only added if it matches the corresponding line number.
-            if (currentLine < lines.length && component.toPlainText().equals("\n")) {
-                String currentText = ChatColor.translateAlternateColorCodes('&', " " + lines[currentLine]);
-                newComponents.addAll(Arrays.asList(TextComponent.fromLegacyText(currentText)));
+            // Insert text before image line breaks
+            if (currentLine < lines.length && child.equals(newline())) {
+                String currentText = " " + lines[currentLine];
+                newChildren.add(mm.deserialize(currentText));
                 ++currentLine;
             }
 
-            newComponents.add(component);
+            newChildren.add(child);
 
         }
 
-        TextComponent result = chatImage.duplicate();
-        result.setExtra(newComponents);
-        return result;
+        return chatImage.children(newChildren);
 
     }
 
@@ -74,7 +66,7 @@ public class ImageMaker {
      * @param trim whether to trim transparency or not
      * @return a Minecraft chat image
      */
-    public static TextComponent createChatImage(BufferedImage original, Dimension maximum, boolean smooth, boolean trim) {
+    public static Component createChatImage(BufferedImage original, Dimension maximum, boolean smooth, boolean trim) {
 
         boolean hasPartialTransparency = hasPartialTransparency(original);
 
@@ -94,9 +86,9 @@ public class ImageMaker {
      * @param hasPartialTransparency whether to use transparent pixels or not
      * @return a text based image
      */
-    private static TextComponent convertToText(BufferedImage image, boolean hasPartialTransparency) {
+    private static Component convertToText(BufferedImage image, boolean hasPartialTransparency) {
 
-        TextComponent result = new TextComponent();
+        Component result = empty();
 
         for (int y = 0; y < image.getHeight(); ++y) {
 
@@ -104,32 +96,16 @@ public class ImageMaker {
 
                 int rgb = image.getRGB(x, y);
                 int alpha = new Color(rgb, true).getAlpha();
-                TextComponent pixel = new TextComponent();
 
-                if (isPixelVisible(alpha, hasPartialTransparency) && isPixelNormal(rgb)) {
+                Component pixel = isPixelVisible(alpha, hasPartialTransparency) && isPixelNormal(rgb)
+                        ? text(alpha > MID_ALPHA ? SOLID_PIXEL : TRANSPARENT_PIXEL).color(color(rgb & 0xFFFFFF)) // Strips alpha
+                        : text(" ").decorate(BOLD).append(text(" ").decoration(BOLD, false));
 
-                    String standardHex = "#" + Integer.toHexString(rgb).substring(2); // Strips alpha characters.
-                    pixel.setColor(ChatColor.of(standardHex));
-
-                    pixel.setText(alpha > MID_ALPHA ? SOLID_PIXEL : TRANSPARENT_PIXEL);
-
-                } else {
-
-                    // Blank pixel.
-                    pixel.setText(" ");
-                    pixel.setBold(true);
-
-                    TextComponent space = new TextComponent(" ");
-                    space.setBold(false);
-                    pixel.addExtra(space);
-
-                }
-
-                result.addExtra(pixel);
+                result = result.append(pixel);
 
             }
 
-            if (y < image.getHeight()-1) result.addExtra("\n");
+            if (y < image.getHeight() - 1) result = result.append(newline());
 
         }
 

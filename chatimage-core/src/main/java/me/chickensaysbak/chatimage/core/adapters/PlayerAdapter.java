@@ -2,7 +2,7 @@
 // This code is licensed under MIT license (see LICENSE file for details).
 package me.chickensaysbak.chatimage.core.adapters;
 
-import net.md_5.bungee.api.chat.BaseComponent;
+import net.kyori.adventure.text.Component;
 
 import java.util.UUID;
 
@@ -12,8 +12,7 @@ public interface PlayerAdapter {
     String getName();
     boolean isOnline();
     boolean hasPermission(String node);
-    void sendMessage(String message);
-    void sendMessage(BaseComponent... component);
+    void sendMessage(Component component);
     int getVersion();
     String getLocale();
 

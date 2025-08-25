@@ -5,8 +5,6 @@ package me.chickensaysbak.chatimage.velocity;
 import com.velocitypowered.api.proxy.Player;
 import me.chickensaysbak.chatimage.core.adapters.PlayerAdapter;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
-import net.md_5.bungee.api.chat.BaseComponent;
 
 import java.util.UUID;
 
@@ -39,13 +37,7 @@ public class PlayerVelocity implements PlayerAdapter {
     }
 
     @Override
-    public void sendMessage(String message) {
-        player.sendMessage(Component.text(message));
-    }
-
-    @Override
-    public void sendMessage(BaseComponent... baseComponents) {
-        Component component = BungeeComponentSerializer.get().deserialize(baseComponents);
+    public void sendMessage(Component component) {
         player.sendMessage(component);
     }
 

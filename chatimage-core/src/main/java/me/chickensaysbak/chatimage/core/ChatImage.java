@@ -11,10 +11,12 @@ import me.chickensaysbak.chatimage.core.loaders.Loadable;
 import me.chickensaysbak.chatimage.core.loaders.PlayerPreferences;
 import me.chickensaysbak.chatimage.core.loaders.SavedImages;
 import me.chickensaysbak.chatimage.core.loaders.Settings;
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.*;
-import net.md_5.bungee.api.chat.hover.content.Text;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -24,6 +26,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.*;
 import java.util.logging.Level;
+
+import static net.kyori.adventure.text.Component.newline;
 
 public class ChatImage {
 
@@ -92,7 +96,7 @@ public class ChatImage {
      * @param message the message sent
      * @return true if the event should be canceled and have the message removed
      */
-    public boolean onChat(PlayerAdapter player, String message) {
+    public boolean onChat(PlayerAdapter player, Component message) {
         return processChatLinks(message, player.getUniqueId().toString(), player.hasPermission("chatimage.use"));
     }
 
@@ -103,7 +107,7 @@ public class ChatImage {
      * @param hasPermission if the user has permission to render images
      * @return true if the message should be removed
      */
-    public boolean processChatLinks(String message, String id, boolean hasPermission) {
+    public boolean processChatLinks(Component message, String id, boolean hasPermission) {
 
         int cooldown = settings.getCooldown();
         boolean strictCooldown = settings.isStrictCooldown();
@@ -147,8 +151,8 @@ public class ChatImage {
             Dimension dim = new Dimension(settings.getMaxWidth(), settings.getMaxHeight());
             Dimension hiddenDim = new Dimension(settings.getMaxHiddenWidth(), settings.getMaxHiddenHeight());
 
-            TextComponent expandedImageRaw = ImageMaker.createChatImage(image, dim, smooth, trim);
-            TextComponent hiddenImageRaw = ImageMaker.createChatImage(image, hiddenDim, smooth, trim);
+            Component expandedImageRaw = ImageMaker.createChatImage(image, dim, smooth, trim);
+            Component hiddenImageRaw = ImageMaker.createChatImage(image, hiddenDim, smooth, trim);
 
             plugin.getOnlinePlayers().stream()
                     .filter(p -> isVersionValid(p.getVersion()))
@@ -157,8 +161,8 @@ public class ChatImage {
                         boolean showing = playerPreferences.isShowingImages(p.getUniqueId());
                         String locale = p.getLocale();
 
-                        BaseComponent[] expandedImage = getExpandedImage(url, expandedImageRaw, locale);
-                        BaseComponent[] hiddenImage = getHiddenImage(url, hiddenImageRaw, locale);
+                        Component expandedImage = getExpandedImage(url, expandedImageRaw, locale);
+                        Component hiddenImage = getHiddenImage(url, hiddenImageRaw, locale);
 
                         p.sendMessage(showing ? expandedImage : hiddenImage);
 
@@ -171,26 +175,17 @@ public class ChatImage {
     }
 
     /**
-     * Sends a UI message if it exists in the settings. If the recipient is null, the message is sent to console.
-     * @param recipient the UUID of the recipient or null for console
-     * @param key the setting key for the message
-     */
-    public void sendUIMessage(UUID recipient, String key) {
-        sendUIMessage(recipient, key, null);
-    }
-
-    /**
      * Sends a UI message with variables if it exists in the settings. If the recipient is null, the message is sent to console.
      * @param recipient the UUID of the recipient or null for console
      * @param key the setting key for the message
-     * @param variables variables to be replaced in the message (name followed by value)
+     * @param variables variables to be replaced in the message
      */
-    public void sendUIMessage(UUID recipient, String key, Map<String, String> variables) {
+    public void sendUIMessage(UUID recipient, String key, TagResolver... variables) {
 
         PlayerAdapter player = recipient != null ? plugin.getPlayer(recipient) : null;
         String locale = player != null ? player.getLocale() : settings.getLanguageDefault();
 
-        String message = getUIMessage(key, variables, locale);
+        Component message = getUIMessage(key, locale, variables);
         if (message == null) return;
 
         if (recipient != null) {
@@ -202,28 +197,16 @@ public class ChatImage {
     /**
      * Gets a UI message with variables if it exists in the settings.
      * @param key the setting key for the message
+     * @param variables variables to be replaced in the message
      * @param locale the locale of the recipient
      * @return the UI message or null if it doesn't exist
      */
-    public String getUIMessage(String key, String locale) {
-        return getUIMessage(key, null, locale);
-    }
-
-    /**
-     * Gets a UI message with variables if it exists in the settings.
-     * @param key the setting key for the message
-     * @param variables variables to be replaced in the message (name followed by value)
-     * @param locale the locale of the recipient
-     * @return the UI message or null if it doesn't exist
-     */
-    public String getUIMessage(String key, Map<String, String> variables, String locale) {
+    public Component getUIMessage(String key, String locale, TagResolver... variables) {
 
         String message = settings.getMessage(key, locale);
         if (message == null) return null;
 
-        if (variables != null) for (String name : variables.keySet()) message = message.replace("%" + name + "%", variables.get(name));
-        message = ChatColor.translateAlternateColorCodes('&', message);
-        return message;
+        return MiniMessage.miniMessage().deserialize(message, variables);
 
     }
 
@@ -239,8 +222,11 @@ public class ChatImage {
      * @param text the text to search
      * @return the first url found
      */
-    public static String findURL(String text) {
-        String[] words = ChatColor.stripColor(text).split(" ");
+    public static String findURL(Component text) {
+
+        String stripped = PlainTextComponentSerializer.plainText().serialize(text);
+        String[] words = stripped.split(" ");
+
         for (String word : words) if (word.startsWith("http")) return word;
         return null;
     }
@@ -289,17 +275,19 @@ public class ChatImage {
      * @param locale the locale of the recipient
      * @return the expanded image
      */
-    public BaseComponent[] getExpandedImage(String url, TextComponent imageComponent, String locale) {
+    public Component getExpandedImage(String url, Component imageComponent, String locale) {
 
-        ComponentBuilder builder = new ComponentBuilder(imageComponent);
+        MiniMessage mm = MiniMessage.miniMessage();
         String hoverTip = settings.getMessage("hover_tip", locale);
 
+        Component result = imageComponent;
+
         if (hoverTip != null) {
-            Text tip = new Text(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', hoverTip)));
-            builder.event(new HoverEvent(tip.requiredAction(), tip));
+            Component tip = mm.deserialize(hoverTip);
+            result = result.hoverEvent(HoverEvent.showText(tip));
         }
 
-        return builder.event(new ClickEvent(ClickEvent.Action.OPEN_URL, url)).create();
+        return result.clickEvent(ClickEvent.openUrl(url));
 
     }
 
@@ -310,24 +298,16 @@ public class ChatImage {
      * @param locale the locale of the recipient
      * @return the hidden image
      */
-    public BaseComponent[] getHiddenImage(String url, TextComponent imageComponent, String locale) {
+    public Component getHiddenImage(String url, Component imageComponent, String locale) {
 
-        String showImage = settings.getMessage("show_image", locale);
-        showImage = ChatColor.translateAlternateColorCodes('&', showImage != null ? showImage : "&a[Show Image]");
+        MiniMessage mm = MiniMessage.miniMessage();
+        String showImageMsg = settings.getMessage("show_image", locale);
+        Component showImage = mm.deserialize(showImageMsg != null ? showImageMsg : "<green>[Show Image]</green>");
+        Component hoverImage = newline().append(imageComponent); // Newline prevents odd spacing.
 
-        Text hoverImage = new Text(new ComponentBuilder("\n").append(imageComponent).create()); // New line prevents odd spacing.
-        HoverEvent hoverEvent = new HoverEvent(hoverImage.requiredAction(), hoverImage);
-        ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.OPEN_URL, url);
-
-        ComponentBuilder builder = new ComponentBuilder();
-
-        Arrays.stream(TextComponent.fromLegacyText(showImage)).forEach(bc -> {
-            bc.setHoverEvent(hoverEvent);
-            bc.setClickEvent(clickEvent);
-            builder.append(bc);
-        });
-
-        return builder.create();
+        return showImage
+                .hoverEvent(HoverEvent.showText(hoverImage))
+                .clickEvent(ClickEvent.openUrl(url));
 
     }
 

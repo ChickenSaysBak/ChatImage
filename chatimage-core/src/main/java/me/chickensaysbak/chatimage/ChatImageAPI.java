@@ -4,7 +4,7 @@ package me.chickensaysbak.chatimage;
 
 import me.chickensaysbak.chatimage.core.ChatImage;
 import me.chickensaysbak.chatimage.core.ImageMaker;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -35,40 +35,40 @@ public class ChatImageAPI {
      * @param height the maximum height an image can be
      * @return a Minecraft chat image
      */
-    public static TextComponent createChatImage(String url, String text, boolean smooth, boolean trim, int width, int height) {
+    public static Component createChatImage(String url, String text, boolean smooth, boolean trim, int width, int height) {
 
         BufferedImage image = ChatImage.getInstance().loadImage(url);
         if (image == null) return null;
 
         Dimension dim = new Dimension(width, height);
-        TextComponent component = ImageMaker.createChatImage(image, dim, smooth, trim);
+        Component component = ImageMaker.createChatImage(image, dim, smooth, trim);
         if (text != null && !text.isEmpty()) component = ImageMaker.addText(component, text);
 
         return component;
 
     }
 
-    public static TextComponent createChatImage(String url, String text, boolean smooth, boolean trim, int width) {
+    public static Component createChatImage(String url, String text, boolean smooth, boolean trim, int width) {
         int height = ChatImage.getInstance().getSettings().getMaxHeight();
         return createChatImage(url, text, smooth, trim, width, height);
     }
 
-    public static TextComponent createChatImage(String url, String text, boolean smooth, boolean trim) {
+    public static Component createChatImage(String url, String text, boolean smooth, boolean trim) {
         int width = ChatImage.getInstance().getSettings().getMaxWidth();
         return createChatImage(url, text, smooth, trim, width);
     }
 
-    public static TextComponent createChatImage(String url, String text, boolean smooth) {
+    public static Component createChatImage(String url, String text, boolean smooth) {
         boolean trim = ChatImage.getInstance().getSettings().isTrimTransparency();
         return createChatImage(url, text, smooth, trim);
     }
 
-    public static TextComponent createChatImage(String url, String text) {
+    public static Component createChatImage(String url, String text) {
         boolean smooth = ChatImage.getInstance().getSettings().isSmoothRender();
         return createChatImage(url, text, smooth);
     }
 
-    public static TextComponent createChatImage(String url) {
+    public static Component createChatImage(String url) {
         return createChatImage(url, null);
     }
 
