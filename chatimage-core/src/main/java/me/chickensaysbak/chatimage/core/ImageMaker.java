@@ -105,7 +105,7 @@ public class ImageMaker {
 
             }
 
-            if (y < image.getHeight() - 1) result = result.append(newline());
+            if (y < image.getHeight() - 1) result = result.appendNewline();
 
         }
 
