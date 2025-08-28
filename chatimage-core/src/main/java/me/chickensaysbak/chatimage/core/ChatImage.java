@@ -22,7 +22,8 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLConnection;
 import java.util.*;
 import java.util.logging.Level;
@@ -240,7 +241,7 @@ public class ChatImage {
 
         try {
 
-            URLConnection connection = new URL(url).openConnection();
+            URLConnection connection = new URI(url).toURL().openConnection();
             // Prevents 403 Forbidden errors.
             connection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
             BufferedImage img = ImageIO.read(connection.getInputStream());
@@ -254,7 +255,7 @@ public class ChatImage {
 
         }
 
-        catch (IOException e) {
+        catch (IOException | URISyntaxException e) {
 
             if (settings.isDebug()) {
                 plugin.getLogger().warning("ChatImage Debugger - Error loading image");
