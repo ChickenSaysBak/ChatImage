@@ -178,12 +178,12 @@ public class PluginVelocity implements PluginAdapter {
     }
 
     @Override
-    public void runAsyncTaskLater(Runnable task, int ticks) {
+    public void runAsyncTaskLater(Runnable task, long ticks) {
         proxy.getScheduler().buildTask(this, task).delay(ticks * 50L, TimeUnit.MILLISECONDS).schedule();
     }
 
     @Override
-    public void runTaskLater(Runnable task, int ticks) {
+    public void runTaskLater(Runnable task, long ticks) {
         runAsyncTaskLater(task, ticks);
     }
 

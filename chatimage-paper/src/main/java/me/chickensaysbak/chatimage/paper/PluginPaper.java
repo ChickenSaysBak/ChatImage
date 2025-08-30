@@ -134,12 +134,12 @@ public class PluginPaper extends JavaPlugin implements Listener, PluginAdapter {
     }
 
     @Override
-    public void runAsyncTaskLater(Runnable task, int ticks) {
+    public void runAsyncTaskLater(Runnable task, long ticks) {
         getServer().getScheduler().runTaskLaterAsynchronously(this, task, ticks).getTaskId();
     }
 
     @Override
-    public void runTaskLater(Runnable task, int ticks) {
+    public void runTaskLater(Runnable task, long ticks) {
         getServer().getScheduler().runTaskLater(this, task, ticks).getTaskId();
     }
 
