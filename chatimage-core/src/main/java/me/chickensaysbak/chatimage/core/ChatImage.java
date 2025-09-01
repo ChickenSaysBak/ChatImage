@@ -22,6 +22,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLConnection;
@@ -244,14 +245,19 @@ public class ChatImage {
             URLConnection connection = new URI(url).toURL().openConnection();
             // Prevents 403 Forbidden errors.
             connection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
-            BufferedImage img = ImageIO.read(connection.getInputStream());
 
-            if (img == null && settings.isDebug()) {
-                plugin.getLogger().warning("ChatImage Debugger - Error loading image: Null BufferedImage");
-                plugin.getLogger().warning("URL: " + url);
+            try (InputStream in = connection.getInputStream()) {
+
+                BufferedImage img = ImageIO.read(in);
+
+                if (img == null && settings.isDebug()) {
+                    plugin.getLogger().warning("ChatImage Debugger - Error loading image: Null BufferedImage");
+                    plugin.getLogger().warning("URL: " + url);
+                }
+
+                return img;
+
             }
-
-            return img;
 
         }
 
