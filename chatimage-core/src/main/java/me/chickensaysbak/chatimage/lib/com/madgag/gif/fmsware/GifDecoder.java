@@ -30,6 +30,7 @@ import java.awt.image.*;
  * @author Kevin Weiner, FM Software; LZW decoder adapted from John Cristy's ImageMagick.
  * @version 1.03 November 2003
  *
+ * 9/7/2025 - Introduced several modifications to the code to prevent null color tables.
  */
 
 public class GifDecoder {
@@ -115,12 +116,11 @@ public class GifDecoder {
      * @return delay in milliseconds
      */
     public int getDelay(int n) {
-        //
-        delay = -1;
+        int d = -1;
         if ((n >= 0) && (n < frameCount)) {
-            delay = ((GifFrame) frames.get(n)).delay;
+            d = ((GifFrame) frames.get(n)).delay;
         }
-        return delay;
+        return d;
     }
 
     /**
@@ -156,8 +156,7 @@ public class GifDecoder {
      */
     protected void setPixels() {
         // expose destination image's pixels as int array
-        int[] dest =
-                ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+        int[] dest = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
         // fill in starting image contents based on last image's dispose code
         if (lastDispose > 0) {
@@ -541,21 +540,29 @@ public class GifDecoder {
      * Reads color table as 256 RGB integer values
      *
      * @param ncolors int number of colors to read
-     * @return int array containing 256 colors (packed ARGB with full alpha)
+     * @return int array containing up to 256 colors (packed ARGB with full alpha),
+     *         or null if an error occurred
      */
     protected int[] readColorTable(int ncolors) {
         int nbytes = 3 * ncolors;
-        int[] tab = null;
+        int[] tab;
         byte[] c = new byte[nbytes];
         int n = 0;
         try {
-            n = in.read(c);
+            // read exactly nbytes (loop because InputStream.read(...) may return
+            // fewer bytes than requested)
+            while (n < nbytes) {
+                int count = in.read(c, n, nbytes - n);
+                if (count == -1) break;
+                n += count;
+            }
         } catch (IOException e) {
         }
         if (n < nbytes) {
             status = STATUS_FORMAT_ERROR;
+            return null;
         } else {
-            tab = new int[256]; // max size to avoid bounds checks
+            tab = new int[256]; // max size to avoid bounds checks later
             int i = 0;
             int j = 0;
             while (i < ncolors) {
@@ -564,6 +571,7 @@ public class GifDecoder {
                 int b = ((int) c[j++]) & 0xff;
                 tab[i++] = 0xff000000 | (r << 16) | (g << 8) | b;
             }
+            // leave remaining entries zero (transparent black) if any
         }
         return tab;
     }
@@ -642,7 +650,12 @@ public class GifDecoder {
     protected void readHeader() {
         String id = "";
         for (int i = 0; i < 6; i++) {
-            id += (char) read();
+            int r = read();
+            if (r < 0) {
+                status = STATUS_FORMAT_ERROR;
+                return;
+            }
+            id += (char) r;
         }
         if (!id.startsWith("GIF")) {
             status = STATUS_FORMAT_ERROR;
@@ -650,9 +663,21 @@ public class GifDecoder {
         }
 
         readLSD();
-        if (gctFlag && !err()) {
+        if (err()) return;
+
+        if (gctFlag) {
             gct = readColorTable(gctSize);
-            bgColor = gct[bgIndex];
+            if (gct == null) {
+                // failed to read global color table
+                status = STATUS_FORMAT_ERROR;
+                return;
+            }
+            // guard bgIndex
+            if (bgIndex < 0 || bgIndex >= gct.length) {
+                bgColor = 0; // fallback to transparent black
+            } else {
+                bgColor = gct[bgIndex];
+            }
         }
     }
 
@@ -674,20 +699,25 @@ public class GifDecoder {
 
         if (lctFlag) {
             lct = readColorTable(lctSize); // read table
+            if (lct == null) { // failed to read local table
+                status = STATUS_FORMAT_ERROR;
+                return;
+            }
             act = lct; // make local table active
         } else {
             act = gct; // make global table active
+            if (act == null) {
+                status = STATUS_FORMAT_ERROR;
+                return;
+            }
             if (bgIndex == transIndex)
                 bgColor = 0;
         }
+
         int save = 0;
-        if (transparency) {
+        if (transparency && transIndex >= 0 && transIndex < act.length) {
             save = act[transIndex];
             act[transIndex] = 0; // set transparent color if specified
-        }
-
-        if (act == null) {
-            status = STATUS_FORMAT_ERROR; // no color table defined
         }
 
         if (err()) return;
@@ -700,18 +730,16 @@ public class GifDecoder {
         frameCount++;
 
         // create new image to receive frame data
-        image =
-                new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB_PRE);
+        image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB_PRE);
 
         setPixels(); // transfer pixel data to image
 
         frames.add(new GifFrame(image, delay)); // add image to frame list
 
-        if (transparency) {
+        if (transparency && act != null && transIndex >= 0 && transIndex < act.length) {
             act[transIndex] = save;
         }
         resetFrame();
-
     }
 
     /**
@@ -765,9 +793,9 @@ public class GifDecoder {
         lastRect = new Rectangle(ix, iy, iw, ih);
         lastImage = image;
         lastBgColor = bgColor;
-        int dispose = 0;
-        boolean transparency = false;
-        int delay = 0;
+        dispose = 0;
+        transparency = false;
+        delay = 0;
         lct = null;
     }
 
