@@ -1,0 +1,29 @@
+# Nếu không muốn dùng tin nhắn nào, hãy xóa dòng tin nhắn đó bao gồm cả từ khóa/tiền tố.
+
+# Hiển thị cho mọi người
+show_image: "&a[Hiện thị hình ảnh]"
+hover_tip: "&7Nhập &f/hideimages&7 để ẩn các hình ảnh từ giờ trở đi."
+hiding_images: "&cĐang để ẩn các hình ảnh! &7Nhập &f/showimages&7 để hiện."
+showing_images: "&aĐang để hiện các hình ảnh! &7Nhập &f/hideimages&7 để ẩn."
+error_hiding: "&cBạn đang để ẩn các hình ảnh rồi! Nhập &4/showimages&c để hoàn tác."
+error_showing: "&cBạn đang để hiện các hình ảnh rồi! Nhập &4/hideimages&c để hoàn tác."
+error_load: "&cKhông thể tải được hình ảnh đó!"
+error_doesnt_exist: "&cHình ảnh '&4%name%&c' không tồn tại!"
+
+# Hiển thị cho quản trị
+reload_config: "&aĐã tải lại ChatImage thành công!"
+image_sent: "&aĐã gửi hình ảnh thành công!"
+image_sent_all: "&aĐã gửi hình ảnh thành công tới tất cả người chơi!"
+image_saved: "&aĐã lưu ảnh '&f%name%&a'"
+image_deleted: "&cĐã xóa ảnh '&4%name%&c'"
+chatimage_usage: "&cCách sử dụng: /chatimage <reload|send|save|delete>"
+chatimage_send_usage: "&cCách sử dụng: /chatimage send <player>|all <url> [smooth] [trim] [max-width] [max-height] [text]"
+chatimage_send_usage_2: "&cCách sử dụng: /chatimage send <player>|all <name> [text]"
+chatimage_save_usage: "&cCách sử dụng: /chatimage save <name> <url> [smooth] [trim] [width] [height]"
+chatimage_delete_usage: "&cCách sử dụng: /chatimage delete <name>"
+error_player_offline: "&cNgười chơi đó đang ngoại tuyến!"
+error_outdated: "&cNgười chơi đó đang ở phiên bản cũ!"
+error_already_exists: "&cHình ảnh '&4%name%&c' đã có sẵn!"
+error_save: "&cĐã xảy ra lỗi khi lưu ảnh. Hãy kiểm tra bảng điều khiển!"
+error_delete: "&cĐã xảy ra lỗi khi xóa ảnh. Hãy kiểm tra bảng điều khiển!"
+error_order: "&cVui lòng đặt tên hình ảnh trước đường link URL!"
