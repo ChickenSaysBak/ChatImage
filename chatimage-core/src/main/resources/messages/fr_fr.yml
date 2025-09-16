@@ -1,29 +1,29 @@
-# Pour arrêter d'envoyer un message entièrement, supprimez toute la ligne y compris la clé/préfixe.
+# Si vous ne souhaitez pas utiliser l'un des messages, supprimez la ligne du message, y compris le mot-clé/préfixe.
 
-# Vu par tout le monde
-show_image: "<green>[Affichez l'image]"
-hover_tip: "<gray>Tapez <white>/hideimages</white> pour cacher les images futures."
-hiding_images: "<red>Cachez les images maintenant ! <gray>Tapez <white>/showimages</white> pour annuler."
-showing_images: "<green>Affichez les images maintenant ! <gray>Tapez <white>/hideimages</white> pour annuler."
-error_hiding: "<red>Vous cachez déjà les images ! Tapez <dark_red>/showimages</dark_red> pour revenir en arrière."
-error_showing: "<red>Vous affichez déjà les images ! Tapez <dark_red>/hideimages</dark_red> pour revenir en arrière."
-error_load: "<red>Impossible de charger l'image !"
+# Visible pour tous
+show_image: "<green>[Afficher l'image]"
+hover_tip: "<gray>Entrez <white>/hideimages</white> pour masquer les images à partir de maintenant."
+hiding_images: "<red>Les images sont masquées ! <gray>Entrez <white>/showimages</white> pour les afficher."
+showing_images: "<green>Les images sont affichées ! <gray>Entrez <white>/hideimages</white> pour les masquer."
+error_hiding: "<red>Vous avez déjà masqué les images ! Entrez <dark_red>/showimages</dark_red> pour annuler."
+error_showing: "<red>Vous avez déjà affiché les images ! Entrez <dark_red>/hideimages</dark_red> pour annuler."
+error_load: "<red>Impossible de charger cette image !"
 error_doesnt_exist: "<red>L'image '<dark_red><name></dark_red>' n'existe pas !"
 
-# Vu par les administrateurs
-reload_config: "<green>ChatImage rechargé avec succès !"
+# Visible pour les administrateurs
+reload_config: "<green>ChatImage a été rechargé avec succès !"
 image_sent: "<green>Image envoyée avec succès !"
-image_sent_all: "<green>Image envoyée à tous les joueurs avec succès !"
-image_saved: "<green>Image enregistrée sous '<white><name></white>'"
+image_sent_all: "<green>Image envoyée avec succès à tous les joueurs !"
+image_saved: "<green>Image '<white><name></white>' enregistrée"
 image_deleted: "<red>Image '<dark_red><name></dark_red>' supprimée"
 chatimage_usage: "<red>Utilisation : /chatimage <reload|send|save|delete>"
 chatimage_send_usage: "<red>Utilisation : /chatimage send <player>|all <url> [smooth] [trim] [max-width] [max-height] [text]"
 chatimage_send_usage_2: "<red>Utilisation : /chatimage send <player>|all <name> [text]"
 chatimage_save_usage: "<red>Utilisation : /chatimage save <name> <url> [smooth] [trim] [width] [height]"
 chatimage_delete_usage: "<red>Utilisation : /chatimage delete <name>"
-error_player_offline: "<red>Ce joueur n'est pas en ligne !"
+error_player_offline: "<red>Ce joueur est hors ligne !"
 error_outdated: "<red>Ce joueur utilise une version obsolète !"
 error_already_exists: "<red>L'image '<dark_red><name></dark_red>' existe déjà !"
-error_save: "<red>Une erreur s'est produite lors de l'enregistrement de l'image. Vérifiez la console !"
-error_delete: "<red>Une erreur s'est produite lors de la suppression de l'image. Vérifiez la console !"
-error_order: "<red>Veuillez mettre le nom de l'image avant l'url !"
+error_save: "<red>Une erreur est survenue lors de l'enregistrement de l'image. Vérifiez la console !"
+error_delete: "<red>Une erreur est survenue lors de la suppression de l'image. Vérifiez la console !"
+error_order: "<red>Veuillez spécifier le nom de l'image avant le lien URL !"
