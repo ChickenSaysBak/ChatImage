@@ -39,6 +39,7 @@ public class PlayerBungee implements PlayerAdapter {
 
     @Override
     public void sendMessage(Component component) {
+        if (component == null) return;
         player.sendMessage(BungeeComponentSerializer.get().serialize(component));
     }
 
