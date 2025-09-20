@@ -39,6 +39,7 @@ public class PlayerSpigot implements PlayerAdapter {
 
     @Override
     public void sendMessage(Component component) {
+        if (component == null) return;
         player.spigot().sendMessage(BungeeComponentSerializer.get().serialize(component));
     }
 

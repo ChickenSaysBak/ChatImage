@@ -36,6 +36,7 @@ public class PlayerPaper implements PlayerAdapter {
 
     @Override
     public void sendMessage(Component component) {
+        if (component == null) return;
         player.sendMessage(component);
     }
 
