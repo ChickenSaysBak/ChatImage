@@ -171,8 +171,7 @@ public class PluginPaper extends JavaPlugin implements Listener, PluginAdapter {
 
     @Override
     public String setPlaceholders(UUID uuid, String text, boolean brackets) {
-        if (papiHandler != null) text = papiHandler.setPlaceholders(getServer().getPlayer(uuid), text, brackets);
-        return text;
+        return papiHandler != null ? papiHandler.setPlaceholders(getServer().getPlayer(uuid), text, brackets) : text;
     }
 
 }
