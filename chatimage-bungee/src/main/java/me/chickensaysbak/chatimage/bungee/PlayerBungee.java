@@ -53,14 +53,16 @@ public class PlayerBungee implements PlayerAdapter {
     }
 
     @Override
-    public void sendGifFrame(Component frame) {
+    public void sendGifFrame(Component frame, Component text) {
 
         TextComponent frameTC = new TextComponent(BungeeComponentSerializer.get().serialize(frame));
+        TextComponent textTC = text != null ? new TextComponent(BungeeComponentSerializer.get().serialize(frame)) : new TextComponent();
+
         TranslatableComponent closeText = new TranslatableComponent("mco.selectServer.close");
         closeText.setFallback("Close");
 
         Dialog dialog = new NoticeDialog(
-                new DialogBase(new TextComponent()).body(List.of(new PlainMessageBody(frameTC))),
+                new DialogBase(textTC).body(List.of(new PlainMessageBody(frameTC))),
                 new ActionButton(closeText, new CustomClickAction("chatimage:close_gif"))
         );
 

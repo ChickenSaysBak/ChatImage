@@ -43,7 +43,7 @@ public class PlayerVelocity implements PlayerAdapter {
     }
 
     @Override
-    public void sendGifFrame(Component frame) {
+    public void sendGifFrame(Component frame, Component text) {
         // Waiting for Adventure to implement full dialog API.
     }
 
