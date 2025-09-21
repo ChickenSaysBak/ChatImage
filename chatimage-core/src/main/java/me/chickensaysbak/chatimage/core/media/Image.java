@@ -29,10 +29,10 @@ public class Image implements Media {
 
         if (player != null && !isVersionCompatible(player.getVersion())) return null;
 
-        if (text != null && text.isEmpty()) {
+        if (text != null && !text.isEmpty()) {
 
-            String formattedText = player != null ?
-                    ChatImage.getInstance().getPlugin().setPlaceholders(player.getUniqueId(), text, placeholder)
+            String formattedText = player != null
+                    ? ChatImage.getInstance().getPlugin().setPlaceholders(player.getUniqueId(), text, placeholder)
                     : text;
 
             return ImageMaker.addText(expandedImage, formattedText);
