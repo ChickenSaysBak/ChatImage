@@ -56,7 +56,7 @@ public class PlayerBungee implements PlayerAdapter {
     public void sendGifFrame(Component frame, Component text) {
 
         TextComponent frameTC = new TextComponent(BungeeComponentSerializer.get().serialize(frame));
-        TextComponent textTC = text != null ? new TextComponent(BungeeComponentSerializer.get().serialize(frame)) : new TextComponent();
+        TextComponent textTC = text != null ? new TextComponent(BungeeComponentSerializer.get().serialize(text)) : new TextComponent();
 
         TranslatableComponent closeText = new TranslatableComponent("mco.selectServer.close");
         closeText.setFallback("Close");

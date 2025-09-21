@@ -122,9 +122,9 @@ public class ChatImage {
 
             String[] parts = id.split("_");
             int gifID = Integer.parseInt(parts[2]);
-            String text = Gif.decodeText(parts[3]);
+            String text = parts.length >= 4 ? Gif.decodeText(parts[3]) : null;
 
-            Component component = !text.isEmpty() ? MiniMessage.miniMessage().deserialize(text) : null;
+            Component component = text != null && !text.isEmpty() ? MiniMessage.miniMessage().deserialize(text) : null;
             gifHandler.playGif(player, gifHandler.getGif(gifID), component);
 
         }
