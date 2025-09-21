@@ -23,6 +23,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCustomClickEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -90,6 +91,11 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
     public void onChat(AsyncPlayerChatEvent event) {
         boolean cancelEvent = core.onChat(new PlayerSpigot(event.getPlayer()), text(event.getMessage()));
         if (cancelEvent) event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onClick(PlayerCustomClickEvent event) {
+        core.onClick(new PlayerSpigot(event.getPlayer()), event.getId().toString());
     }
 
     @Override
@@ -165,8 +171,8 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
     }
 
     @Override
-    public String setPlaceholders(UUID uuid, String text) {
-        if (papiHandler != null) text = papiHandler.setPlaceholders(getServer().getPlayer(uuid), text);
+    public String setPlaceholders(UUID uuid, String text, boolean brackets) {
+        if (papiHandler != null) text = papiHandler.setPlaceholders(getServer().getPlayer(uuid), text, brackets);
         return text;
     }
 

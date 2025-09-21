@@ -13,6 +13,8 @@ public interface PlayerAdapter {
     boolean isOnline();
     boolean hasPermission(String node);
     void sendMessage(Component component);
+    void sendGifFrame(Component frame);
+    void closeDialog();
     int getVersion();
     String getLocale();
 

@@ -18,17 +18,14 @@ public class Settings implements Loadable {
 
     // Config fields
     private File configFile;
-    private boolean smoothRender;
-    private boolean trimTransparency;
-    private int maxWidth;
-    private int maxHeight;
     private int cooldown;
     private boolean strictCooldown;
+    private boolean smoothRender, trimTransparency;
+    private int maxWidth, maxHeight;
     private boolean autoHide;
-    private int hiddenWidth;
-    private int hiddenHeight;
-    private boolean filterExplicitContent;
-    private boolean removeExplicitContent;
+    private int hiddenWidth, hiddenHeight;
+    private int gifWidth, gifHeight;
+    private boolean filterExplicitContent, removeExplicitContent;
     private String languageDefault;
     private boolean debug;
 
@@ -62,15 +59,17 @@ public class Settings implements Loadable {
         Arrays.stream(suppliedLangs).forEach(lang -> plugin.saveResource("messages/" + lang + ".yml"));
 
         YamlAdapter config = plugin.loadYaml(configFile);
+        cooldown = config.getInt("cooldown", 3);
+        strictCooldown = config.getBoolean("strict_cooldown", false);
         smoothRender = config.getBoolean("smooth_render", config.getBoolean("fancy_render", true)); // Legacy support.
         trimTransparency = config.getBoolean("trim_transparency", true);
         maxWidth = config.getInt("max_width", 35);
         maxHeight = config.getInt("max_height", 20);
-        cooldown = config.getInt("cooldown", 3);
-        strictCooldown = config.getBoolean("strict_cooldown", false);
         autoHide = config.getBoolean("hidden_images.auto_hide", false);
         hiddenWidth = config.getInt("hidden_images.max_width", 23);
         hiddenHeight = config.getInt("hidden_images.max_height", 24);
+        gifWidth = config.getInt("gifs.max_width", 22);
+        gifHeight = config.getInt("gifs.max_height", 22);
         filterExplicitContent = config.getBoolean("explicit_content.enabled", false);
         removeExplicitContent = config.getBoolean("explicit_content.remove_message", false);
         languageDefault = config.getString("language_default", "en_us");
@@ -88,20 +87,24 @@ public class Settings implements Loadable {
 
         }
 
+        plugin.publishStat("cooldowns", String.valueOf(cooldown));
+        plugin.publishStat("strict_cooldown", String.valueOf(strictCooldown));
         plugin.publishStat("smooth_render", String.valueOf(smoothRender));
         plugin.publishStat("trim_transparency", String.valueOf(trimTransparency));
         plugin.publishStat("max_width", String.valueOf(maxWidth));
         plugin.publishStat("max_height", String.valueOf(maxHeight));
-        plugin.publishStat("cooldowns", String.valueOf(cooldown));
-        plugin.publishStat("strict_cooldown", String.valueOf(strictCooldown));
         plugin.publishStat("auto_hide", String.valueOf(autoHide));
         plugin.publishStat("max_hidden_width", String.valueOf(hiddenWidth));
         plugin.publishStat("max_hidden_height", String.valueOf(hiddenHeight));
+        plugin.publishStat("max_gif_width", String.valueOf(gifWidth));
+        plugin.publishStat("max_gif_height", String.valueOf(gifHeight));
         plugin.publishStat("explicit_content_filtration2", String.valueOf(filterExplicitContent));
         plugin.publishStat("explicit_content_message_removal2", String.valueOf(removeExplicitContent));
 
     }
 
+    public int getCooldown() {return cooldown;}
+    public boolean isStrictCooldown() {return strictCooldown;}
     public boolean isSmoothRender() {return smoothRender;}
     public boolean isTrimTransparency() {return trimTransparency;}
     public int getMaxWidth() {return maxWidth;}
@@ -109,8 +112,8 @@ public class Settings implements Loadable {
     public boolean isAutoHide() {return autoHide;}
     public int getMaxHiddenWidth() {return hiddenWidth;}
     public int getMaxHiddenHeight() {return hiddenHeight;}
-    public int getCooldown() {return cooldown;}
-    public boolean isStrictCooldown() {return strictCooldown;}
+    public int getMaxGifWidth() {return gifWidth;}
+    public int getMaxGifHeight() {return gifHeight;}
     public boolean isFilterExplicitContent() {return filterExplicitContent;}
     public boolean isRemoveExplicitContent() {return removeExplicitContent;}
     public String getLanguageDefault() {return languageDefault;}

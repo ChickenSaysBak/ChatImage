@@ -203,7 +203,7 @@ public class PluginVelocity implements PluginAdapter {
     }
 
     @Override
-    public String setPlaceholders(UUID uuid, String text) {
+    public String setPlaceholders(UUID uuid, String text, boolean brackets) {
         return text;
     }
 }

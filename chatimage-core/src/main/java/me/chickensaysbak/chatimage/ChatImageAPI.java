@@ -3,11 +3,9 @@
 package me.chickensaysbak.chatimage;
 
 import me.chickensaysbak.chatimage.core.ChatImage;
-import me.chickensaysbak.chatimage.core.ImageMaker;
+import me.chickensaysbak.chatimage.core.media.Media;
 import net.kyori.adventure.text.Component;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.UUID;
 
 public class ChatImageAPI {
@@ -25,9 +23,9 @@ public class ChatImageAPI {
     }
 
     /**
-     * Creates an image that can be sent in Minecraft chat.
-     * All parameters are optional besides the url. Any unused parameters will use config defaults.
-     * @param url the url of the image
+     * Creates an image or GIF that can be sent in Minecraft chat.
+     * All parameters are optional besides the URL. Any unused parameters will use config defaults.
+     * @param url the URL of the image
      * @param text optional text to append to the right of the image
      * @param smooth whether to use smooth rendering (true) or simple rendering (false)
      * @param trim whether to trim transparent edges or not
@@ -37,14 +35,10 @@ public class ChatImageAPI {
      */
     public static Component createChatImage(String url, String text, boolean smooth, boolean trim, int width, int height) {
 
-        BufferedImage image = ChatImage.getInstance().loadImage(url);
-        if (image == null) return null;
+        Media media = ChatImage.getInstance().loadMedia(url, width, height, smooth, trim, false);
+        if (media == null) return null;
 
-        Dimension dim = new Dimension(width, height);
-        Component component = ImageMaker.createChatImage(image, dim, smooth, trim);
-        if (text != null && !text.isEmpty()) component = ImageMaker.addText(component, text);
-
-        return component;
+        return media.formatFor(null, text, false);
 
     }
 

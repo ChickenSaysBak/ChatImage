@@ -116,8 +116,9 @@ public interface PluginAdapter {
      * Sets placeholders in a string of text if PlaceholderAPI is enabled.
      * @param uuid the uuid of the player involved
      * @param text the text to set placeholders in
+     * @param brackets true if bracket placeholders should be set
      * @return the text with placeholders set
      */
-    String setPlaceholders(UUID uuid, String text);
+    String setPlaceholders(UUID uuid, String text, boolean brackets);
 
 }
