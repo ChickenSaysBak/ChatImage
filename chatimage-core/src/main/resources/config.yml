@@ -10,24 +10,9 @@
 # ============================================= #
 
 
-# IMAGE SETTINGS #
-
-# Uses a more visually pleasing method of rendering images.
-# This is nearly just as fast as alternative rendering.
-smooth_render: true
-
-# Gets rid of excessive blank space along edges.
-trim_transparency: true
-
-# Maximum dimensions for an image. The maximum for default Minecraft chat settings is 35 x 20.
-# See HIDDEN IMAGE SETTINGS for changing the dimensions of hidden images.
-max_width: 35
-max_height: 20
-
-
 # COOLDOWN SETTINGS #
 
-# Sets how long (in seconds) someone must wait before another image will render.
+# Sets how long (in seconds) someone must wait before another image or GIF will render.
 cooldown: 3
 
 # Cooldown will start from 0 if an image URL is sent (as opposed to it starting when the image itself renders).
@@ -35,10 +20,28 @@ cooldown: 3
 strict_cooldown: false
 
 
+# IMAGE SETTINGS #
+
+# Uses a smoothing effect when rendering images and GIFs.
+# Looks best on photo-realistic images, but simple rendering may look better for flat graphics.
+# This is nearly just as fast as simple rendering.
+smooth_render: true
+
+# Gets rid of excessive blank space along the edges of images.
+# Does not apply to GIFs.
+trim_transparency: true
+
+# Maximum dimensions for an image in chat. The maximum for default Minecraft chat settings is 35 x 20.
+# See HIDDEN IMAGE SETTINGS for changing the dimensions of hidden images.
+# See GIF SETTINGS for changing the dimensions of GIFs.
+max_width: 35
+max_height: 20
+
+
 # HIDDEN IMAGE SETTINGS #
 
 # When a player runs /hideimages, images sent in chat are minimized, and they can be viewed by hovering.
-# Hidden images that are wide will appear smaller than normal.
+# Images that are wide will appear smaller than normal when hidden.
 hidden_images:
 
   # Hides images by default. Players can individually override this with /showimages.
@@ -52,6 +55,15 @@ hidden_images:
   # If you don't mind potentially breaking images for some users, you can increase it to 26 x 27 for full-screen users.
   max_width: 23
   max_height: 24
+
+
+# GIF SETTINGS #
+
+gifs:
+
+  # Maximum dimensions for GIFs only. The maximum for default Minecraft settings is 22 x 22.
+  max_width: 22
+  max_height: 22
 
 
 # FILTRATION SETTINGS #

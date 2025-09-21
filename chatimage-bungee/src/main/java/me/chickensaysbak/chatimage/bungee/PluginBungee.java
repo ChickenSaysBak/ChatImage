@@ -11,6 +11,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
+import net.md_5.bungee.api.event.CustomClickEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -64,6 +65,11 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
             if (cancelEvent) event.setCancelled(true);
         }
 
+    }
+
+    @EventHandler
+    public void onClick(CustomClickEvent event) {
+        core.onClick(new PlayerBungee(event.getPlayer()), event.getId());
     }
 
     @Override
@@ -186,7 +192,7 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
     }
 
     @Override
-    public String setPlaceholders(UUID uuid, String text) {
+    public String setPlaceholders(UUID uuid, String text, boolean brackets) {
         return text;
     }
 

@@ -43,6 +43,16 @@ public class PlayerVelocity implements PlayerAdapter {
     }
 
     @Override
+    public void sendGifFrame(Component frame) {
+        // Waiting for Adventure to implement full dialog API.
+    }
+
+    @Override
+    public void closeDialog() {
+        player.closeDialog();
+    }
+
+    @Override
     public int getVersion() {
         return player.getProtocolVersion().getProtocol();
     }

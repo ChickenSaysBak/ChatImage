@@ -1,6 +1,8 @@
 package me.chickensaysbak.chatimage.paper;
 
+import io.papermc.paper.connection.PlayerGameConnection;
 import io.papermc.paper.event.player.AsyncChatEvent;
+import io.papermc.paper.event.player.PlayerCustomClickEvent;
 import me.chickensaysbak.chatimage.core.ChatImage;
 import me.chickensaysbak.chatimage.core.adapters.CommandAdapter;
 import me.chickensaysbak.chatimage.core.adapters.PlayerAdapter;
@@ -87,6 +89,15 @@ public class PluginPaper extends JavaPlugin implements Listener, PluginAdapter {
         if (cancelEvent) event.setCancelled(true);
     }
 
+    @EventHandler
+    public void onClick(PlayerCustomClickEvent event) {
+
+        if (event.getCommonConnection() instanceof PlayerGameConnection pgc) {
+            core.onClick(new PlayerPaper(pgc.getPlayer()), event.getIdentifier().asString());
+        }
+
+    }
+
     @Override
     public void registerCommand(CommandAdapter command) {
         registerCommand(command.getName(), Arrays.asList(command.getAliases()), new CommandPaper(command));
@@ -159,8 +170,8 @@ public class PluginPaper extends JavaPlugin implements Listener, PluginAdapter {
     }
 
     @Override
-    public String setPlaceholders(UUID uuid, String text) {
-        if (papiHandler != null) text = papiHandler.setPlaceholders(getServer().getPlayer(uuid), text);
+    public String setPlaceholders(UUID uuid, String text, boolean brackets) {
+        if (papiHandler != null) text = papiHandler.setPlaceholders(getServer().getPlayer(uuid), text, brackets);
         return text;
     }
 

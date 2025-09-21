@@ -5,8 +5,17 @@ package me.chickensaysbak.chatimage.bungee;
 import me.chickensaysbak.chatimage.core.adapters.PlayerAdapter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.TranslatableComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.dialog.Dialog;
+import net.md_5.bungee.api.dialog.DialogBase;
+import net.md_5.bungee.api.dialog.NoticeDialog;
+import net.md_5.bungee.api.dialog.action.ActionButton;
+import net.md_5.bungee.api.dialog.action.CustomClickAction;
+import net.md_5.bungee.api.dialog.body.PlainMessageBody;
 
+import java.util.List;
 import java.util.UUID;
 
 public class PlayerBungee implements PlayerAdapter {
@@ -41,6 +50,27 @@ public class PlayerBungee implements PlayerAdapter {
     public void sendMessage(Component component) {
         if (component == null) return;
         player.sendMessage(BungeeComponentSerializer.get().serialize(component));
+    }
+
+    @Override
+    public void sendGifFrame(Component frame) {
+
+        TextComponent frameTC = new TextComponent(BungeeComponentSerializer.get().serialize(frame));
+        TranslatableComponent closeText = new TranslatableComponent("mco.selectServer.close");
+        closeText.setFallback("Close");
+
+        Dialog dialog = new NoticeDialog(
+                new DialogBase(new TextComponent()).body(List.of(new PlainMessageBody(frameTC))),
+                new ActionButton(closeText, new CustomClickAction("chatimage:close_gif"))
+        );
+
+        player.showDialog(dialog);
+
+    }
+
+    @Override
+    public void closeDialog() {
+        player.clearDialog();
     }
 
     @Override

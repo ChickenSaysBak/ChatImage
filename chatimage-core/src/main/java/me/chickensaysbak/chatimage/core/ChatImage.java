@@ -9,14 +9,19 @@ import me.chickensaysbak.chatimage.core.commands.HideImagesCommand;
 import me.chickensaysbak.chatimage.core.commands.ShowImagesCommand;
 import me.chickensaysbak.chatimage.core.loaders.Loadable;
 import me.chickensaysbak.chatimage.core.loaders.PlayerPreferences;
-import me.chickensaysbak.chatimage.core.loaders.SavedImages;
+import me.chickensaysbak.chatimage.core.loaders.SavedMedia;
 import me.chickensaysbak.chatimage.core.loaders.Settings;
+import me.chickensaysbak.chatimage.core.media.Gif;
+import me.chickensaysbak.chatimage.core.media.HidableImage;
+import me.chickensaysbak.chatimage.core.media.Image;
+import me.chickensaysbak.chatimage.core.media.Media;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -29,32 +34,34 @@ import java.net.URLConnection;
 import java.util.*;
 import java.util.logging.Level;
 
-import static net.kyori.adventure.text.Component.newline;
-
 public class ChatImage {
 
     private static ChatImage instance;
     private PluginAdapter plugin;
+    private GifHandler gifHandler;
     private Filtration filtration;
 
     private Settings settings;
     private PlayerPreferences playerPreferences;
-    private SavedImages savedImages;
+    private SavedMedia savedMedia;
     private ArrayList<Loadable> loaders = new ArrayList<>();
 
     private HashMap<String, Long> lastSent = new HashMap<>(); // Contains UUIDs and Discord IDs.
     private ArrayList<UUID> recordedPlayerLocale = new ArrayList<>();
 
+    public static String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0";
+
     public ChatImage(PluginAdapter plugin) {
 
         instance = this;
         this.plugin = plugin;
+        gifHandler = new GifHandler(plugin);
         filtration = new Filtration(plugin);
 
         settings = new Settings(plugin);
         playerPreferences = new PlayerPreferences(plugin);
-        savedImages = new SavedImages(plugin);
-        loaders.addAll(Arrays.asList(settings, playerPreferences, savedImages));
+        savedMedia = new SavedMedia(plugin);
+        loaders.addAll(Arrays.asList(settings, playerPreferences, savedMedia));
 
         plugin.registerCommand(new ChatImageCommand(plugin));
         plugin.registerCommand(new HideImagesCommand(plugin));
@@ -103,6 +110,22 @@ public class ChatImage {
     }
 
     /**
+     * Called when a player clicks a custom dialog button.
+     * @param player the player that clicked
+     * @param id the ID of the button
+     */
+    public void onClick(PlayerAdapter player, String id) {
+
+        if (id.equals("chatimage:close_gif")) gifHandler.closeGif(player);
+
+        else if (id.startsWith("chatimage:open_gif_")) {
+            int gifID = Integer.parseInt(id.split("chatimage:open_gif_")[1]);
+            gifHandler.playGif(player, gifHandler.getGif(gifID));
+        }
+
+    }
+
+    /**
      * Searches for a url in a message and attempts to render an image if applicable.
      * @param message the message to scan
      * @param id the UUID or Discord ID of the user
@@ -146,29 +169,8 @@ public class ChatImage {
             // Filtration #2 - Only prevents rendering; if message removal is disabled, it's ideal to run on a separate thread.
             if (!removeExplicitContent && filterExplicitContent && filtration.hasExplicitContent(url)) return;
 
-            BufferedImage image = loadImage(url);
-            if (image == null) return;
-
-            boolean smooth = settings.isSmoothRender(), trim = settings.isTrimTransparency();
-            Dimension dim = new Dimension(settings.getMaxWidth(), settings.getMaxHeight());
-            Dimension hiddenDim = new Dimension(settings.getMaxHiddenWidth(), settings.getMaxHiddenHeight());
-
-            Component expandedImageRaw = ImageMaker.createChatImage(image, dim, smooth, trim);
-            Component hiddenImageRaw = ImageMaker.createChatImage(image, hiddenDim, smooth, trim);
-
-            plugin.getOnlinePlayers().stream()
-                    .filter(p -> isVersionValid(p.getVersion()))
-                    .forEach(p -> {
-
-                        boolean showing = playerPreferences.isShowingImages(p.getUniqueId());
-                        String locale = p.getLocale();
-
-                        Component expandedImage = getExpandedImage(url, expandedImageRaw, locale);
-                        Component hiddenImage = getHiddenImage(url, hiddenImageRaw, locale);
-
-                        p.sendMessage(showing ? expandedImage : hiddenImage);
-
-                    });
+            Media media = loadMedia(url, null, null, null, null, true);
+            if (media != null) plugin.getOnlinePlayers().forEach(p -> p.sendMessage(media.formatFor(p, null, false)));
 
         }, 1);
 
@@ -220,9 +222,9 @@ public class ChatImage {
     }
 
     /**
-     * Finds the first url in a string of text.
+     * Finds the first URL in a string of text.
      * @param text the text to search
-     * @return the first url found
+     * @return the first URL found
      */
     public static String findURL(Component text) {
 
@@ -231,31 +233,62 @@ public class ChatImage {
 
         for (String word : words) if (word.startsWith("http")) return word;
         return null;
+
     }
 
     /**
-     * Loads an image.
-     * @param url the url string of the image
-     * @return the loaded image or null if it failed to load
+     * Loads media from a URL.
+     * @param url the URL string
+     * @param width the maximum width (null for default)
+     * @param height the maximum height (null for default)
+     * @param smooth smooth rendering (null for default)
+     * @param trim trim transparency (null for default)
+     * @param user true if a user sent the URL
+     * @return the media
      */
-    public BufferedImage loadImage(String url) {
+    public Media loadMedia(String url, Integer width, Integer height, Boolean smooth, Boolean trim, boolean user) {
+
+        if (url.toLowerCase().contains("tenor.com/view")) url = extractDirectTenorUrl(url);
+        if (smooth == null) smooth = settings.isSmoothRender();
+        if (trim == null) trim = settings.isTrimTransparency();
 
         try {
 
             URLConnection connection = new URI(url).toURL().openConnection();
             // Prevents 403 Forbidden errors.
-            connection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
+            connection.addRequestProperty("User-Agent", USER_AGENT);
+
+            if (connection.getContentType().equalsIgnoreCase("image/gif")) {
+
+                if (width == null) width = settings.getMaxGifWidth();
+                if (height == null) height = settings.getMaxGifHeight();
+
+                GifHandler.Gif gif = gifHandler.loadGif(connection, new Dimension(width, height), smooth);
+                if (gif != null) return new Gif(gif);
+
+            }
 
             try (InputStream in = connection.getInputStream()) {
 
                 BufferedImage img = ImageIO.read(in);
 
-                if (img == null && settings.isDebug()) {
-                    plugin.getLogger().warning("ChatImage Debugger - Error loading image: Null BufferedImage");
-                    plugin.getLogger().warning("URL: " + url);
+                if (img == null) {
+
+                    if (settings.isDebug()) {
+                        plugin.getLogger().warning("ChatImage Debugger - Error loading image: Null BufferedImage");
+                        plugin.getLogger().warning("URL: " + url);
+                    }
+
+                    return null;
+
                 }
 
-                return img;
+                if (width == null) width = settings.getMaxWidth();
+                if (height == null) height = settings.getMaxHeight();
+
+                return user
+                        ? new HidableImage(url, img)
+                        : new Image(img, new Dimension(width, height), smooth, trim);
 
             }
 
@@ -264,7 +297,7 @@ public class ChatImage {
         catch (IOException | URISyntaxException e) {
 
             if (settings.isDebug()) {
-                plugin.getLogger().warning("ChatImage Debugger - Error loading image");
+                plugin.getLogger().warning("ChatImage Debugger - Error loading media");
                 plugin.getLogger().warning("URL: " + url);
                 plugin.getLogger().log(Level.WARNING, e.getMessage(), e);
             }
@@ -276,60 +309,51 @@ public class ChatImage {
     }
 
     /**
-     * Gets an expanded image that can be clicked on to open and contains a tip about /hideimages.
-     * @param url the url of the image
-     * @param imageComponent the chat image
-     * @param locale the locale of the recipient
-     * @return the expanded image
+     * Finds the direct GIF URL when provided a tenor.com/view URL.
+     * @param url the Tenor URL pointing to a webpage
+     * @return the Tenor URL pointing to a GIF
      */
-    public Component getExpandedImage(String url, Component imageComponent, String locale) {
+    private String extractDirectTenorUrl(String url) {
 
-        MiniMessage mm = MiniMessage.miniMessage();
-        String hoverTip = settings.getMessage("hover_tip", locale);
+        Document doc;
 
-        Component result = imageComponent;
+        try {
+            doc = Jsoup.connect(url).userAgent(ChatImage.USER_AGENT).get();
+        } catch (IOException e) {
 
-        if (hoverTip != null) {
-            Component tip = mm.deserialize(hoverTip);
-            result = result.hoverEvent(HoverEvent.showText(tip));
+            if (settings.isDebug()) {
+                plugin.getLogger().warning("ChatImage Debugger - Error extracting Tenor URL");
+                plugin.getLogger().warning("URL: " + url);
+                plugin.getLogger().log(Level.WARNING, e.getMessage(), e);
+            }
+
+            return url;
+
         }
 
-        return result.clickEvent(ClickEvent.openUrl(url));
+        // Check the OpenGraph "og:image" meta tag
+        Element meta = doc.selectFirst("meta[property=og:image]");
+        if (meta != null) return meta.attr("content");
 
-    }
+        // As fallback, check Twitter card meta
+        meta = doc.selectFirst("meta[property=twitter:image]");
+        if (meta != null) return meta.attr("content");
 
-    /**
-     * Gets a hidden image that can be clicked on to open and hovered over to view.
-     * @param url the url of the image
-     * @param imageComponent the chat image
-     * @param locale the locale of the recipient
-     * @return the hidden image
-     */
-    public Component getHiddenImage(String url, Component imageComponent, String locale) {
+        if (settings.isDebug()) {
+            plugin.getLogger().warning("ChatImage Debugger - Error extracting Tenor URL");
+            plugin.getLogger().warning("URL: " + url);
+        }
 
-        MiniMessage mm = MiniMessage.miniMessage();
-        String showImageMsg = settings.getMessage("show_image", locale);
-        Component showImage = mm.deserialize(showImageMsg != null ? showImageMsg : "<green>[Show Image]</green>");
-        Component hoverImage = newline().append(imageComponent); // Newline prevents odd spacing.
+        return url;
 
-        return showImage
-                .hoverEvent(HoverEvent.showText(hoverImage))
-                .clickEvent(ClickEvent.openUrl(url));
-
-    }
-
-    /**
-     * Checks if the client version is 1.16 or higher and can see custom colors.
-     * For Spigot servers, this will always be true.
-     * @param version the client's protocol version
-     * @return true if the client's version is 1.16 or higher
-     */
-    public static boolean isVersionValid(int version) {
-        return version == -1 || version > 735;
     }
 
     public static ChatImage getInstance() {
         return instance;
+    }
+
+    public GifHandler getGifHandler() {
+        return gifHandler;
     }
 
     public Filtration getFiltration() {
@@ -348,8 +372,8 @@ public class ChatImage {
         return playerPreferences;
     }
 
-    public SavedImages getSavedImages() {
-        return savedImages;
+    public SavedMedia getSavedImages() {
+        return savedMedia;
     }
 
 }
