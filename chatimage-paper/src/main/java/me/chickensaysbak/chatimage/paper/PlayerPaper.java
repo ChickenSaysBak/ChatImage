@@ -52,10 +52,10 @@ public class PlayerPaper implements PlayerAdapter {
     }
 
     @Override
-    public void sendGifFrame(Component frame) {
+    public void sendGifFrame(Component frame, Component text) {
 
         Dialog dialog = Dialog.create(builder -> builder.empty()
-                .base(DialogBase.builder(empty())
+                .base(DialogBase.builder(text != null ? text : empty())
                         .body(List.of(DialogBody.plainMessage(frame)))
                         .build()
                 )

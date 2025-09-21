@@ -8,9 +8,6 @@ import me.chickensaysbak.chatimage.core.adapters.PluginAdapter;
 import me.chickensaysbak.chatimage.lib.com.madgag.gif.fmsware.GifDecoder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 
 import java.awt.*;
 import java.io.IOException;
@@ -116,10 +113,10 @@ public class GifHandler {
 
     }
 
-    public void playGif(PlayerAdapter player, Gif gif) {
+    public void playGif(PlayerAdapter player, Gif gif, Component text) {
         if (gif == null) return;
         playersViewing.put(player.getUniqueId(), gif);
-        gif.play(player, 0);
+        gif.play(player, 0, text);
     }
 
     public void closeGif(PlayerAdapter player) {
@@ -143,13 +140,13 @@ public class GifHandler {
             return id;
         }
 
-        void play(PlayerAdapter player, int frameNum) {
+        void play(PlayerAdapter player, int frameNum, Component text) {
 
             if (!this.equals(playersViewing.get(player.getUniqueId()))) return;
-            player.sendGifFrame(frames.get(frameNum));
+            player.sendGifFrame(frames.get(frameNum), text);
 
             int nextFrameNum = frameNum < frames.size() - 1 ? frameNum + 1 : 0;
-            plugin.runAsyncTaskLater(() -> play(player, nextFrameNum), tickDelays.get(frameNum));
+            plugin.runAsyncTaskLater(() -> play(player, nextFrameNum, text), tickDelays.get(frameNum));
 
         }
 

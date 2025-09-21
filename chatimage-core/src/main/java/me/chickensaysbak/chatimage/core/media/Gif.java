@@ -10,6 +10,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.apache.commons.codec.binary.Base32;
 
 import static net.kyori.adventure.text.Component.empty;
 
@@ -36,10 +37,14 @@ public class Gif implements Media {
         String playGifMsg = settings.getMessage("play_gif", locale);
         Component playGif = playGifMsg != null ? mm.deserialize(playGifMsg) : empty();
 
+        String formattedText = text != null && !text.isEmpty()
+                ? ChatImage.getInstance().getPlugin().setPlaceholders(player.getUniqueId(), text, placeholder)
+                : text;
+
         return showGif
                 .hoverEvent(HoverEvent.showText(playGif))
                 .clickEvent(ClickEvent.custom(
-                        Key.key("chatimage:open_gif_" + gif.getID()),
+                        Key.key("chatimage:open_gif_" + gif.getID() + "_" + encodeText(formattedText)),
                         BinaryTagHolder.binaryTagHolder("{}")
                 ));
 
@@ -58,6 +63,28 @@ public class Gif implements Media {
      */
     public static boolean isVersionCompatible(int version) {
         return version == -1 || version >= 771;
+    }
+
+    /**
+     * Encode text to Base32 so it can be passed as a namespaced key.
+     * @param text the raw text
+     * @return the encoded text
+     */
+    public static String encodeText(String text) {
+        if (text == null) return "";
+        Base32 base32 = new Base32(false, (byte) '.');
+        return base32.encodeAsString(text.getBytes()).toLowerCase();
+    }
+
+    /**
+     * Decodes Base32 text.
+     * @param encoded the Base32 string
+     * @return the decoded text
+     */
+    public static String decodeText(String encoded) {
+        if (encoded.isEmpty()) return encoded;
+        Base32 base32 = new Base32(false, (byte) '.');
+        return new String(base32.decode(encoded));
     }
 
 }

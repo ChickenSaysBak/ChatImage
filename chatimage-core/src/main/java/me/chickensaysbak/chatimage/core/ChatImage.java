@@ -119,8 +119,14 @@ public class ChatImage {
         if (id.equals("chatimage:close_gif")) gifHandler.closeGif(player);
 
         else if (id.startsWith("chatimage:open_gif_")) {
-            int gifID = Integer.parseInt(id.split("chatimage:open_gif_")[1]);
-            gifHandler.playGif(player, gifHandler.getGif(gifID));
+
+            String[] parts = id.split("_");
+            int gifID = Integer.parseInt(parts[2]);
+            String text = Gif.decodeText(parts[3]);
+
+            Component component = !text.isEmpty() ? MiniMessage.miniMessage().deserialize(text) : null;
+            gifHandler.playGif(player, gifHandler.getGif(gifID), component);
+
         }
 
     }
