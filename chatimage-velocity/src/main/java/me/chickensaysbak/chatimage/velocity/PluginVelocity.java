@@ -206,4 +206,10 @@ public class PluginVelocity implements PluginAdapter {
     public String setPlaceholders(UUID uuid, String text, boolean brackets) {
         return text;
     }
+
+    @Override
+    public boolean hasDialogSupport() {
+        return false;
+    }
+
 }

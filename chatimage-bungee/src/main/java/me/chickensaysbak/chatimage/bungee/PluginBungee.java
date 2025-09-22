@@ -196,4 +196,9 @@ public class PluginBungee extends Plugin implements Listener, PluginAdapter {
         return text;
     }
 
+    @Override
+    public boolean hasDialogSupport() {
+        return true;
+    }
+
 }

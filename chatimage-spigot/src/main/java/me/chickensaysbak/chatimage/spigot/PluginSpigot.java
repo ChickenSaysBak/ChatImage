@@ -175,4 +175,9 @@ public class PluginSpigot extends JavaPlugin implements Listener, PluginAdapter 
         return papiHandler != null ? papiHandler.setPlaceholders(getServer().getPlayer(uuid), text, brackets) : text;
     }
 
+    @Override
+    public boolean hasDialogSupport() {
+        return true;
+    }
+
 }
