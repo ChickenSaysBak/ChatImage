@@ -37,9 +37,9 @@ public class HidableImage extends Image {
     @Override
     public Component formatFor(PlayerAdapter player, String text, boolean placeholder) {
 
-        if (!isVersionCompatible(player.getVersion())) return null;
+        if (player != null && !isVersionCompatible(player.getVersion())) return null;
 
-        String locale = player.getLocale();
+        String locale = player != null ? player.getLocale() : ChatImage.getInstance().getSettings().getLanguageDefault();
         boolean showing = ChatImage.getInstance().getPlayerPreferences().isShowingImages(player.getUniqueId());
         return showing ? formatExpandedImage(locale) : formatHiddenImage(locale);
 

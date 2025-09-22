@@ -25,11 +25,12 @@ public class Gif implements Media {
     @Override
     public Component formatFor(PlayerAdapter player, String text, boolean placeholder) {
 
-        if (!isVersionCompatible(player.getVersion()) || !ChatImage.getInstance().getPlugin().hasDialogSupport()) return null;
+        if (!ChatImage.getInstance().getPlugin().hasDialogSupport()) return null;
+        if (player != null && !isVersionCompatible(player.getVersion())) return null;
 
         Settings settings = ChatImage.getInstance().getSettings();
         MiniMessage mm = MiniMessage.miniMessage();
-        String locale = player.getLocale();
+        String locale = player != null ? player.getLocale() : ChatImage.getInstance().getSettings().getLanguageDefault();
 
         String showGifMsg = settings.getMessage("show_gif", locale);
         Component showGif = mm.deserialize(showGifMsg != null ? showGifMsg : "<green>[Show GIF]");
@@ -37,7 +38,7 @@ public class Gif implements Media {
         String playGifMsg = settings.getMessage("play_gif", locale);
         Component playGif = playGifMsg != null ? mm.deserialize(playGifMsg) : empty();
 
-        String formattedText = text != null && !text.isEmpty()
+        String formattedText = text != null && !text.isEmpty() && player != null
                 ? ChatImage.getInstance().getPlugin().setPlaceholders(player.getUniqueId(), text, placeholder)
                 : text;
 
