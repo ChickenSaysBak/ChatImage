@@ -2,6 +2,8 @@
 
 # 누구나 볼 수 있음
 show_image: "<green>[이미지 보기]"
+show_gif: "<green>[GIF 보기]"
+play_gif: "클릭하여 재생"
 hover_tip: "<gray>향후 이미지를 숨기려면 <white>/hideimages</white>를 입력하세요."
 hiding_images: "<red>이미지 숨기기 활성화! <gray>취소하려면 <white>/showimages</white>를 입력하세요."
 showing_images: "<green>이미지 숨기기 비활성화! <gray>다시 숨기려면 <white>/hideimages</white>를 입력하세요."

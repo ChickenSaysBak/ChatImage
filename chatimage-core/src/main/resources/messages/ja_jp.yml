@@ -2,6 +2,8 @@
 
 # 誰でも見ることができます
 show_image: "<green>[画像を表示]"
+show_gif: "<green>[GIFを表示]"
+play_gif: "クリックして再生"
 hover_tip: "<gray>将来の画像を非表示にするには、<white>/hideimages</white>と入力してください。"
 hiding_images: "<red>これから画像を非表示にします！ <gray>元に戻すには、<white>/showimages</white>と入力してください。"
 showing_images: "<green>これから画像を表示します！ <gray>非表示にするには、<white>/hideimages</white>と入力してください。"

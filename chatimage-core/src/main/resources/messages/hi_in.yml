@@ -2,6 +2,8 @@
 
 # सभी के द्वारा देखा गया
 show_image: "<green>[छवि दिखाएं]"
+show_gif: "<green>[GIF दिखाएं]"
+play_gif: "चलाने के लिए क्लिक करें"
 hover_tip: "<gray>भविष्य की छवियों को छिपाने के लिए <white>/hideimages</white> टाइप करें।"
 hiding_images: "<red>अब छवियों को छिपा रहे हैं! <gray>इसे पूर्ववत करने के लिए <white>/showimages</white> टाइप करें।"
 showing_images: "<green>अब छवियों को दिखा रहे हैं! <gray>छिपाने के लिए <white>/hideimages</white> टाइप करें।"

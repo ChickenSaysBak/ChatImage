@@ -2,6 +2,8 @@
 
 # Nähtävillä kaikille
 show_image: "<green>[Näytä kuva]"
+show_gif: "<green>[Näytä GIF]"
+play_gif: "Napsauta toistaaksesi"
 hover_tip: "<gray>Kirjoita <white>/hideimages</white> piilottaaksesi tulevat kuvat."
 hiding_images: "<red>Kuvat piilotettu! <gray>Kirjoita <white>/showimages</white> peruuttaaksesi."
 showing_images: "<green>Näytetään kuvat nyt! <gray>Kirjoita <white>/hideimages</white> piilottaaksesi."

@@ -2,6 +2,8 @@
 
 # Visto por cualquiera
 show_image: "<green>[Mostrar Imagen]"
+show_gif: "<green>[Mostrar GIF]"
+play_gif: "Haz clic para reproducir"
 hover_tip: "<gray>Escribe <white>/hideimages</white> para ocultar imágenes futuras."
 hiding_images: "<red>¡Ocultando imágenes ahora! <gray>Escribe <white>/showimages</white> para deshacer."
 showing_images: "<green>¡Mostrando imágenes ahora! <gray>Escribe <white>/hideimages</white> para deshacer."

@@ -2,6 +2,8 @@
 
 # Hiển thị cho mọi người
 show_image: "<green>[Hiện thị hình ảnh]"
+show_gif: "<green>[Hiển thị GIF]"
+play_gif: "Nhấp để phát"
 hover_tip: "<gray>Nhập <white>/hideimages</white> để ẩn các hình ảnh từ giờ trở đi."
 hiding_images: "<red>Đang để ẩn các hình ảnh! <gray>Nhập <white>/showimages</white> để hiện."
 showing_images: "<green>Đang để hiện các hình ảnh! <gray>Nhập <white>/hideimages</white> để ẩn."
