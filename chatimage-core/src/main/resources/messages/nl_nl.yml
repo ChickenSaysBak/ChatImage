@@ -1,7 +1,9 @@
 # Om het verzenden van een bericht volledig te stoppen, verwijder de hele regel inclusief de sleutel/voorvoegsel.
 
 # Zichtbaar voor iedereen
-show_image: "<green>[Afbeelding tonen]"
+show_image: "<green>[Afbeelding weergeven]"
+show_gif: "<green>[GIF weergeven]"
+play_gif: "Klik om af te spelen"
 hover_tip: "<gray>Typ <white>/hideimages</white> om toekomstige afbeeldingen te verbergen."
 hiding_images: "<red>Afbeeldingen worden nu verborgen! <gray>Typ <white>/showimages</white> om dit ongedaan te maken."
 showing_images: "<green>Afbeeldingen worden nu getoond! <gray>Typ <white>/hideimages</white> om dit ongedaan te maken."

@@ -2,6 +2,8 @@
 
 # Dilihat oleh semua orang
 show_image: "<green>[Tampilkan Gambar]"
+show_gif: "<green>[Tampilkan GIF]"
+play_gif: "Klik untuk memutar"
 hover_tip: "<gray>Ketik <white>/hideimages</white> untuk menyembunyikan gambar di masa depan."
 hiding_images: "<red>Sekarang menyembunyikan gambar! <gray>Ketik <white>/showimages</white> untuk membatalkan."
 showing_images: "<green>Sekarang menampilkan gambar! <gray>Ketik <white>/hideimages</white> untuk membatalkan."

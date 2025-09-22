@@ -2,6 +2,8 @@
 
 # 对所有人可见
 show_image: "<green>[显示图片]"
+show_gif: "<green>[显示 GIF]"
+play_gif: "点击播放"
 hover_tip: "<gray>输入 <white>/hideimages</white> 来隐藏图片"
 hiding_images: "<red>正在隐藏图片！<gray>输入 <white>/showimages</white> 撤销"
 showing_images: "<green>正在显示图片！<gray>输入 <white>/hideimages</white> 撤销"
