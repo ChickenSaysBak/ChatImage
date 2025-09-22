@@ -25,7 +25,7 @@ public class Gif implements Media {
     @Override
     public Component formatFor(PlayerAdapter player, String text, boolean placeholder) {
 
-        if (!isVersionCompatible(player.getVersion())) return null;
+        if (!isVersionCompatible(player.getVersion()) || !ChatImage.getInstance().getPlugin().hasDialogSupport()) return null;
 
         Settings settings = ChatImage.getInstance().getSettings();
         MiniMessage mm = MiniMessage.miniMessage();
