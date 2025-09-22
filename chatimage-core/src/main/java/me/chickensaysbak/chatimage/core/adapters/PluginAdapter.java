@@ -121,4 +121,10 @@ public interface PluginAdapter {
      */
     String setPlaceholders(UUID uuid, String text, boolean brackets);
 
+    /**
+     * Whether the plugin supports dialogs.
+     * @return true if dialogs are supported
+     */
+    boolean hasDialogSupport();
+
 }
