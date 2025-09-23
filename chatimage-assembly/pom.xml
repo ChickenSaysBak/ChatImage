@@ -76,5 +76,10 @@
             <artifactId>chatimage-velocity</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>me.chickensaysbak</groupId>
+            <artifactId>chatimage-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

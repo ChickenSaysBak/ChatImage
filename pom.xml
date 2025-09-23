@@ -32,5 +32,6 @@
         <module>chatimage-bungee</module>
         <module>chatimage-velocity</module>
         <module>chatimage-assembly</module>
+        <module>chatimage-api</module>
     </modules>
 </project>
