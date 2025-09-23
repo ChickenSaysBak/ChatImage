@@ -4,7 +4,7 @@ website: ${plugin.website}
 description: ${plugin.description}
 version: ${project.version}
 api-version: ${plugin.api-version}
-main: me.chickensaysbak.chatimage.paper.PluginPaper
+main: io.github.chickensaysbak.chatimage.paper.PluginPaper
 dependencies:
   server:
     DiscordSRV:

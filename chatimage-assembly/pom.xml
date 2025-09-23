@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>me.chickensaysbak</groupId>
+        <groupId>io.github.chickensaysbak</groupId>
         <artifactId>chatimage</artifactId>
         <version>3.0.0</version>
     </parent>
@@ -35,7 +35,7 @@
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>me.chickensaysbak.chatimage</shadedPattern>
+                            <shadedPattern>io.github.chickensaysbak.chatimage</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -57,27 +57,27 @@
 
     <dependencies>
         <dependency>
-            <groupId>me.chickensaysbak</groupId>
+            <groupId>io.github.chickensaysbak</groupId>
             <artifactId>chatimage-spigot</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>me.chickensaysbak</groupId>
+            <groupId>io.github.chickensaysbak</groupId>
             <artifactId>chatimage-paper</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>me.chickensaysbak</groupId>
+            <groupId>io.github.chickensaysbak</groupId>
             <artifactId>chatimage-bungee</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>me.chickensaysbak</groupId>
+            <groupId>io.github.chickensaysbak</groupId>
             <artifactId>chatimage-velocity</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>me.chickensaysbak</groupId>
+            <groupId>io.github.chickensaysbak</groupId>
             <artifactId>chatimage-api</artifactId>
             <version>${project.version}</version>
         </dependency>

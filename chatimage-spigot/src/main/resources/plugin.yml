@@ -6,7 +6,7 @@ version: ${project.version}
 api-version: ${plugin.api-version}
 softdepend: [DiscordSRV, EssentialsDiscord, PlaceholderAPI]
 libraries: [com.google.code.gson:gson:2.10.1]
-main: me.chickensaysbak.chatimage.spigot.PluginSpigot
+main: io.github.chickensaysbak.chatimage.spigot.PluginSpigot
 commands:
   chatimage:
     description: Admin command for the ChatImage plugin.
