@@ -42,26 +42,41 @@ public class ChatImageAPI {
 
     }
 
+    /**
+     * @see #createChatImage(String, String, boolean, boolean, int, int)
+     */
     public static Component createChatImage(String url, String text, boolean smooth, boolean trim, int width) {
         int height = ChatImage.getInstance().getSettings().getMaxHeight();
         return createChatImage(url, text, smooth, trim, width, height);
     }
 
+    /**
+     * @see #createChatImage(String, String, boolean, boolean, int, int)
+     */
     public static Component createChatImage(String url, String text, boolean smooth, boolean trim) {
         int width = ChatImage.getInstance().getSettings().getMaxWidth();
         return createChatImage(url, text, smooth, trim, width);
     }
 
+    /**
+     * @see #createChatImage(String, String, boolean, boolean, int, int)
+     */
     public static Component createChatImage(String url, String text, boolean smooth) {
         boolean trim = ChatImage.getInstance().getSettings().isTrimTransparency();
         return createChatImage(url, text, smooth, trim);
     }
 
+    /**
+     * @see #createChatImage(String, String, boolean, boolean, int, int)
+     */
     public static Component createChatImage(String url, String text) {
         boolean smooth = ChatImage.getInstance().getSettings().isSmoothRender();
         return createChatImage(url, text, smooth);
     }
 
+    /**
+     * @see #createChatImage(String, String, boolean, boolean, int, int)
+     */
     public static Component createChatImage(String url) {
         return createChatImage(url, null);
     }
