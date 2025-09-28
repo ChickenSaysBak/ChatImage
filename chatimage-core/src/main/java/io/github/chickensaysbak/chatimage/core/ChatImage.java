@@ -264,7 +264,7 @@ public class ChatImage {
             // Prevents 403 Forbidden errors.
             connection.addRequestProperty("User-Agent", USER_AGENT);
 
-            if (connection.getContentType().equalsIgnoreCase("image/gif")) {
+            if ("image/gif".equalsIgnoreCase(connection.getContentType())) {
 
                 if (width == null) width = settings.getMaxGifWidth();
                 if (height == null) height = settings.getMaxGifHeight();
