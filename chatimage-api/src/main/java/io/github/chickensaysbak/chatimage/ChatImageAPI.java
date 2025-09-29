@@ -14,7 +14,6 @@ public class ChatImageAPI {
 
     /**
      * Check if a player is hiding images via /hideimages.
-     * Hiding an image means minimizing it where it must be hovered over to be seen.
      * @param uuid the uuid of the player to check
      * @return true if the player is hiding images
      */
@@ -25,15 +24,15 @@ public class ChatImageAPI {
     /**
      * Creates an image or GIF that can be sent in Minecraft chat.
      * All parameters are optional besides the URL. Any unused parameters will use config defaults.
-     * @param url the URL of the image
-     * @param text optional text to append to the right of the image
+     * @param url the URL of the media
+     * @param text optional text to append to the right of the image or top of the GIF
      * @param smooth whether to use smooth rendering (true) or simple rendering (false)
-     * @param trim whether to trim transparent edges or not
-     * @param width the maximum width an image can be
-     * @param height the maximum height an image can be
-     * @return a Minecraft chat image
+     * @param trim whether to trim transparent edges or not (ignored for GIFs)
+     * @param width the maximum width the content can be
+     * @param height the maximum height the content can be
+     * @return a Minecraft chat image or clickable GIF text
      */
-    public static Component createChatImage(String url, String text, boolean smooth, boolean trim, int width, int height) {
+    public static Component createMediaFromURL(String url, String text, boolean smooth, boolean trim, int width, int height) {
 
         Media media = ChatImage.getInstance().loadMedia(url, width, height, smooth, trim, false);
         if (media == null) return null;
@@ -43,42 +42,65 @@ public class ChatImageAPI {
     }
 
     /**
-     * @see #createChatImage(String, String, boolean, boolean, int, int)
+     * @see #createMediaFromURL(String, String, boolean, boolean, int, int)
      */
-    public static Component createChatImage(String url, String text, boolean smooth, boolean trim, int width) {
+    public static Component createMediaFromURL(String url, String text, boolean smooth, boolean trim, int width) {
         int height = ChatImage.getInstance().getSettings().getMaxHeight();
-        return createChatImage(url, text, smooth, trim, width, height);
+        return createMediaFromURL(url, text, smooth, trim, width, height);
     }
 
     /**
-     * @see #createChatImage(String, String, boolean, boolean, int, int)
+     * @see #createMediaFromURL(String, String, boolean, boolean, int, int)
      */
-    public static Component createChatImage(String url, String text, boolean smooth, boolean trim) {
+    public static Component createMediaFromURL(String url, String text, boolean smooth, boolean trim) {
         int width = ChatImage.getInstance().getSettings().getMaxWidth();
-        return createChatImage(url, text, smooth, trim, width);
+        return createMediaFromURL(url, text, smooth, trim, width);
     }
 
     /**
-     * @see #createChatImage(String, String, boolean, boolean, int, int)
+     * @see #createMediaFromURL(String, String, boolean, boolean, int, int)
      */
-    public static Component createChatImage(String url, String text, boolean smooth) {
+    public static Component createMediaFromURL(String url, String text, boolean smooth) {
         boolean trim = ChatImage.getInstance().getSettings().isTrimTransparency();
-        return createChatImage(url, text, smooth, trim);
+        return createMediaFromURL(url, text, smooth, trim);
     }
 
     /**
-     * @see #createChatImage(String, String, boolean, boolean, int, int)
+     * @see #createMediaFromURL(String, String, boolean, boolean, int, int)
      */
-    public static Component createChatImage(String url, String text) {
+    public static Component createMediaFromURL(String url, String text) {
         boolean smooth = ChatImage.getInstance().getSettings().isSmoothRender();
-        return createChatImage(url, text, smooth);
+        return createMediaFromURL(url, text, smooth);
     }
 
     /**
-     * @see #createChatImage(String, String, boolean, boolean, int, int)
+     * @see #createMediaFromURL(String, String, boolean, boolean, int, int)
      */
-    public static Component createChatImage(String url) {
-        return createChatImage(url, null);
+    public static Component createMediaFromURL(String url) {
+        return createMediaFromURL(url, null);
+    }
+
+    /**
+     * Gets an image or GIF that has been saved in the ChatImage plugin folder.
+     * Text is optional.
+     * @param name the name of the saved media
+     * @param text optional text to append to the right of the image or top of the GIF
+     * @return a Minecraft chat image or clickable GIF text
+     */
+    public static Component getSavedMedia(String name, String text) {
+
+        Media media = ChatImage.getInstance().getSavedImages().getMedia(name);
+        if (media == null) return null;
+
+        return media.formatFor(null, text, false);
+
+    }
+
+    /**
+     * @see #getSavedMedia(String, String)
+     */
+    public static Component getSavedMedia(String name) {
+        return getSavedMedia(name, null);
     }
 
 }
