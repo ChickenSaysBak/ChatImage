@@ -11,7 +11,7 @@
 
     <groupId>io.github.chickensaysbak</groupId>
     <artifactId>chatimage-api</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.0-1</version>
 
     <name>ChatImage API</name>
     <description>API for sending images in Minecraft with the ChatImage plugin.</description>
@@ -105,7 +105,7 @@
         <dependency>
             <groupId>io.github.chickensaysbak</groupId>
             <artifactId>chatimage-core</artifactId>
-            <version>${project.version}</version>
+            <version>3.0.0</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
